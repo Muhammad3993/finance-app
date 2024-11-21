@@ -98,14 +98,20 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setState({ isTelegramWebApp });
-    WebApp.expand()
-    WebApp.disableVerticalSwipes()
-    WebApp.viewportStableHeight
-    WebApp.setBackgroundColor("#ffffff")
+    WebApp.expand();
+    WebApp.disableVerticalSwipes();
+    WebApp.viewportStableHeight;
+    WebApp.setBackgroundColor("#ffffff");
 
-    // WebApp.BackButton.onClick(() => {
-    //   window.history.back();
-    // })
+    WebApp.BackButton.onClick(() => {
+      window.history.back();
+    });
+
+    return () => {
+      WebApp.BackButton.offClick(() => {
+        window.history.back();
+      });
+    };
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
