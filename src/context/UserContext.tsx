@@ -1,6 +1,7 @@
-import { createContext, useContext, useReducer, Dispatch } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { createContext, useContext, useReducer, Dispatch, useEffect } from "react";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import WebApp from "@twa-dev/sdk";
 
 interface IState {
   user?: {
@@ -43,6 +44,9 @@ interface IContext {
 const UserContext = createContext<IContext | undefined>(undefined);
 
 function UserProvider({ children }: { children: React.ReactNode }) {
+  const dataUnsafe = WebApp.initDataUnsafe;
+  const isTelegramWebApp = !!dataUnsafe?.user;
+
   const initialState: IState = {
     user: {
       telegram_id: 0,
@@ -86,15 +90,15 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     initialState,
   );
 
-  console.log(state.user?.is_boarding);
+  setState({ isTelegramWebApp });
 
   const saveUserData = async () => {
     try {
       const docRef = await addDoc(collection(db, "users"), {
         ...state.user,
-        telegram_id: 13234,
-        name: "Muhammad13",
-        lang: "en",
+        telegram_id: dataUnsafe?.user?.id,
+        name: dataUnsafe?.user?.first_name,
+        lang: dataUnsafe?.user?.language_code,
         is_boarding: true,
       });
       console.log("Dokument muvaffaqiyatli qo'shildi, ID:", docRef.id);
@@ -102,6 +106,34 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       console.error("Xatolik yuz berdi: ", e);
     }
   };
+
+  // const fetchUserByTelegramId = async (telegram_id: number) => {
+  //   try {
+  //     const q = query(
+  //       collection(db, "users"),
+  //       where("telegram_id", "==", telegram_id)
+  //     );
+  //     const querySnapshot = await getDocs(q);
+
+  //     if (!querySnapshot.empty) {
+  //       const userData = querySnapshot.docs[0].data();
+  //       console.log("Foydalanuvchi topildi:", userData);
+  //       setState({ user: userData });
+  //     } else {
+  //       console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
+  //       await saveUserData();
+  //     }
+  //   } catch (e) {
+  //     console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (isTelegramWebApp && dataUnsafe?.user?.id) {
+  //     fetchUserByTelegramId(dataUnsafe.user.id);
+  //   }
+  // }, [isTelegramWebApp]);
+
 
   const contextValue = {
     state,
