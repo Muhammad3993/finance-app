@@ -3,14 +3,17 @@ import { useTranslation } from "react-i18next";
 
 const IsDebt = () => {
   const { setState, state } = useUserContext();
-  console.log(state);
 
-  // const handleLater = () => {
-  //   setState({
-  //     user: { onBoarding: { ...state.user?.onBoarding, is_creadit: true } },
-  //   });
-  //   navigate("/");
-  // };
+  const handleLater = () => {
+    setState({
+      user: {
+        ...state.user,
+        is_boarding: true,
+        onBoarding: { ...state.user?.onBoarding, debt: 0 },
+      },
+      pages: 18,
+    });
+  };
 
   const { t } = useTranslation();
   return (
@@ -29,7 +32,7 @@ const IsDebt = () => {
         </div>
         <div
           className='h-11 text-sm font-normal text-center text-customGray1 flex items-center justify-center mt-3 font-unbounded'
-          // onClick={() => handleLater()}
+          onClick={() => handleLater()}
         >
           {t("later")}
         </div>

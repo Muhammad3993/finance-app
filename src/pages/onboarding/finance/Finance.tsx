@@ -19,6 +19,11 @@ const Finance = () => {
       .required("Finance is required"),
   });
 
+  const formatNumber = (value: string | number): string => {
+    if (typeof value === "number") value = value.toString();
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
+
   const {
     handleSubmit,
     control,
@@ -55,10 +60,11 @@ const Finance = () => {
             render={({ field }) => (
               <input
                 {...field}
-                type='number'
+                type='text'
                 className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
                 placeholder={t("finance_placeholder")}
-                value={field.value ?? ""}
+                value={formatNumber(field.value ?? "")}
+                autoFocus
               />
             )}
           />

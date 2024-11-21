@@ -7,17 +7,19 @@ const IsCredit = () => {
 
   const handleBegin = () => {
     setState({
-      user: { onBoarding: { ...state.user?.onBoarding, is_creadit: true } },
       pages: 10,
     });
   };
 
-  // const handleLater = () => {
-  //   setState({
-  //     user: { onBoarding: { ...state.user?.onBoarding, is_creadit: true } },
-  //   });
-  //   navigate("/");
-  // };
+  const handleLater = () => {
+    setState({
+      pages: 12,
+      user: {
+        ...state.user,
+        onBoarding: { ...state.user?.onBoarding, credit: [] },
+      },
+    });
+  };
 
   const { t } = useTranslation();
   return (
@@ -39,7 +41,7 @@ const IsCredit = () => {
         </div>
         <div
           className='h-11 text-sm font-normal text-center text-customGray1 flex items-center justify-center mt-3 font-unbounded'
-          // onClick={() => handleLater()}
+          onClick={() => handleLater()}
         >
           {t("later")}
         </div>

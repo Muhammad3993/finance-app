@@ -18,6 +18,7 @@ import IsSaving from "./is-saving/IsSaving";
 import Saving from "./saving/Saving";
 import IsDebt from "./is-debt/IsDebt";
 import Debt from "./debt/Debt";
+import Finish from "./finish/FInish";
 
 const Onboarding = () => {
   const { state } = useUserContext();
@@ -42,7 +43,8 @@ const Onboarding = () => {
         state.pages === 14 && <IsSaving /> || 
         state.pages === 15 && <Saving /> || 
         state.pages === 16 && <IsDebt /> || 
-        state.pages === 17 && <Debt />
+        state.pages === 17 && <Debt /> || 
+        state.pages === 18 && <Finish />
       }
     </section>
   );

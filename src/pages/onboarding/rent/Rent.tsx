@@ -13,9 +13,15 @@ const Rent = () => {
 
   console.log(state);
 
+  const formatNumber = (value: string | number): string => {
+    if (typeof value === "number") value = value.toString();
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
+
   const schema = yup.object().shape({
     for_rent: yup
       .number()
+      .max(Number(state.user?.onBoarding?.finance))
       .typeError("Finance must be a number")
       .positive("Finance must be greater than 0")
       .required("Finance is required"),
@@ -40,7 +46,13 @@ const Rent = () => {
   };
 
   const handleLater = () => {
-    setState({pages: 5, user: {...state.user, onBoarding: {...state.user?.onBoarding, for_rent: 0}}});
+    setState({
+      pages: 5,
+      user: {
+        ...state.user,
+        onBoarding: { ...state.user?.onBoarding, for_rent: 0 },
+      },
+    });
   };
 
   const { t } = useTranslation();
@@ -65,10 +77,11 @@ const Rent = () => {
               render={({ field }) => (
                 <input
                   {...field}
-                  type='number'
+                  type='text'
                   className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
                   placeholder={t("finance_placeholder")}
-                  value={field.value ?? ""}
+                  value={formatNumber(field.value ?? "")}
+                  autoFocus
                 />
               )}
             />
@@ -96,7 +109,7 @@ const Rent = () => {
       </form>
       <div className='absolute top-[67px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 rounded-2xl flex flex-col items-center'>
         <p className='font-unbounded text-sm font-medium text-black'>
-          {state?.user?.onBoarding?.finance} сум
+          {state?.user?.onBoarding?.finance?.toLocaleString()} сум
         </p>
         <p className='font-unbounded text-sm font-normal text-black'>
           остается

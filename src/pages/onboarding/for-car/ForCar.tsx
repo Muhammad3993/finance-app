@@ -13,14 +13,10 @@ const ForCar = () => {
 
   console.log(state);
 
-  const schema = yup.object().shape({
-    for_car: yup
-      .number()
-      .typeError("Finance must be a number")
-      .positive("Finance must be greater than 0")
-      .required("Finance is required"),
-  });
-
+  const formatNumber = (value: string | number): string => {
+    if (typeof value === "number") value = value.toString();
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
   const finance: number | undefined = state?.user?.onBoarding?.finance;
   const for_rent: number | undefined = state?.user?.onBoarding?.for_rent;
   const for_meal: number | undefined = state?.user?.onBoarding?.for_meal;
@@ -30,6 +26,15 @@ const ForCar = () => {
   const remainder: number | undefined =
     Number(finance) -
     (Number(for_rent) + Number(for_meal) + Number(for_communal));
+
+  const schema = yup.object().shape({
+    for_car: yup
+      .number()
+      .max(Number(remainder))
+      .typeError("Finance must be a number")
+      .positive("Finance must be greater than 0")
+      .required("Finance is required"),
+  });
 
   const {
     handleSubmit,
@@ -84,10 +89,11 @@ const ForCar = () => {
               render={({ field }) => (
                 <input
                   {...field}
-                  type='number'
+                  type='text'
                   className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
                   placeholder={t("finance_placeholder")}
-                  value={field.value ?? ""}
+                  value={formatNumber(field.value ?? "")}
+                  autoFocus
                 />
               )}
             />
@@ -115,7 +121,7 @@ const ForCar = () => {
       </form>
       <div className='absolute top-[67px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 rounded-2xl flex flex-col items-center'>
         <p className='font-unbounded text-sm font-medium text-black'>
-          {remainder} сум
+          {remainder?.toLocaleString()} сум
         </p>
         <p className='font-unbounded text-sm font-normal text-black'>
           остается

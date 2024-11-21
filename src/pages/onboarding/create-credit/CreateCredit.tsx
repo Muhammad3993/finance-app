@@ -14,6 +14,11 @@ const CreateCredit = () => {
   const { setState, state } = useUserContext();
   console.log(state);
 
+  const formatNumber = (value: string | number): string => {
+    if (typeof value === "number") value = value.toString();
+    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
+
   const schema = yup.object().shape({
     creadit_name: yup.string().required("Finance name is required"),
     creadit_price: yup
@@ -78,6 +83,7 @@ const CreateCredit = () => {
                 className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
                 placeholder={t("creadit_name")}
                 value={field.value ?? ""}
+                autoFocus
               />
             )}
           />
@@ -93,10 +99,10 @@ const CreateCredit = () => {
             render={({ field }) => (
               <input
                 {...field}
-                type='number'
+                type='text'
                 className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
                 placeholder={t("creadit_month_price")}
-                value={field.value ?? ""}
+                value={formatNumber(field.value ?? "")}
               />
             )}
           />

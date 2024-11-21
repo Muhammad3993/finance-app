@@ -86,9 +86,17 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     initialState,
   );
 
+  console.log(state.user?.is_boarding);
+
   const saveUserData = async () => {
     try {
-      const docRef = await addDoc(collection(db, "users"), state.user);
+      const docRef = await addDoc(collection(db, "users"), {
+        ...state.user,
+        telegram_id: 13234,
+        name: "Muhammad13",
+        lang: "en",
+        is_boarding: true,
+      });
       console.log("Dokument muvaffaqiyatli qo'shildi, ID:", docRef.id);
     } catch (e) {
       console.error("Xatolik yuz berdi: ", e);
@@ -98,7 +106,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   const contextValue = {
     state,
     setState,
-    saveUserData
+    saveUserData,
   };
 
   return (

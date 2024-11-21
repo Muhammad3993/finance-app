@@ -5,12 +5,12 @@ const IsCulturel = () => {
   const { setState, state } = useUserContext();
   console.log(state);
 
-  // const handleLater = () => {
-  //   setState({
-  //     user: { onBoarding: { ...state.user?.onBoarding, is_creadit: true } },
-  //   });
-  //   navigate("/");
-  // };
+  const handleLater = () => {
+    setState({
+      pages: 14,
+      user: {...state.user, onBoarding: {...state.user?.onBoarding, cultural: 0}}
+    });
+  };
 
   const { t } = useTranslation();
   return (
@@ -32,7 +32,7 @@ const IsCulturel = () => {
         </div>
         <div
           className='h-11 text-sm font-normal text-center text-customGray1 flex items-center justify-center mt-3 font-unbounded'
-          // onClick={() => handleLater()}
+          onClick={() => handleLater()}
         >
           {t("later")}
         </div>

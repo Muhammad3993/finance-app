@@ -5,12 +5,12 @@ const IsSaving = () => {
   const { setState, state } = useUserContext();
   console.log(state);
 
-  // const handleLater = () => {
-  //   setState({
-  //     user: { onBoarding: { ...state.user?.onBoarding, is_creadit: true } },
-  //   });
-  //   navigate("/");
-  // };
+  const handleLater = () => {
+    setState({
+      pages: 16,
+      user: {...state.user, onBoarding: {...state.user?.onBoarding, saving: 0}}
+    });
+  };
 
   const { t } = useTranslation();
   return (
@@ -29,7 +29,7 @@ const IsSaving = () => {
         </div>
         <div
           className='h-11 text-sm font-normal text-center text-customGray1 flex items-center justify-center mt-3 font-unbounded'
-          // onClick={() => handleLater()}
+          onClick={() => handleLater()}
         >
           {t("later")}
         </div>
