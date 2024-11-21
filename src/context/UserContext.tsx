@@ -1,5 +1,5 @@
-import { createContext, useContext, useReducer, Dispatch, useEffect } from "react";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { createContext, useContext, useReducer, Dispatch } from "react";
+import { collection, addDoc,  } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 
