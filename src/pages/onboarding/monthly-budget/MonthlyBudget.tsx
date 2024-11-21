@@ -13,9 +13,7 @@ const MonthlyBudget = () => {
     });
 
     return () => {
-      WebApp.BackButton.offClick(() => {
-        window.history.back();
-      });
+      WebApp.BackButton.onClick(() => {});
     };
   }, [state]);
   console.log(state);
