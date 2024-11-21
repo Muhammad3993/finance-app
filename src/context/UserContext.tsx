@@ -5,7 +5,7 @@ import {
   Dispatch,
   useEffect,
 } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 
@@ -98,6 +98,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setState({ isTelegramWebApp });
+    WebApp.expand()
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
@@ -115,32 +116,32 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // const fetchUserByTelegramId = async (telegram_id: number) => {
-  //   try {
-  //     const q = query(
-  //       collection(db, "users"),
-  //       where("telegram_id", "==", telegram_id)
-  //     );
-  //     const querySnapshot = await getDocs(q);
+  const fetchUserByTelegramId = async (telegram_id: number) => {
+    try {
+      const q = query(
+        collection(db, "users"),
+        where("telegram_id", "==", telegram_id),
+      );
+      const querySnapshot = await getDocs(q);
 
-  //     if (!querySnapshot.empty) {
-  //       const userData = querySnapshot.docs[0].data();
-  //       console.log("Foydalanuvchi topildi:", userData);
-  //       setState({ user: userData });
-  //     } else {
-  //       console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
-  //       await saveUserData();
-  //     }
-  //   } catch (e) {
-  //     console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
-  //   }
-  // };
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        console.log("Foydalanuvchi topildi:", userData);
+        setState({ user: userData });
+      } else {
+        console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
+        await saveUserData();
+      }
+    } catch (e) {
+      console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (isTelegramWebApp && dataUnsafe?.user?.id) {
-  //     fetchUserByTelegramId(dataUnsafe.user.id);
-  //   }
-  // }, [isTelegramWebApp]);
+  useEffect(() => {
+    if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(dataUnsafe?.user?.id);
+    }
+  }, [isTelegramWebApp]);
 
   const contextValue = {
     state,
