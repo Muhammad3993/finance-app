@@ -1,5 +1,11 @@
-import { createContext, useContext, useReducer, Dispatch } from "react";
-import { collection, addDoc,  } from "firebase/firestore";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  Dispatch,
+  useEffect,
+} from "react";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 
@@ -90,7 +96,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     initialState,
   );
 
-  setState({ isTelegramWebApp });
+  useEffect(() => {
+    setState({ isTelegramWebApp });
+  }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
     try {
@@ -133,7 +141,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   //     fetchUserByTelegramId(dataUnsafe.user.id);
   //   }
   // }, [isTelegramWebApp]);
-
 
   const contextValue = {
     state,
