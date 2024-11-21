@@ -106,12 +106,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.BackButton.onClick(() => {
       window.history.back();
     });
-
-    return () => {
-      WebApp.BackButton.offClick(() => {
-        window.history.back();
-      });
-    };
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {

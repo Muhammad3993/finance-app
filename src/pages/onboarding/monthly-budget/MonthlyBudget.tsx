@@ -11,6 +11,12 @@ const MonthlyBudget = () => {
     WebApp.BackButton.onClick(() => {
       setState({ pages: 0 });
     });
+
+    return () => {
+      WebApp.BackButton.offClick(() => {
+        window.history.back();
+      });
+    };
   }, [state]);
   console.log(state);
   const navigate = useNavigate();
