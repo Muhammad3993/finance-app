@@ -100,6 +100,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     setState({ isTelegramWebApp });
     WebApp.expand()
     WebApp.disableVerticalSwipes()
+    WebApp.viewportStableHeight
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
