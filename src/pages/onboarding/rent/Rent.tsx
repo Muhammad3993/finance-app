@@ -57,8 +57,8 @@ const Rent = () => {
 
   const { t } = useTranslation();
   return (
-    <div className='relative px-4'>
-      <div className='bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center mt-10 m-auto'>
+    <div className='relative px-4 py-10'>
+      <div className='bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center m-auto'>
         <p className='font-unbounded text-sm font-medium text-black'>
           {state?.user?.onBoarding?.finance?.toLocaleString()} сум
         </p>
