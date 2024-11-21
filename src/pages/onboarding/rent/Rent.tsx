@@ -58,8 +58,16 @@ const Rent = () => {
   const { t } = useTranslation();
   return (
     <div className='relative px-4'>
+      <div className='bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center mt-10 m-auto'>
+        <p className='font-unbounded text-sm font-medium text-black'>
+          {state?.user?.onBoarding?.finance?.toLocaleString()} сум
+        </p>
+        <p className='font-unbounded text-sm font-normal text-black'>
+          остается
+        </p>
+      </div>
       <form
-        className='w-full min-h-[100vh] flex flex-col justify-center items-center gap-36'
+        className='w-full flex flex-col justify-center items-center gap-36 mt-10'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='flex flex-col items-center w-full gap-3'>
@@ -107,14 +115,6 @@ const Rent = () => {
           </div>
         </div>
       </form>
-      <div className='absolute top-[10px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center'>
-        <p className='font-unbounded text-sm font-medium text-black'>
-          {state?.user?.onBoarding?.finance?.toLocaleString()} сум
-        </p>
-        <p className='font-unbounded text-sm font-normal text-black'>
-          остается
-        </p>
-      </div>
     </div>
   );
 };
