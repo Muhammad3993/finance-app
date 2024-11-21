@@ -19,9 +19,15 @@ import Saving from "./saving/Saving";
 import IsDebt from "./is-debt/IsDebt";
 import Debt from "./debt/Debt";
 import Finish from "./finish/FInish";
+import { useEffect } from "react";
+import WebApp from "@twa-dev/sdk";
 
 const Onboarding = () => {
   const { state } = useUserContext();
+
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, [])
 
   return (
     <section className="overflow-auto h-[100vh]">

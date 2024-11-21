@@ -11,6 +11,8 @@ const AppRoutes = () => {
   } else {
     i18n.changeLanguage(DEFAULT_LANGUAGE);
   }
+ 
+  
   return (
     <main className='max-w-[768px] bg-[#FFFFFF] h-[100dvh] mx-auto w-full relative'>
       <Routes>

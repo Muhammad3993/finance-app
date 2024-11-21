@@ -102,6 +102,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.disableVerticalSwipes()
     WebApp.viewportStableHeight
     WebApp.setBackgroundColor("#ffffff")
+
+    WebApp.BackButton.onClick(() => {
+      window.history.back();
+    })
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {

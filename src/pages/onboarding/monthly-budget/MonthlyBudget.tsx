@@ -1,9 +1,17 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const MonthlyBudget = () => {
   const { setState, state } = useUserContext();
+  useEffect(() => {
+    WebApp.BackButton.show();
+    WebApp.BackButton.onClick(() => {
+      setState({pages: 0})
+    })
+  }, [state])
   console.log(state);
   const navigate = useNavigate();
 
