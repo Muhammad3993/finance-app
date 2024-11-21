@@ -99,6 +99,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setState({ isTelegramWebApp });
     WebApp.expand()
+    WebApp.disableVerticalSwipes()
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
