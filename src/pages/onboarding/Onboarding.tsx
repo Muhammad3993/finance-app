@@ -24,7 +24,7 @@ const Onboarding = () => {
   const { state } = useUserContext();
 
   return (
-    <section className="overflow-auto">
+    <section className="overflow-auto h-[100vh]">
       {
         state.pages === 0 && <Welcome /> ||
         state.pages === 1 && <MonthlyBudget /> ||

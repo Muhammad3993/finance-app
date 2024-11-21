@@ -132,7 +132,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         setState({ user: userData });
       } else {
         console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
-        await saveUserData();
       }
     } catch (e) {
       console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
