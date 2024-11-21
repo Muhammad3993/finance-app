@@ -14,7 +14,7 @@ const IsCulturel = () => {
 
   const { t } = useTranslation();
   return (
-    <div className='px-4 py-190 w-full h-[100vh] flex flex-col justify-between items-center'>
+    <div className='px-4 w-full min-h-[100vh] flex flex-col justify-center items-center gap-36'>
       <div className='flex flex-col items-center gap-3'>
         <p className='font-unbounded font-medium text-22 text-black text-center'>
           {t("is_culterel")}

@@ -5,8 +5,8 @@ const Welcome = () => {
   const { setState } = useUserContext();
   const { t } = useTranslation();
   return (
-    <div className='px-4 py-190 w-full h-[100vh] flex flex-col justify-between items-center'>
-      <div className='flex flex-col gap-10'>
+    <div className='px-4 w-full flex flex-col justify-center items-center min-h-[100vh] gap-28'>
+      <div className='flex flex-col gap-8'>
         <p className='font-unbounded font-medium text-28 text-black text-center'>
           {t("welcome")}
         </p>

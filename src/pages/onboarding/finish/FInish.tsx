@@ -79,7 +79,7 @@ const Finish = () => {
   const filteredData = data.filter(item => item.value > 0);
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen bg-white p-4'>
+    <div className='w-full flex flex-col items-center justify-center min-h-[100vh] bg-white p-4 py-10'>
       <p className='font-unbounded font-medium text-22 text-black text-center'>
         Отлично! Мы распределили весь ваш бюджет на этот месяц
       </p>
@@ -92,7 +92,7 @@ const Finish = () => {
       </div>
 
       <PieChart
-        width={400}
+        width={350}
         height={300}
         className='mt-8 border-none outline-none'
       >

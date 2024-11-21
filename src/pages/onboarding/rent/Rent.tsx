@@ -59,7 +59,7 @@ const Rent = () => {
   return (
     <div className='relative px-4'>
       <form
-        className=' py-190 w-full h-[100vh] flex flex-col justify-between items-center'
+        className='w-full min-h-[100vh] flex flex-col justify-center items-center gap-36'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='flex flex-col items-center w-full gap-3'>
@@ -69,7 +69,7 @@ const Rent = () => {
           <p className='text-center text-xs w-60p text-customGray1 font-unbounded'>
             {t("how_much_spend_rent_title")}
           </p>
-          <div className='w-full mt-14'>
+          <div className='w-full mt-10'>
             <Controller
               control={control}
               name='for_rent'
@@ -107,7 +107,7 @@ const Rent = () => {
           </div>
         </div>
       </form>
-      <div className='absolute top-[67px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 rounded-2xl flex flex-col items-center'>
+      <div className='absolute top-[10px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center'>
         <p className='font-unbounded text-sm font-medium text-black'>
           {state?.user?.onBoarding?.finance?.toLocaleString()} сум
         </p>

@@ -81,7 +81,7 @@ const Debt = () => {
   return (
     <div className='relative px-4'>
       <form
-        className=' py-190 w-full h-[100vh] flex flex-col justify-between items-center'
+        className='px-4 w-full min-h-[100vh] flex flex-col justify-center items-center gap-36'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='flex flex-col items-center w-full gap-3'>
@@ -91,7 +91,7 @@ const Debt = () => {
           <p className='font-unbounded font-normal text-sm text-customGray1 text-center'>
             {t("debt")}
           </p>
-          <div className='w-full mt-16'>
+          <div className='w-full mt-3'>
             <Controller
               control={control}
               name='debt'
@@ -121,7 +121,7 @@ const Debt = () => {
           {t("confirm")}
         </button>
       </form>
-      <div className='absolute top-[67px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 rounded-2xl flex flex-col items-center'>
+      <div className='absolute top-[10px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center'>
         <p className='font-unbounded text-sm font-medium text-black'>
           {remainder?.toLocaleString()} сум
         </p>

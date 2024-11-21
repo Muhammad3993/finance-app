@@ -64,10 +64,10 @@ const CreateCredit = () => {
   const { t } = useTranslation();
   return (
     <form
-      className='px-4 py-190 w-full h-[100vh] flex flex-col justify-between items-center'
+      className='px-4 w-full min-h-[100vh] flex flex-col justify-center items-center gap-36 '
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className='flex flex-col gap-28'>
+      <div className='flex flex-col gap-10'>
         <p className='font-unbounded font-medium text-22 text-black text-center'>
           {t("create_credit_title")}
         </p>
