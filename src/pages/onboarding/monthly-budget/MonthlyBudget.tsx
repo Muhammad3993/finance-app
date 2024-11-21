@@ -9,9 +9,9 @@ const MonthlyBudget = () => {
   useEffect(() => {
     WebApp.BackButton.show();
     WebApp.BackButton.onClick(() => {
-      setState({pages: 0})
-    })
-  }, [state])
+      setState({ pages: 0 });
+    });
+  }, [state]);
   console.log(state);
   const navigate = useNavigate();
 

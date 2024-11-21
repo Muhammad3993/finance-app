@@ -103,9 +103,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.viewportStableHeight
     WebApp.setBackgroundColor("#ffffff")
 
-    WebApp.BackButton.onClick(() => {
-      window.history.back();
-    })
+    // WebApp.BackButton.onClick(() => {
+    //   window.history.back();
+    // })
   }, [isTelegramWebApp]);
 
   const saveUserData = async () => {
