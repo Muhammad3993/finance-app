@@ -7,7 +7,6 @@ import {
 } from "react";
 import {
   collection,
-  addDoc,
   query,
   where,
   getDocs,
