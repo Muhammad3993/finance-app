@@ -13,10 +13,11 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
   
-  if (state.userData === null) {
-    return <div>Loading...</div>;
-  }
-  
+
+  // if (state.userData === null) {
+  //   return <div>Loading...</div>;
+  // }
+
   if (!state.userData?.telegram_id) {
     navigate("/onboarding");
   }
