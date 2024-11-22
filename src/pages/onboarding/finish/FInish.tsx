@@ -48,8 +48,11 @@ const Finish = () => {
     Number(debt) +
     Number(creditsTotal);
 
-
-  const totalIncome: number | undefined = Number(finance) - remainderAll;
+  const reminderCash =
+    finance && remainderAll
+      ? ((Number(finance) - remainderAll) * 100) / finance
+      : 0;
+  const totalIncome: number | undefined = Number(finance) - reminderCash;
 
   const percentageNeed =
     totalIncome && remainder
@@ -58,10 +61,6 @@ const Finish = () => {
   const culturalNeed =
     totalIncome && cultural ? (cultural * 100) / totalIncome : 0;
   const savingNeed = totalIncome && saving ? (saving * 100) / totalIncome : 0;
-  const reminderCash =
-    totalIncome && remainderAll
-      ? ((Number(finance) - remainderAll) * 100) / totalIncome
-      : 0;
 
   const data = [
     { name: "Необходимые", value: percentageNeed, color: "#D9D9D9" },
@@ -130,7 +129,7 @@ const Finish = () => {
         <div className='flex justify-between items-center mt-2'>
           <span>Свободные</span>
           <span>
-            {((reminderCash / 100) * Number(totalIncome)).toLocaleString()} сум
+            {((reminderCash / 100) * Number(finance)).toLocaleString()} сум
           </span>
         </div>
       </div>
