@@ -14,27 +14,20 @@ interface IState {
     telegram_id?: number;
     name?: string;
     lang?: string;
-    is_boarding?: boolean;
     onBoarding?: {
-      is_ready?: boolean;
       finance?: number;
-      is_category?: boolean;
       for_rent?: number;
       for_meal?: number;
       for_communal?: number;
       for_car?: number;
       for_transport?: number;
-      is_creadit?: boolean;
       credit?: {
         name?: string;
         price?: number;
         months?: number;
       }[];
-      is_cultural?: boolean;
       cultural?: number;
-      is_saving?: boolean;
       saving?: number;
-      is_debt?: boolean;
       debt?: number;
     };
   };
@@ -58,29 +51,16 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       telegram_id: 0,
       name: "No User",
       lang: "en",
-      is_boarding: false,
       onBoarding: {
-        is_ready: false,
         finance: 0,
-        is_category: false,
         for_rent: 0,
         for_meal: 0,
         for_communal: 0,
         for_car: 0,
         for_transport: 0,
-        is_creadit: false,
-        credit: [
-          {
-            name: "Ipoteka",
-            price: 0,
-            months: 3,
-          },
-        ],
-        is_cultural: false,
+        credit: [],
         cultural: 0,
-        is_saving: false,
         saving: 0,
-        is_debt: false,
         debt: 0,
       },
     },
@@ -115,7 +95,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         telegram_id: dataUnsafe?.user?.id,
         name: dataUnsafe?.user?.first_name,
         lang: dataUnsafe?.user?.language_code,
-        is_boarding: true,
       });
       console.log("Dokument muvaffaqiyatli qo'shildi, ID:", docRef.id);
     } catch (e) {

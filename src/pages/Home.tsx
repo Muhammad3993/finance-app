@@ -1,7 +1,7 @@
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { state } = useUserContext();
@@ -11,16 +11,18 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
 
-  if (!state.user?.is_boarding) {
-    return (
-      <div>
-        <h1>To`ldirilmagan</h1>
-        <Link to={"/onboarding"}>Onboarding</Link>
-      </div>
-    );
+  const navigate = useNavigate();
+
+  if (!state.user?.telegram_id) {
+    navigate("/onboarding");
   }
 
-  return <div>Home</div>;
+  return (
+    <div>
+      <h1>Home</h1>
+      {!state.user?.onBoarding && <Link to='/onboarding'>Start</Link>}
+    </div>
+  );
 };
 
 export default Home;

@@ -17,7 +17,6 @@ const IsDebt = () => {
     setState({
       user: {
         ...state.user,
-        is_boarding: true,
         onBoarding: { ...state.user?.onBoarding, debt: 0 },
       },
     });
@@ -35,7 +34,7 @@ const IsDebt = () => {
       <div>
         <div
           className='py-3 px-6 rounded-2xl bg-customGray text-base font-medium font-unbounded'
-          onClick={() => navigate('/onboarding/debt')}
+          onClick={() => navigate("/onboarding/debt")}
         >
           {t("Определить сумму")}
         </div>

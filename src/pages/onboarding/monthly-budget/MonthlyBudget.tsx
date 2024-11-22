@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const MonthlyBudget = () => {
-  const { setState, state } = useUserContext();
+  const { state, saveUserData } = useUserContext();
   useEffect(() => {
     WebApp.BackButton.show();
   }, []);
@@ -15,14 +15,11 @@ const MonthlyBudget = () => {
   const navigate = useNavigate();
 
   const handleBegin = () => {
-    setState({
-      user: { onBoarding: { is_ready: true } },
-    });
     navigate('/onboarding/finance')
   };
 
   const handleLater = () => {
-    setState({ user: { is_boarding: false } });
+    saveUserData();
     navigate("/");
   };
 

@@ -76,14 +76,13 @@ const Debt = () => {
     setState({
       user: {
         ...state.user,
-        is_boarding: true,
         onBoarding: {
           ...state.user?.onBoarding,
           debt: data.debt,
         },
       },
     });
-    navigate("/onboarding/finish")
+    navigate("/onboarding/finish");
   };
 
   const { t } = useTranslation();

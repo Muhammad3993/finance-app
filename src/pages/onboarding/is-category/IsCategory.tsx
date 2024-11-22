@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const IsCategory = () => {
-  const { setState, state } = useUserContext();
+  const { state } = useUserContext();
   useEffect(() => {
     WebApp.BackButton.show();
   }, []);
@@ -14,12 +14,6 @@ const IsCategory = () => {
   console.log(state);
 
   const handleBegin = () => {
-    setState({
-      user: {
-        ...state.user,
-        onBoarding: { ...state.user?.onBoarding, is_category: true },
-      },
-    });
     navigate("/onboarding/rent");
   };
 
