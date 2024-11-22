@@ -95,7 +95,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         onBoarding: onboardingData || null,
       };
 
-      const docRef = await setDoc(doc(db, "users", `${123}`), docData);
+      const docRef = await setDoc(doc(db, "users", `${userData.telegram_id}`), docData);
       console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);
     } catch (e) {
       console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
