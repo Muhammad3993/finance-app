@@ -11,14 +11,16 @@ const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
     WebApp.BackButton.hide();
-    if (!state.userData?.telegram_id) {
-      navigate("/onboarding");
-    }
-  }, [state.userData, navigate]);
+  }, []);
   
   if (state.userData === null) {
     return <div>Loading...</div>;
   }
+  
+  if (!state.userData?.telegram_id) {
+    navigate("/onboarding");
+  }
+
   
   return (
     <div>
