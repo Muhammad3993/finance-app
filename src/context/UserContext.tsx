@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
-import { useNavigate } from "react-router-dom";
 
 interface IUser {
   telegram_id?: number;
@@ -76,7 +75,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }),
     initialState,
   );
-  const navigate = useNavigate();
 
   useEffect(() => {
     setState({ isTelegramWebApp });
@@ -88,9 +86,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.BackButton.onClick(() => {
       window.history.back();
     });
-    if (state.userData?.telegram_id) {
-      navigate("/");
-    }
   }, [isTelegramWebApp]);
 
 
