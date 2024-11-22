@@ -68,10 +68,10 @@ const Finish = () => {
     { name: "Необходимые", value: percentageNeed, color: "#D9D9D9" },
     { name: "Сбережения", value: savingNeed, color: "#D9D9D9" },
     { name: "Развлечения", value: culturalNeed, color: "#D9D9D9" },
-    { name: "Свободные", value: reminderCash, color: "#D9D9D9" },
+    // { name: "Свободные", value: reminderCash, color: "#D9D9D9" },
   ];
 
-  const filteredData = data.filter(item => item.value > 0);
+  const filteredData = data.filter((item) => item.value > 0);
 
   return (
     <div className='w-full flex flex-col items-center justify-center min-h-[100vh] bg-white p-4 py-10'>
@@ -128,12 +128,10 @@ const Finish = () => {
             </span>
           </div>
         ))}
-        {/* {data.slice(3).map((item, index) => (
-          <div key={index} className='flex justify-between items-center mt-2'>
-            <span>{item.name}</span>
-            <span>{item.value.toLocaleString()} сум</span>
-          </div>
-        ))} */}
+        <div className='flex justify-between items-center mt-2'>
+          <span>Свободные</span>
+          <span>{reminderCash} сум</span>
+        </div>
       </div>
 
       {/* Tugma */}

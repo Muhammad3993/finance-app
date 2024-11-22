@@ -89,7 +89,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     });
   }, [isTelegramWebApp]);
 
-
   const saveUserData = async (userData: IUser, onboardingData?: object) => {
     try {
       const docData = {
@@ -132,7 +131,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserByTelegramId = async (telegram_id: number) => {
     try {
-      setState({isLoading: true})
+      setState({ isLoading: true });
       const q = query(
         collection(db, "users"),
         where("telegram_id", "==", telegram_id),
@@ -146,7 +145,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       } else {
         console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
       }
-      setState({isLoading: false})
+      setState({ isLoading: false });
     } catch (e) {
       console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
     }
@@ -157,7 +156,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       fetchUserByTelegramId(dataUnsafe?.user?.id);
     }
   }, [isTelegramWebApp]);
-
 
   const contextValue = {
     state,
