@@ -48,11 +48,9 @@ const Finish = () => {
     Number(debt) +
     Number(creditsTotal);
 
-  const reminderCash =
-    finance && remainderAll
-      ? ((Number(finance) - remainderAll) * 100) / finance
-      : 0;
-  const totalIncome: number | undefined = Number(finance) - reminderCash;
+  console.log(remainderAll);
+
+  const totalIncome: number | undefined = state.user?.onBoarding?.finance;
 
   const percentageNeed =
     totalIncome && remainder
@@ -61,6 +59,10 @@ const Finish = () => {
   const culturalNeed =
     totalIncome && cultural ? (cultural * 100) / totalIncome : 0;
   const savingNeed = totalIncome && saving ? (saving * 100) / totalIncome : 0;
+  const reminderCash =
+    totalIncome && remainderAll
+      ? ((totalIncome - remainderAll) * 100) / totalIncome
+      : 0;
 
   const data = [
     { name: "Необходимые", value: percentageNeed, color: "#D9D9D9" },
@@ -80,7 +82,7 @@ const Finish = () => {
       <div className='mt-6 bg-gray-200 w-full max-w-sm p-4 rounded-lg flex justify-between items-center'>
         <span className='font-unbounded'>Доход</span>
         <span className='font-unbounded'>
-          {finance?.toLocaleString()} сум
+          {totalIncome?.toLocaleString()} сум
         </span>
       </div>
 
@@ -128,9 +130,7 @@ const Finish = () => {
         ))}
         <div className='flex justify-between items-center mt-2'>
           <span>Свободные</span>
-          <span>
-            {((reminderCash / 100) * Number(finance)).toLocaleString()} сум
-          </span>
+          <span>{reminderCash} сум</span>
         </div>
       </div>
 
