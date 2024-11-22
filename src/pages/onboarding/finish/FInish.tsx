@@ -130,7 +130,7 @@ const Finish = () => {
         ))}
         <div className='flex justify-between items-center mt-2'>
           <span>Свободные</span>
-          <span>{reminderCash} сум</span>
+          <span>{((reminderCash / 100) * Number(totalIncome)).toLocaleString()} сум</span>
         </div>
       </div>
 
