@@ -12,7 +12,9 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
   if (!state.userData?.telegram_id) {
-    navigate("/onboarding");
+    setTimeout(() => {
+      navigate("/onboarding");
+    }, 1000);
   }
 
   return (
