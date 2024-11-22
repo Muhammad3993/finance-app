@@ -51,11 +51,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   const isTelegramWebApp = !!dataUnsafe?.user;
 
   const initialState: IState = {
-    user: {
-      telegram_id: 0,
-      name: "No User",
-      lang: "en",
-    },
+    user: {},
     userData: {},
     isTelegramWebApp: true,
     pages: 0,
@@ -96,7 +92,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
       const docData = {
         ...userData,
-        onBoarding: onboardingData || null, 
+        onBoarding: onboardingData || null,
       };
 
       const docRef = await addDoc(collection(db, "users"), docData);
@@ -108,25 +104,25 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   const handleSaveBasic = () => {
     const basicUserData = {
-      telegram_id: state.user?.telegram_id,
-      name: state.user?.name,
+      telegram_id: dataUnsafe.user?.id,
+      name: dataUnsafe.user?.first_name,
       lang: state.user?.lang,
     };
-  
+
     saveUserData(basicUserData);
   };
 
   const handleSaveWithOnboarding = () => {
     const basicUserData = {
-      telegram_id: state.user?.telegram_id,
-      name: state.user?.name,
+      telegram_id: dataUnsafe.user?.id,
+      name: dataUnsafe.user?.first_name,
       lang: state.user?.lang,
     };
-  
+
     const onboardingData = {
-      ...state.user?.onBoarding
+      ...state.user?.onBoarding,
     };
-  
+
     saveUserData(basicUserData, onboardingData);
   };
 
@@ -151,16 +147,16 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
-    fetchUserByTelegramId(123);
-    // }
+    if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(dataUnsafe?.user?.id);
+    }
   }, [isTelegramWebApp]);
 
   const contextValue = {
     state,
     setState,
     handleSaveWithOnboarding,
-    handleSaveBasic
+    handleSaveBasic,
   };
 
   return (
