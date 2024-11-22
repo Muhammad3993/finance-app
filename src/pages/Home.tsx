@@ -1,17 +1,20 @@
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { state } = useUserContext();
   console.log(state.userData);
   console.log(state);
 
+  const navigate = useNavigate();
   useEffect(() => {
     WebApp.BackButton.hide();
   }, []);
-
+  if (!state.userData?.telegram_id) {
+    navigate("/onboarding");
+  }
 
   return (
     <div>

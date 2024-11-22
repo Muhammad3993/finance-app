@@ -76,6 +76,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }),
     initialState,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     setState({ isTelegramWebApp });
@@ -87,15 +88,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.BackButton.onClick(() => {
       window.history.back();
     });
+    if (state.userData?.telegram_id) {
+      navigate("/");
+    }
   }, [isTelegramWebApp]);
 
-  const navigate = useNavigate();
-
-  if (!state.userData?.telegram_id) {
-    setTimeout(() => {
-      navigate("/onboarding");
-    }, 10000);
-  }
 
   const saveUserData = async (userData: IUser, onboardingData?: object) => {
     try {
