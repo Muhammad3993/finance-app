@@ -4,6 +4,9 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import "i18next";
 import { UserProvider } from "./context/UserContext.tsx";
+import WebApp from "@twa-dev/sdk";
+
+WebApp.ready();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter

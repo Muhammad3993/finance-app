@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { state } = useUserContext();
+  console.log(state.userData);
   console.log(state);
 
   const navigate = useNavigate();

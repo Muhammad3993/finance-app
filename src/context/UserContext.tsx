@@ -139,7 +139,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
         console.log("Foydalanuvchi topildi:", userData);
-        setState({ userData: userData });
+        setState({ userData });
       } else {
         console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
       }
