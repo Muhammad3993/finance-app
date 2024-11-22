@@ -1,7 +1,7 @@
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { state } = useUserContext();
