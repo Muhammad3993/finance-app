@@ -95,7 +95,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         onBoarding: onboardingData || null,
       };
 
-      const docRef = await setDoc(doc(db, "users", `${userData.telegram_id}`), docData);
+      const docRef = await setDoc(
+        doc(db, "users", `${userData.telegram_id}`),
+        docData,
+      );
       console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);
     } catch (e) {
       console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
@@ -103,18 +106,12 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleSaveBasic = () => {
-    const telegramId = dataUnsafe?.user?.id;
-
-    if (!telegramId) {
-      console.log("Telegram ID topilmadi, yangi foydalanuvchi qo'shiladi");
-      const basicUserData = {
-        telegram_id: dataUnsafe?.user?.id,
-        name: "dataUnsafe?.user?.first_name",
-        lang: "state.user?.lang",
-      };
-      saveUserData(basicUserData);
-      return;
-    }
+    const basicUserData = {
+      telegram_id: dataUnsafe?.user?.id,
+      name: dataUnsafe?.user?.first_name,
+      lang: state.user?.lang,
+    };
+    saveUserData(basicUserData);
   };
 
   const handleSaveWithOnboarding = () => {
@@ -153,7 +150,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isTelegramWebApp && dataUnsafe?.user?.id) {
-    fetchUserByTelegramId(dataUnsafe?.user?.id);
+      fetchUserByTelegramId(dataUnsafe?.user?.id);
     }
   }, [isTelegramWebApp]);
 
