@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
+import { useNavigate } from "react-router-dom";
 
 interface IUser {
   telegram_id?: number;
@@ -87,6 +88,14 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       window.history.back();
     });
   }, [isTelegramWebApp]);
+
+  const navigate = useNavigate();
+
+  if (!state.userData?.telegram_id) {
+    setTimeout(() => {
+      navigate("/onboarding");
+    }, 10000);
+  }
 
   const saveUserData = async (userData: IUser, onboardingData?: object) => {
     try {

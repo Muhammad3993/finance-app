@@ -8,15 +8,10 @@ const Home = () => {
   console.log(state.userData);
   console.log(state);
 
-  const navigate = useNavigate();
   useEffect(() => {
     WebApp.BackButton.hide();
   }, []);
-  if (!state.userData?.telegram_id) {
-    setTimeout(() => {
-      navigate("/onboarding");
-    }, 10000);
-  }
+
 
   return (
     <div>
