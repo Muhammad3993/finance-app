@@ -15,7 +15,7 @@ const Home = () => {
   if (!state.userData?.telegram_id) {
     setTimeout(() => {
       navigate("/onboarding");
-    }, 1000);
+    }, 10000);
   }
 
   return (
