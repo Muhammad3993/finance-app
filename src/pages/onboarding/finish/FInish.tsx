@@ -48,9 +48,8 @@ const Finish = () => {
     Number(debt) +
     Number(creditsTotal);
 
-  console.log(remainderAll);
 
-  const totalIncome: number | undefined = state.user?.onBoarding?.finance;
+  const totalIncome: number | undefined = Number(finance) - remainderAll;
 
   const percentageNeed =
     totalIncome && remainder
@@ -61,7 +60,7 @@ const Finish = () => {
   const savingNeed = totalIncome && saving ? (saving * 100) / totalIncome : 0;
   const reminderCash =
     totalIncome && remainderAll
-      ? ((totalIncome - remainderAll) * 100) / totalIncome
+      ? ((Number(finance) - remainderAll) * 100) / totalIncome
       : 0;
 
   const data = [
