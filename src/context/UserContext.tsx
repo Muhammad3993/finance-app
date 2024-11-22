@@ -5,7 +5,15 @@ import {
   Dispatch,
   useEffect,
 } from "react";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 
@@ -51,7 +59,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   const isTelegramWebApp = !!dataUnsafe?.user;
 
   const initialState: IState = {
-    user: {},
+    user: {
+      telegram_id: 0,
+      name: "No USer",
+      lang: "en",
+    },
     userData: {},
     isTelegramWebApp: true,
     pages: 0,
@@ -79,42 +91,36 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   const saveUserData = async (userData: IUser, onboardingData?: object) => {
     try {
-      const q = query(
-        collection(db, "users"),
-        where("telegram_id", "==", userData.telegram_id),
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        console.log("Foydalanuvchi allaqachon mavjud.");
-        return;
-      }
-
       const docData = {
         ...userData,
         onBoarding: onboardingData || null,
       };
 
-      const docRef = await addDoc(collection(db, "users"), docData);
-      console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef.id);
+      const docRef = await setDoc(doc(db, "users", `${123}`), docData);
+      console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);
     } catch (e) {
       console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
     }
   };
 
   const handleSaveBasic = () => {
-    const basicUserData = {
-      telegram_id: dataUnsafe.user?.id,
-      name: dataUnsafe.user?.first_name,
-      lang: state.user?.lang,
-    };
+    const telegramId = dataUnsafe?.user?.id;
 
-    saveUserData(basicUserData);
+    if (!telegramId) {
+      console.log("Telegram ID topilmadi, yangi foydalanuvchi qo'shiladi");
+      const basicUserData = {
+        telegram_id: dataUnsafe?.user?.id,
+        name: "dataUnsafe?.user?.first_name",
+        lang: "state.user?.lang",
+      };
+      saveUserData(basicUserData);
+      return;
+    }
   };
 
   const handleSaveWithOnboarding = () => {
     const basicUserData = {
-      telegram_id: dataUnsafe.user?.id,
+      telegram_id: dataUnsafe?.user?.id,
       name: dataUnsafe.user?.first_name,
       lang: state.user?.lang,
     };
@@ -148,9 +154,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe?.user?.id);
+    fetchUserByTelegramId(dataUnsafe?.user?.id);
     }
   }, [isTelegramWebApp]);
+
+  console.log(state.userData.name);
 
   const contextValue = {
     state,
