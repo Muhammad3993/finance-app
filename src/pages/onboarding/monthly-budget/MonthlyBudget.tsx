@@ -8,22 +8,17 @@ const MonthlyBudget = () => {
   const { setState, state } = useUserContext();
   useEffect(() => {
     WebApp.BackButton.show();
-    WebApp.BackButton.onClick(() => {
-      setState({ pages: 0 });
-    });
+  }, []);
 
-    return () => {
-      WebApp.BackButton.onClick(() => {});
-    };
-  }, [state]);
+
   console.log(state);
   const navigate = useNavigate();
 
   const handleBegin = () => {
     setState({
       user: { onBoarding: { is_ready: true } },
-      pages: 2,
     });
+    navigate('/onboarding/finance')
   };
 
   const handleLater = () => {

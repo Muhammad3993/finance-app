@@ -1,10 +1,16 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
 import { t } from "i18next";
+import { useEffect } from "react";
 import { Trans } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const IsCategory = () => {
   const { setState, state } = useUserContext();
-
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
+  const navigate = useNavigate();
   console.log(state);
 
   const handleBegin = () => {
@@ -13,8 +19,8 @@ const IsCategory = () => {
         ...state.user,
         onBoarding: { ...state.user?.onBoarding, is_category: true },
       },
-      pages: 4
     });
+    navigate("/onboarding/rent");
   };
 
   return (

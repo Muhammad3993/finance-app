@@ -1,7 +1,10 @@
 import { useUserContext } from "@/context/UserContext";
 import { yupResolver } from "@hookform/resolvers/yup";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 interface IFormValues {
@@ -10,6 +13,10 @@ interface IFormValues {
 
 const ForProduct = () => {
   const { setState, state } = useUserContext();
+
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
 
   console.log(state);
 
@@ -32,6 +39,7 @@ const ForProduct = () => {
       .required("Finance is required"),
   });
 
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -47,15 +55,23 @@ const ForProduct = () => {
         ...state.user,
         onBoarding: { ...state.user?.onBoarding, for_meal: data.for_product },
       },
-      pages: 6,
     });
+    navigate("/onboarding/for-communal");
   };
 
   const { t } = useTranslation();
   return (
-    <div className='relative px-4'>
+    <div className='relative px-4 py-10'>
+      <div className='bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center m-auto'>
+        <p className='font-unbounded text-sm font-medium text-black'>
+          {remainder?.toLocaleString()} сум
+        </p>
+        <p className='font-unbounded text-sm font-normal text-black'>
+          остается
+        </p>
+      </div>
       <form
-        className='w-full min-h-[100vh] flex flex-col justify-center items-center gap-36'
+        className='w-full flex flex-col justify-center items-center gap-36 mt-10'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='flex flex-col w-full gap-10'>
@@ -92,14 +108,6 @@ const ForProduct = () => {
           {t("confirm")}
         </button>
       </form>
-      <div className='absolute top-[10px] left-[50%] translate-x-[-50%] bg-customGray py-4 px-8 w-[70%] rounded-2xl flex flex-col items-center'>
-        <p className='font-unbounded text-sm font-medium text-black'>
-          {remainder?.toLocaleString()} сум
-        </p>
-        <p className='font-unbounded text-sm font-normal text-black'>
-          остается
-        </p>
-      </div>
     </div>
   );
 };

@@ -1,15 +1,24 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const IsSaving = () => {
   const { setState, state } = useUserContext();
   console.log(state);
 
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
+
+  const navigate = useNavigate()
+
   const handleLater = () => {
     setState({
-      pages: 16,
       user: {...state.user, onBoarding: {...state.user?.onBoarding, saving: 0}}
     });
+    navigate("/onboarding/is-debt");
   };
 
   const { t } = useTranslation();
@@ -23,7 +32,7 @@ const IsSaving = () => {
       <div>
         <div
           className='py-3 px-6 rounded-2xl bg-customGray text-base font-medium font-unbounded'
-          onClick={() => setState({ pages: 15 })}
+          onClick={() => navigate("/onboarding/saving")}
         >
           {t("Определить сумму")}
         </div>

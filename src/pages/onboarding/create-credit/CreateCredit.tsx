@@ -1,7 +1,10 @@
 import { useUserContext } from "@/context/UserContext";
 import { yupResolver } from "@hookform/resolvers/yup";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 interface IFormValues {
@@ -13,6 +16,10 @@ interface IFormValues {
 const CreateCredit = () => {
   const { setState, state } = useUserContext();
   console.log(state);
+
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
 
   const formatNumber = (value: string | number): string => {
     if (typeof value === "number") value = value.toString();
@@ -32,6 +39,8 @@ const CreateCredit = () => {
       .positive("Finance must be greater than 0")
       .required("Finance is required"),
   });
+
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -57,14 +66,14 @@ const CreateCredit = () => {
           ],
         },
       },
-      pages: 11,
     });
+    navigate("/onboarding/credits");
   };
 
   const { t } = useTranslation();
   return (
     <form
-      className='px-4 w-full min-h-[100vh] flex flex-col justify-center items-center gap-36 '
+      className='px-4 w-full min-h-[100vh] flex flex-col justify-center items-center gap-36 py-10'
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className='flex flex-col gap-10'>
@@ -120,7 +129,7 @@ const CreateCredit = () => {
                 {...field}
                 type='number'
                 className='font-unbounded w-full h-54 bg-customGray rounded-2xl py-4 px-6 outline-none'
-                placeholder={t("finance_placeholder")}
+                placeholder={t("Введите кол-во месяцев")}
                 value={field.value ?? ""}
               />
             )}

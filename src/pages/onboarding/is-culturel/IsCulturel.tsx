@@ -1,15 +1,25 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const IsCulturel = () => {
   const { setState, state } = useUserContext();
   console.log(state);
 
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
+
+
+  const navigate = useNavigate()
+
   const handleLater = () => {
     setState({
-      pages: 14,
       user: {...state.user, onBoarding: {...state.user?.onBoarding, cultural: 0}}
     });
+    navigate("/onboarding/is-saving");
   };
 
   const { t } = useTranslation();
@@ -26,7 +36,7 @@ const IsCulturel = () => {
       <div>
         <div
           className='py-3 px-6 rounded-2xl bg-customGray text-base font-medium font-unbounded'
-          onClick={() => setState({ pages: 13 })}
+          onClick={() => navigate("/onboarding/culturel")}
         >
           {t("Определить сумму")}
         </div>

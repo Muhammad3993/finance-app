@@ -1,24 +1,30 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const IsCredit = () => {
   const { setState, state } = useUserContext();
   console.log(state);
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
+
+  const navigate = useNavigate();
 
   const handleBegin = () => {
-    setState({
-      pages: 10,
-    });
+    navigate("/onboarding/create-credit");
   };
 
   const handleLater = () => {
     setState({
-      pages: 12,
       user: {
         ...state.user,
         onBoarding: { ...state.user?.onBoarding, credit: [] },
       },
     });
+    navigate("/onboarding/is-culturel");
   };
 
   const { t } = useTranslation();

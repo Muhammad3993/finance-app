@@ -1,8 +1,13 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
 const Finish = () => {
   const { state, saveUserData } = useUserContext();
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
 
   const finance: number | undefined = state?.user?.onBoarding?.finance;
   const for_rent: number | undefined = state?.user?.onBoarding?.for_rent;
@@ -46,16 +51,6 @@ const Finish = () => {
   console.log(remainderAll);
 
   const totalIncome: number | undefined = state.user?.onBoarding?.finance;
-  // const spendCash: number | undefined = Number(totalIncome) - Number(remainder);
-
-  // const reminderCash: number | undefined =
-  //   Number(totalIncome) - Number(remainderAll);
-
-  // const percentageNeed =
-  //   totalIncome && spendCash ? (spendCash * 100) / totalIncome : 0;
-  // const culturalNeed =
-  //   totalIncome && cultural ? (cultural * 100) / totalIncome : 0;
-  // const savingNeed = totalIncome && saving ? (saving * 100) / totalIncome : 0;
 
   const percentageNeed =
     totalIncome && remainder

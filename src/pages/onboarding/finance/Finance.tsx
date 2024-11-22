@@ -1,7 +1,10 @@
 import { useUserContext } from "@/context/UserContext";
 import { yupResolver } from "@hookform/resolvers/yup";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 interface IFormValues {
@@ -10,6 +13,9 @@ interface IFormValues {
 
 const Finance = () => {
   const { setState, state } = useUserContext();
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
 
   const schema = yup.object().shape({
     finance: yup
@@ -32,14 +38,16 @@ const Finance = () => {
     resolver: yupResolver(schema),
   });
 
+  const navigate = useNavigate();
+
   const onSubmit = (data: IFormValues) => {
     setState({
       user: {
         ...state.user,
         onBoarding: { ...state.user?.onBoarding, finance: data.finance },
       },
-      pages: 3,
     });
+    navigate("/onboarding/is-category");
   };
 
   const { t } = useTranslation();

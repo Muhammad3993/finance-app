@@ -1,8 +1,17 @@
 import { useUserContext } from "@/context/UserContext";
+import WebApp from "@twa-dev/sdk";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const IsDebt = () => {
   const { setState, state } = useUserContext();
+
+  useEffect(() => {
+    WebApp.BackButton.show();
+  }, []);
+
+  const navigate = useNavigate();
 
   const handleLater = () => {
     setState({
@@ -11,8 +20,8 @@ const IsDebt = () => {
         is_boarding: true,
         onBoarding: { ...state.user?.onBoarding, debt: 0 },
       },
-      pages: 18,
     });
+    navigate("/onboarding/finish");
   };
 
   const { t } = useTranslation();
@@ -26,7 +35,7 @@ const IsDebt = () => {
       <div>
         <div
           className='py-3 px-6 rounded-2xl bg-customGray text-base font-medium font-unbounded'
-          onClick={() => setState({ pages: 17 })}
+          onClick={() => navigate('/onboarding/debt')}
         >
           {t("Определить сумму")}
         </div>
