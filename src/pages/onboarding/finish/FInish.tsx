@@ -80,7 +80,7 @@ const Finish = () => {
       <div className='mt-6 bg-gray-200 w-full max-w-sm p-4 rounded-lg flex justify-between items-center'>
         <span className='font-unbounded'>Доход</span>
         <span className='font-unbounded'>
-          {totalIncome?.toLocaleString()} сум
+          {finance?.toLocaleString()} сум
         </span>
       </div>
 
