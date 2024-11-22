@@ -10,11 +10,10 @@ const Home = () => {
   const navigate = useNavigate();
   useEffect(() => {
     WebApp.BackButton.hide();
-
-    if (!state.userData?.telegram_id) {
-      navigate("/onboarding");
-    }
   }, []);
+  if (!state.userData?.telegram_id) {
+    navigate("/onboarding");
+  }
 
   return (
     <div>
