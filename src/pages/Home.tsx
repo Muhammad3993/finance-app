@@ -14,8 +14,12 @@ const Home = () => {
     if (!state.userData?.telegram_id) {
       navigate("/onboarding");
     }
-  }, [state, navigate]);
-
+  }, [state.userData, navigate]);
+  
+  if (state.userData === null) {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <div>
       <h1>Home</h1>

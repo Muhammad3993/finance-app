@@ -40,7 +40,7 @@ interface IUser {
 
 interface IState {
   user?: IUser;
-  userData: IUser;
+  userData: IUser | null;
   isTelegramWebApp?: boolean;
   pages?: number;
 }
@@ -63,7 +63,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       name: "No USer",
       lang: "en",
     },
-    userData: {},
+    userData: null,
     isTelegramWebApp: true,
     pages: 0,
   };
@@ -155,7 +155,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isTelegramWebApp]);
 
-  console.log(state.userData.name);
 
   const contextValue = {
     state,
