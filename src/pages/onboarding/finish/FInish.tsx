@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { PieChart, Pie, Cell } from "recharts";
 
 const Finish = () => {
-  const { state, saveUserData } = useUserContext();
+  const { state, handleSaveWithOnboarding } = useUserContext();
   useEffect(() => {
     WebApp.BackButton.show();
   }, []);
@@ -139,7 +139,7 @@ const Finish = () => {
       {/* Tugma */}
       <button
         className='mt-8 bg-gray-200 text-black py-2 px-4 rounded-lg'
-        onClick={() => saveUserData()}
+        onClick={() => handleSaveWithOnboarding()}
       >
         Продолжить
       </button>

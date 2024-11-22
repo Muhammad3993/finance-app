@@ -5,21 +5,20 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const MonthlyBudget = () => {
-  const { state, saveUserData } = useUserContext();
+  const { state, handleSaveBasic } = useUserContext();
   useEffect(() => {
     WebApp.BackButton.show();
   }, []);
-
 
   console.log(state);
   const navigate = useNavigate();
 
   const handleBegin = () => {
-    navigate('/onboarding/finance')
+    navigate("/onboarding/finance");
   };
 
   const handleLater = () => {
-    saveUserData();
+    handleSaveBasic();
     navigate("/");
   };
 

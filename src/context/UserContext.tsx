@@ -9,35 +9,39 @@ import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 
-interface IState {
-  user?: {
-    telegram_id?: number;
-    name?: string;
-    lang?: string;
-    onBoarding?: {
-      finance?: number;
-      for_rent?: number;
-      for_meal?: number;
-      for_communal?: number;
-      for_car?: number;
-      for_transport?: number;
-      credit?: {
-        name?: string;
-        price?: number;
-        months?: number;
-      }[];
-      cultural?: number;
-      saving?: number;
-      debt?: number;
-    };
+interface IUser {
+  telegram_id?: number;
+  name?: string;
+  lang?: string;
+  onBoarding?: {
+    finance?: number;
+    for_rent?: number;
+    for_meal?: number;
+    for_communal?: number;
+    for_car?: number;
+    for_transport?: number;
+    credit?: {
+      name?: string;
+      price?: number;
+      months?: number;
+    }[];
+    cultural?: number;
+    saving?: number;
+    debt?: number;
   };
+}
+
+interface IState {
+  user?: IUser;
+  userData: IUser;
   isTelegramWebApp?: boolean;
   pages?: number;
 }
 interface IContext {
   state: Partial<IState>;
   setState: Dispatch<Partial<IState>>;
-  saveUserData: () => void;
+  handleSaveWithOnboarding: () => void;
+  handleSaveBasic: () => void;
 }
 
 const UserContext = createContext<IContext | undefined>(undefined);
@@ -51,19 +55,8 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       telegram_id: 0,
       name: "No User",
       lang: "en",
-      onBoarding: {
-        finance: 0,
-        for_rent: 0,
-        for_meal: 0,
-        for_communal: 0,
-        for_car: 0,
-        for_transport: 0,
-        credit: [],
-        cultural: 0,
-        saving: 0,
-        debt: 0,
-      },
     },
+    userData: {},
     isTelegramWebApp: true,
     pages: 0,
   };
@@ -88,18 +81,53 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     });
   }, [isTelegramWebApp]);
 
-  const saveUserData = async () => {
+  const saveUserData = async (userData: IUser, onboardingData?: object) => {
     try {
-      const docRef = await addDoc(collection(db, "users"), {
-        ...state.user,
-        telegram_id: dataUnsafe?.user?.id,
-        name: dataUnsafe?.user?.first_name,
-        lang: dataUnsafe?.user?.language_code,
-      });
-      console.log("Dokument muvaffaqiyatli qo'shildi, ID:", docRef.id);
+      const q = query(
+        collection(db, "users"),
+        where("telegram_id", "==", userData.telegram_id),
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        console.log("Foydalanuvchi allaqachon mavjud.");
+        return;
+      }
+
+      const docData = {
+        ...userData,
+        onBoarding: onboardingData || null, 
+      };
+
+      const docRef = await addDoc(collection(db, "users"), docData);
+      console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef.id);
     } catch (e) {
-      console.error("Xatolik yuz berdi: ", e);
+      console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
     }
+  };
+
+  const handleSaveBasic = () => {
+    const basicUserData = {
+      telegram_id: state.user?.telegram_id,
+      name: state.user?.name,
+      lang: state.user?.lang,
+    };
+  
+    saveUserData(basicUserData);
+  };
+
+  const handleSaveWithOnboarding = () => {
+    const basicUserData = {
+      telegram_id: state.user?.telegram_id,
+      name: state.user?.name,
+      lang: state.user?.lang,
+    };
+  
+    const onboardingData = {
+      ...state.user?.onBoarding
+    };
+  
+    saveUserData(basicUserData, onboardingData);
   };
 
   const fetchUserByTelegramId = async (telegram_id: number) => {
@@ -113,7 +141,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
         console.log("Foydalanuvchi topildi:", userData);
-        setState({ user: userData });
+        setState({ userData: userData });
       } else {
         console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
       }
@@ -123,15 +151,16 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe?.user?.id);
-    }
+    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
+    fetchUserByTelegramId(123);
+    // }
   }, [isTelegramWebApp]);
 
   const contextValue = {
     state,
     setState,
-    saveUserData,
+    handleSaveWithOnboarding,
+    handleSaveBasic
   };
 
   return (
