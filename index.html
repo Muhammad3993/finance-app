@@ -18,20 +18,20 @@
   </div>
   <script type="module" src="/src/main.tsx"></script>
   <script>
-    window.telegramApps.requestFullscreen()
-      (function () {
-        var { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
-        var lp = retrieveLaunchParams();
-        if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
-          return;
-        }
-        postEvent('web_app_expand');
-        setContentSafeAreaInset({ top: 0, bottom: 0, left: 0, right: 0 })
-        document.body.classList.add('mobile-body');
-        document.getElementById('wrap').classList.add('mobile-wrap');
-        document.getElementById('root').classList.add('mobile-content');
-        window.Telegram.WebApp.requestFullscreen();
-      })();
+    (function () {
+      var { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
+      window.telegramApps.requestFullscreen();
+      var lp = retrieveLaunchParams();
+      if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
+        return;
+      }
+      postEvent('web_app_expand');
+      setContentSafeAreaInset({ top: 0, bottom: 0, left: 0, right: 0 })
+      document.body.classList.add('mobile-body');
+      document.getElementById('wrap').classList.add('mobile-wrap');
+      document.getElementById('root').classList.add('mobile-content');
+      window.Telegram.WebApp.requestFullscreen();
+    })();
   </script>
 </body>
 
