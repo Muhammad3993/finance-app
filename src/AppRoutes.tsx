@@ -21,6 +21,7 @@ import Saving from "./pages/onboarding/saving/Saving";
 import IsDebt from "./pages/onboarding/is-debt/IsDebt";
 import Debt from "./pages/onboarding/debt/Debt";
 import Finish from "./pages/onboarding/finish/FInish";
+// import Calculator from "./pages/Calculator";
 
 const AppRoutes = () => {
   const userLang: string = "ru";
@@ -56,6 +57,7 @@ const AppRoutes = () => {
           <Route path='debt' element={<Debt />} />
           <Route path='finish' element={<Finish />} />
         </Route>
+        {/* <Route path="/cal" element={<Calculator />} /> */}
         <Route path='*' element={<Home />} />
       </Routes>
     </main>

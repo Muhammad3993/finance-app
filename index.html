@@ -1,32 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/mainlogo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Finance App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js" ></script>
-    <script src="https://unpkg.com/@telegram-apps/sdk@1.0.0/dist/index.iife.js" ></script>
-  </head>
-  <body>
-    <div id="wrap">
-        <div id="root"></div>
-    </div>
-    <script type="module" src="/src/main.tsx"></script>
-    <script>
-      (function() {
-        var { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
-        var lp = retrieveLaunchParams();
-        if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
-          return;
-        }
-        postEvent('web_app_expand');
-        setContentSafeAreaInset({top: 0, bottom: 0, left: 0, right: 0})
-        document.body.classList.add('mobile-body');
-        document.getElementById('wrap').classList.add('mobile-wrap');  
-        document.getElementById('root').classList.add('mobile-content');
-      })();
-    </script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/mainlogo.svg" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Finance App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://unpkg.com/@telegram-apps/sdk@1.0.0/dist/index.iife.js"></script>
+</head>
+
+<body>
+  <div id="wrap">
+    <div id="root"></div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script>
+    (function () {
+      var { retrieveLaunchParams, postEvent, setContentSafeAreaInset } = window.telegramApps.sdk;
+      var lp = retrieveLaunchParams();
+      if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
+        return;
+      }
+      postEvent('web_app_expand');
+      setContentSafeAreaInset({ top: 0, bottom: 0, left: 0, right: 0 })
+      document.body.classList.add('mobile-body');
+      document.getElementById('wrap').classList.add('mobile-wrap');
+      document.getElementById('root').classList.add('mobile-content');
+    })();
+  </script>
+</body>
+
 </html>
