@@ -20,7 +20,6 @@
   <script>
     (function () {
       var { retrieveLaunchParams, postEvent } = window.telegramApps.sdk;
-      window.telegramApps.requestFullscreen();
       var lp = retrieveLaunchParams();
       if (['macos', 'tdesktop', 'weba', 'web', 'webk'].includes(lp.platform)) {
         return;

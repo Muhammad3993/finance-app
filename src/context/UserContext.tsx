@@ -20,6 +20,7 @@ interface IUser {
   telegram_id?: number;
   name?: string;
   lang?: string;
+  photo?: string;
   onBoarding?: {
     finance?: number;
     for_rent?: number;
@@ -107,19 +108,21 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   const handleSaveBasic = () => {
-    const basicUserData = {
+    const basicUserData: IUser = {
       telegram_id: dataUnsafe?.user?.id,
       name: dataUnsafe?.user?.first_name,
-      lang: state.user?.lang,
+      lang: dataUnsafe.user?.language_code,
+      photo: dataUnsafe.user?.photo_url,
     };
     saveUserData(basicUserData);
   };
 
   const handleSaveWithOnboarding = () => {
-    const basicUserData = {
+    const basicUserData: IUser = {
       telegram_id: dataUnsafe?.user?.id,
       name: dataUnsafe.user?.first_name,
       lang: state.user?.lang,
+      photo: dataUnsafe.user?.photo_url,
     };
 
     const onboardingData = {
@@ -156,6 +159,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       fetchUserByTelegramId(dataUnsafe?.user?.id);
     }
   }, [isTelegramWebApp]);
+
 
   const contextValue = {
     state,

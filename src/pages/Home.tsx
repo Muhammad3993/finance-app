@@ -1,3 +1,4 @@
+import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
@@ -12,8 +13,7 @@ const Home = () => {
   useEffect(() => {
     WebApp.BackButton.hide();
   }, []);
-  
-  
+
   if (state.isLoading) {
     return <div>Loading...</div>;
   }
@@ -22,10 +22,9 @@ const Home = () => {
     navigate("/onboarding");
   }
 
-  
   return (
     <div>
-      <h1>Home</h1>
+      <UserNavbar />
       {!state.user?.onBoarding && <Link to='/onboarding'>Start</Link>}
     </div>
   );
