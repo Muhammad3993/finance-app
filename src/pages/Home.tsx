@@ -14,7 +14,6 @@ const Home = () => {
   }, []);
   
   
-  
   if (state.isLoading) {
     return <div>Loading...</div>;
   }
