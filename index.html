@@ -39,19 +39,24 @@
   
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
-    Telegram.WebApp.ready(); // WebApp tayyor bo'lganda ishlaydi
+    // WebApp tayyor bo'lganda ishlashini ta'minlash
+    Telegram.WebApp.ready(); 
 
     // To'liq ekran rejimiga o'tish
     const fullscreenButton = document.getElementById('fullscreenBtn');
     fullscreenButton.addEventListener('click', () => {
-      Telegram.WebApp.requestFullscreen(); // To'liq ekran rejimiga o'tadi
-      Telegram.WebApp.setHeaderColor('#000000'); // Status bar va UI elementlarining rangini belgilash
+      if (Telegram.WebApp) {
+        Telegram.WebApp.requestFullscreen(); // To'liq ekran rejimiga o'tadi
+        Telegram.WebApp.setHeaderColor('#000000'); // Status bar va UI elementlarining rangini belgilash
+      }
     });
     
     // To'liq ekran rejimidan chiqish
     const exitFullscreenButton = document.getElementById('exitFullscreenBtn');
     exitFullscreenButton.addEventListener('click', () => {
-      Telegram.WebApp.exitFullscreen(); // To'liq ekran rejimidan chiqadi
+      if (Telegram.WebApp) {
+        Telegram.WebApp.exitFullscreen(); // To'liq ekran rejimidan chiqadi
+      }
     });
 
   </script>
