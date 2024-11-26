@@ -1,103 +1,110 @@
-// import React, { useState } from "react";
+import Close from "@/assets/icons/close";
+import Symbol from "@/assets/icons/symbol";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
 
-// const Calculator = () => {
-//   const [input, setInput] = useState(""); // Displeyda ko'rsatiladigan qiymat
-//   const [result, setResult] = useState(""); // Hisoblangan natija
+const Calculator = () => {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
 
-//   // Tugmalarni bosishda ishlov beruvchi funksiya
-//   const handleClick = (value) => {
-//     setInput((prev) => prev + value);
-//   };
+  const handleClick = (value: string) => {
+    setInput((prev) => prev + value);
+  };
 
-//   // Natijani hisoblash
-//   const calculate = () => {
-//     try {
-//       setResult(eval(input)); // Hisoblash (eval() ni faqat oddiy loyihalarda ishlatish tavsiya etiladi)
-//     } catch (error) {
-//       setResult("Error"); // Xato bo'lsa
-//     }
-//   };
+  useEffect(() => {
+    try {
+      setResult(eval(input));
+    } catch (error) {
+      setResult(result);
+    }
+  }, [input]);
 
-//   // Displeyni tozalash
-//   const clear = () => {
-//     setInput("");
-//     setResult("");
-//   };
+  const handleBackSpace = () => {
+    setInput(input.slice(0, -1));
+  };
 
-//   return (
-//     <div style={styles.container}>
-//       <div style={styles.display}>
-//         <p style={styles.input}>{input || "0"}</p>
-//         <p style={styles.result}>{result ? `= ${result}` : ""}</p>
-//       </div>
-//       <div style={styles.buttons}>
-//         {["7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", ".", "C", "+"].map(
-//           (btn, index) => (
-//             <button
-//               key={index}
-//               onClick={() => (btn === "C" ? clear() : handleClick(btn))}
-//               style={styles.button}
-//             >
-//               {btn}
-//             </button>
-//           )
-//         )}
-//         <button onClick={calculate} style={styles.equals}>
-//           =
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
+  const clear = () => {
+    setInput("");
+    setResult("");
+  };
+  const regex = /[+-]/;
 
-// const styles = {
-//   container: {
-//     width: "300px",
-//     margin: "50px auto",
-//     border: "1px solid #ddd",
-//     borderRadius: "8px",
-//     padding: "10px",
-//     boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-//   },
-//   display: {
-//     backgroundColor: "#f7f7f7",
-//     padding: "10px",
-//     borderRadius: "8px",
-//     textAlign: "right",
-//     marginBottom: "10px",
-//     fontSize: "1.5em",
-//     fontWeight: "bold",
-//   },
-//   input: {
-//     margin: 0,
-//   },
-//   result: {
-//     margin: 0,
-//     color: "green",
-//   },
-//   buttons: {
-//     display: "grid",
-//     gridTemplateColumns: "repeat(4, 1fr)",
-//     gap: "10px",
-//   },
-//   button: {
-//     padding: "15px",
-//     fontSize: "1.2em",
-//     borderRadius: "4px",
-//     border: "1px solid #ddd",
-//     backgroundColor: "#fff",
-//     cursor: "pointer",
-//   },
-//   equals: {
-//     gridColumn: "span 4",
-//     padding: "15px",
-//     fontSize: "1.2em",
-//     backgroundColor: "#007BFF",
-//     color: "#fff",
-//     border: "none",
-//     borderRadius: "4px",
-//     cursor: "pointer",
-//   },
-// };
+  return (
+    <div className='fixed left-3 right-3 bottom-4 bg-red-500 p-4 rounded-3xl flex flex-col gap-4'>
+      <div
+        className={clsx(
+          "bg-customGray h-66 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
+          regex.test(input) && "h-82",
+        )}
+      >
+        <p className='absolute top-1'>{regex.test(input) && input + "="}</p>
+        <p
+          className={clsx(
+            "font-medium text-2xl font-unbounded text-customGray2 duration-300",
+            regex.test(input) && "mt-3",
+          )}
+        >
+          {regex.test(input) ? result : input || "0"}
+        </p>
+        <p
+          className={clsx(
+            "font-unbounded text-13 font-normal text-customGray2 ml-3 duration-300",
+            regex.test(input) && "mt-3",
+          )}
+        >
+          сум
+        </p>
+        <p>{result ? `= ${result}` : ""}</p>
+      </div>
+      <div className='grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61'>
+        {[
+          "1",
+          "2",
+          "3",
+          "AC",
+          "4",
+          "5",
+          "6",
+          "+",
+          "7",
+          "8",
+          "9",
+          "-",
+          ",",
+          "0",
+        ].map((btn, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              btn === "AC" ? clear() : handleClick(btn);
+            }}
+            className={clsx(
+              "bg-customGray h-66 w-84 flex justify-center items-center rounded-2xl col-span-1 text-25 font-unbounded text-customGray2 max-390:w-auto",
+              (index + 1) % 4 === 0 && "w-[66px] ml-",
+              btn === "," && "bg-inherit",
+            )}
+          >
+            {btn}
+          </button>
+        ))}
+        <button
+          className={
+            "bg-inherit h-66 w-84 rounded-2xl flex justify-center items-center max-390:w-auto"
+          }
+          onClick={() => handleBackSpace()}
+        >
+          <Close />
+        </button>
+        <button
+          className={
+            "bg-customGray2 h-66 w-66 rounded-2xl flex justify-center items-center max-390:w-auto"
+          }
+        >
+          <Symbol />
+        </button>
+      </div>
+    </div>
+  );
+};
 
-// export default Calculator;
+export default Calculator;

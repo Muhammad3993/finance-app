@@ -1,10 +1,16 @@
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell } from "recharts";
 
 const Finish = () => {
   const { state, handleSaveWithOnboarding } = useUserContext();
+  const navigate = useNavigate();
+  const handleReady = () => {
+    handleSaveWithOnboarding();
+    navigate("/");
+  };
   useEffect(() => {
     WebApp.BackButton.show();
   }, []);
@@ -68,7 +74,6 @@ const Finish = () => {
     { name: "Необходимые", value: percentageNeed, color: "#D9D9D9" },
     { name: "Сбережения", value: savingNeed, color: "#D9D9D9" },
     { name: "Развлечения", value: culturalNeed, color: "#D9D9D9" },
-    // { name: "Свободные", value: reminderCash, color: "#D9D9D9" },
   ];
 
   const filteredData = data.filter((item) => item.value > 0);
@@ -130,14 +135,16 @@ const Finish = () => {
         ))}
         <div className='flex justify-between items-center mt-2'>
           <span>Свободные</span>
-          <span>{((reminderCash / 100) * Number(totalIncome)).toLocaleString()} сум</span>
+          <span>
+            {((reminderCash / 100) * Number(totalIncome)).toLocaleString()} сум
+          </span>
         </div>
       </div>
 
       {/* Tugma */}
       <button
         className='mt-8 bg-gray-200 text-black py-2 px-4 rounded-lg'
-        onClick={() => handleSaveWithOnboarding()}
+        onClick={() => handleReady()}
       >
         Продолжить
       </button>

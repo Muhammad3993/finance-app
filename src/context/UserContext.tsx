@@ -155,9 +155,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe?.user?.id);
-    }
+    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(5673577167);
+    // }
   }, [isTelegramWebApp]);
 
 

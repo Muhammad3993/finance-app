@@ -21,9 +21,13 @@ import Saving from "./pages/onboarding/saving/Saving";
 import IsDebt from "./pages/onboarding/is-debt/IsDebt";
 import Debt from "./pages/onboarding/debt/Debt";
 import Finish from "./pages/onboarding/finish/FInish";
-// import Calculator from "./pages/Calculator";
+import Card from "./pages/card-details/Card";
+import { useUserContext } from "./context/UserContext";
+import AddExpense from "./pages/AddExpense";
+import Calculator from "./pages/Calculator";
 
 const AppRoutes = () => {
+  const { state } = useUserContext();
   const userLang: string = "ru";
   const supportedLanguages = ["en", "ru", "uz"];
   if (supportedLanguages.includes(userLang)) {
@@ -32,8 +36,12 @@ const AppRoutes = () => {
     i18n.changeLanguage(DEFAULT_LANGUAGE);
   }
 
+  if (state.isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <main className='max-w-[768px] bg-[#FFFFFF] h-[100dvh] mx-auto w-full relative'>
+    <main className='max-w-[768px] bg-[#FFFFFF] h-[100vh] mx-auto w-full relative'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/onboarding' element={<Onboarding />}>
@@ -57,7 +65,9 @@ const AppRoutes = () => {
           <Route path='debt' element={<Debt />} />
           <Route path='finish' element={<Finish />} />
         </Route>
-        {/* <Route path="/cal" element={<Calculator />} /> */}
+        <Route path='/card/:card' element={<Card />} />
+        <Route path='/card/:card/add-expense' element={<AddExpense />} />
+        <Route path="/cal" element={<Calculator />} />
         <Route path='*' element={<Home />} />
       </Routes>
     </main>
