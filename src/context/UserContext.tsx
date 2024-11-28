@@ -85,7 +85,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.viewportStableHeight;
     WebApp.setBackgroundColor("#ffffff");
     WebApp.requestFullscreen();
-    WebApp.isOrientationLocked
+    WebApp.lockOrientation
 
     WebApp.BackButton.onClick(() => {
       window.history.back();
