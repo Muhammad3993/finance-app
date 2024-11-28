@@ -28,7 +28,7 @@ const Bill = (props: IProps) => {
             {card.card_number}
           </p>
           <p className='text-2xl font-medium font-unbounded'>
-            {formatter.format(card.card_finance)}
+            {formatter.format(card.card_finance ?? 0)}
           </p>
         </div>
         <div>
