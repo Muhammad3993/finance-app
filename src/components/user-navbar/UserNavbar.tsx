@@ -7,6 +7,7 @@ interface IProps {
   leftIconBoxClick?: () => void;
   leftIcon?: React.ReactElement;
   rightIconBoxClass?: string;
+  rightIconBoxClick?: () => void;
   rightIcon?: React.ReactElement;
 }
 
@@ -18,6 +19,7 @@ const UserNavbar = (props: IProps) => {
     leftIconBoxClick,
     leftIcon,
     rightIconBoxClass,
+    rightIconBoxClick,
     rightIcon,
   } = props;
   return (
@@ -43,6 +45,7 @@ const UserNavbar = (props: IProps) => {
           "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
           rightIconBoxClass,
         )}
+        onClick={rightIconBoxClick}
       >
         {rightIcon}
       </div>

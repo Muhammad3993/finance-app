@@ -24,7 +24,8 @@ import Finish from "./pages/onboarding/finish/FInish";
 import Card from "./pages/card-details/Card";
 import { useUserContext } from "./context/UserContext";
 import AddExpense from "./pages/AddExpense";
-import Calculator from "./pages/Calculator";
+import Bills from "./pages/Bills";
+import CreateCard from "./pages/create-card/CreateCard";
 
 const AppRoutes = () => {
   const { state } = useUserContext();
@@ -67,7 +68,8 @@ const AppRoutes = () => {
         </Route>
         <Route path='/card/:card' element={<Card />} />
         <Route path='/card/:card/add-expense' element={<AddExpense />} />
-        <Route path="/cal" element={<Calculator />} />
+        <Route path='/bills' element={<Bills />} />
+        <Route path='/create-card' element={<CreateCard />} />
         <Route path='*' element={<Home />} />
       </Routes>
     </main>

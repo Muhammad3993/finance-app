@@ -11,7 +11,7 @@ const Navigation = () => {
       <NavLink to={"/"} className="w-14 h-14 flex justify-center items-center rounded-full nav_link">
         <Coin />
       </NavLink>
-      <NavLink to={"/cards"} className="w-14 h-14 flex justify-center items-center rounded-full nav_link">
+      <NavLink to={"/bills"} className="w-14 h-14 flex justify-center items-center rounded-full nav_link">
         <Card />
       </NavLink>
       <NavLink to={"/budget"} className="w-14 h-14 flex justify-center items-center rounded-full nav_link">

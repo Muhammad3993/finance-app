@@ -1,5 +1,15 @@
-const Symbol = () => (
-  <svg xmlns='http://www.w3.org/2000/svg' width={40} height={40} fill='none'>
+interface IProps {
+  width?: number;
+  height?: number;
+}
+const Symbol = (props: IProps) => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width={props.width || 40}
+    height={props.height || 40}
+    viewBox="0 0 40 40"
+    fill='none'
+  >
     <g>
       <path
         fill='#404040'
