@@ -24,7 +24,7 @@ import Finish from "./pages/onboarding/finish/FInish";
 import Card from "./pages/card-details/Card";
 import { useUserContext } from "./context/UserContext";
 import AddExpense from "./pages/AddExpense";
-import Bills from "./pages/Bills";
+import Bills from "./pages/bills/Bills";
 import CreateCard from "./pages/create-card/CreateCard";
 
 const AppRoutes = () => {

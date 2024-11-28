@@ -84,6 +84,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.disableVerticalSwipes();
     WebApp.viewportStableHeight;
     WebApp.setBackgroundColor("#ffffff");
+    WebApp.requestFullscreen();
 
     WebApp.BackButton.onClick(() => {
       window.history.back();
@@ -155,9 +156,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(5673577167);
-    // }
+    if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(dataUnsafe?.user?.id);
+    }
   }, [isTelegramWebApp]);
 
 

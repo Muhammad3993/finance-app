@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 
 interface IProps {
   setIsOpenCalc: (value: boolean) => void;
-  selectedCurrence: ICurrence | null;
+  selectedCurrence: ICurrence | null | undefined;
   isOpenCalc?: boolean;
   realResult?: string | number;
   setRealResult: (value: string) => void;
+  isLoading: boolean;
 }
 const Finance = (props: IProps) => {
   const {
@@ -49,7 +50,7 @@ const Finance = (props: IProps) => {
     setResult("");
   };
   const regex = /[+-]/;
-
+  
   const formatter = new Intl.NumberFormat(selectedCurrence?.intl, {
     style: "currency",
     currency: selectedCurrence?.code,

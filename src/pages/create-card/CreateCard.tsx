@@ -5,12 +5,13 @@ import Symbol from "@/assets/icons/symbol";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { db } from "@/firebaseConfig";
 import clsx from "clsx";
-import { collection, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Finance from "./Finance";
 import Currency from "./Currency";
+import useUserData from "@/constants/useUserData";
 
 export interface ICurrence {
   name?: string;
@@ -24,6 +25,9 @@ export interface ICardData {
   card_finance: number | string;
   card_name: string;
   card_currency: ICurrence;
+  card_number?: number;
+  card_expiry_date?: string;
+  isBalance: boolean;
 }
 
 const CreateCard = () => {
@@ -36,22 +40,28 @@ const CreateCard = () => {
 
   const [realResult, setRealResult] = useState("0");
   console.log(realResult);
-  
 
   const [currencies, setCurrencies] = useState<ICurrence[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedCurrence, setSelectedCurrence] = useState<ICurrence | null>({
-    code: "uzs",
-  });
-  const [isChecked, setIsChecked] = useState(false);
+  const [codeCountry, setCodeCountry] = useState<string>();
+  const currenciesGets: ICurrence[] | null =
+    currencies && currencies?.filter((curr) => curr.code === codeCountry);
 
-  const handleChecked = () => {
-    setIsChecked(!isChecked);
-  };
+  const currencyGet: ICurrence | null = currenciesGets && currenciesGets[0];
+
+  const [selectedCurrence, setSelectedCurrence] = useState<ICurrence | null>({
+    code: "usd",
+  });
+
+  useEffect(() => {
+    if (currencyGet) {
+      setSelectedCurrence(currencyGet);
+    }
+  }, [currencyGet]);
 
   const [isOpenCalc, setIsOpenCalc] = useState(false);
 
-  const fetchAllUsers = async () => {
+  const fetchAllCurriense = async () => {
     try {
       setIsLoading(true);
       const querySnapshot = await getDocs(collection(db, "currencies"));
@@ -59,29 +69,96 @@ const CreateCard = () => {
       if (!querySnapshot.empty) {
         const currencies = querySnapshot.docs.map((doc) => doc.data());
         setCurrencies(currencies);
-      } else {
-        console.log("Hech qanday foydalanuvchi topilmadi.");
       }
       setIsLoading(false);
     } catch (e) {
-      console.error("Ma'lumotlarni olishda xatolik yuz berdi:", e);
+      console.error(e);
     }
   };
 
   const { control, handleSubmit } = useForm<ICardData>({
-    defaultValues: { card_name: "" },
+    defaultValues: { card_name: "", card_number: 0, isBalance: false },
   });
+
+  const userData = useUserData();
+
+  const saveCardData = async (cardData: ICardData) => {
+    try {
+      const userDocRef = doc(db, "users", `${userData.telegram_id}`);
+
+      const cardsCollectionRef = collection(userDocRef, "cards");
+      await addDoc(cardsCollectionRef, {
+        ...cardData,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const onSubmit = async (data: ICardData) => {
-    const cardData = {
+    const cardData: ICardData = {
       card_finance: data.card_finance,
       card_name: data.card_name,
+      card_currency: data.card_currency,
+      card_number: data.card_number || 0,
+      card_expiry_date: data.card_expiry_date || "",
+      isBalance: data.isBalance,
     };
-    console.log(cardData);
+    saveCardData(cardData);
   };
 
   useEffect(() => {
-    fetchAllUsers();
+    fetchAllCurriense();
   }, []);
+
+  const [date, setDate] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, "");
+
+    const month = value.slice(0, 2);
+    if (month <= `${12}`) {
+      if (value.length > 2 && value.length <= 4) {
+        value = value.substring(0, 2) + "/" + value.substring(2);
+      }
+
+      if (value.length > 5) {
+        value = value.substring(0, 5);
+      }
+
+      setDate(value);
+    }
+  };
+
+  const currencyMapping: { [key: string]: string } = {
+    uz: "uzs",
+    ru: "rub",
+    us: "usd",
+    eu: "eur",
+  };
+
+  const getCurrencyByCountry = (countryCode: string) => {
+    const code = currencyMapping[countryCode] || "usd";
+    setCodeCountry(code);
+  };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+          );
+          const data = await response.json();
+          const detectedCountryCode = data.countryCode.toLowerCase();
+          getCurrencyByCountry(detectedCountryCode);
+        } catch (error) {
+          console.error("Mamlakat kodini olishda xato:", error);
+        }
+      });
+    }
+  }, [codeCountry]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -122,6 +199,7 @@ const CreateCard = () => {
                   field.onChange(value);
                   setRealResult(value);
                 }}
+                isLoading={isLoading}
               />
             );
           }}
@@ -155,38 +233,73 @@ const CreateCard = () => {
             </p>
             <div className='flex items-center gap-4'>
               <div className='flex items-center gap-61'>
-                <Card width={20} height={20} />
-                <p className='text-xs font-unbounded text-customGray2 font-normal'>
-                  Карта
-                </p>
+                {selectedAccountType && (
+                  <>
+                    {selectedAccountType === "karta" && (
+                      <Card width={20} height={20} />
+                    )}
+                    <p className='text-xs font-unbounded text-customGray2 font-normal'>
+                      {!selectedAccountType && "Выбрать"}
+                      {selectedAccountType}
+                    </p>
+                  </>
+                )}
               </div>
               <ArrowRight />
             </div>
           </div>
           {selectedAccountType === "karta" && (
             <div className='bg-white rounded-2xl'>
-              <div className='h-10 flex items-center justify-between border-b border-customGray10 px-3 last:border-none'>
+              <label className='h-10 flex items-center justify-between border-b border-customGray10 px-3 last:border-none'>
                 <p className='text-10 font-unbounded font-normal text-customGray2'>
                   Номер карты
                 </p>
                 <div className='flex items-center gap-2'>
-                  <p className='opacity-50 text-customGray2 font-unbounded font-normal text-10'>
-                    9860 **** **** 4820
-                  </p>
+                  <Controller
+                    control={control}
+                    name='card_number'
+                    render={({ field }) => {
+                      return (
+                        <input
+                          type='text'
+                          className='text-10 text-right font-normal font-unbounded text-customGray2 outline-none'
+                          maxLength={16}
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
                   <ArrowRight />
                 </div>
-              </div>{" "}
-              <div className='h-10 flex items-center justify-between border-b border-customGray10 px-3 last:border-none'>
+              </label>
+              <label className='h-10 flex items-center justify-between border-b border-customGray10 px-3 last:border-none'>
                 <p className='text-10 font-unbounded font-normal text-customGray2'>
                   Срок истечения
                 </p>
                 <div className='flex items-center gap-2'>
-                  <p className='opacity-50 text-customGray2 font-unbounded font-normal text-10'>
-                    07/27
-                  </p>
+                  <Controller
+                    control={control}
+                    name='card_expiry_date'
+                    render={({ field }) => {
+                      return (
+                        <input
+                          type='text'
+                          className='text-10 text-right font-normal font-unbounded text-customGray2 outline-none'
+                          maxLength={5}
+                          {...field}
+                          value={date}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleInputChange(e);
+                          }}
+                          placeholder='12/2'
+                        />
+                      );
+                    }}
+                  />
                   <ArrowRight />
                 </div>
-              </div>
+              </label>
             </div>
           )}
         </div>
@@ -195,16 +308,17 @@ const CreateCard = () => {
           control={control}
           name='card_currency'
           render={({ field }) => {
-            console.log(field);
-            
             return (
               <Currency
                 setIsOpenCurrency={setIsOpenCurrency}
                 isOpenCurrency={isOpenCurrency}
-                selectedCurrence={selectedCurrence}
-                setSelectedCurrence={setSelectedCurrence}
+                selectedCurrence={field.value}
+                setSelectedCurrence={(value) => {
+                  field.onChange(value);
+                  setSelectedCurrence(value);
+                }}
                 currencies={currencies}
-
+                selecteddCurrence={selectedCurrence}
               />
             );
           }}
@@ -216,11 +330,19 @@ const CreateCard = () => {
           </p>
           <div className='flex items-center gap-4'>
             <label className='relative inline-flex cursor-pointer items-center'>
-              <input
-                type='checkbox'
-                className='peer sr-only'
-                checked={isChecked}
-                onChange={handleChecked}
+              <Controller
+                control={control}
+                name='isBalance'
+                render={({ field }) => {
+                  return (
+                    <input
+                      type='checkbox'
+                      className='peer sr-only'
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                  );
+                }}
               />
               <div
                 className={clsx(

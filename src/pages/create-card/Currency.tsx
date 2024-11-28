@@ -1,6 +1,6 @@
 import ArrowRight from "@/assets/icons/arrowRight";
 import Flag from "@/assets/icons/flag";
-import Search from "@/assets/icons/search";
+// import Search from "@/assets/icons/search";
 import clsx from "clsx";
 import { ICurrence } from "./CreateCard";
 
@@ -10,10 +10,17 @@ interface IProps {
   setSelectedCurrence: (value: ICurrence) => void;
   currencies: ICurrence[] | null;
   selectedCurrence: ICurrence | null;
+  selecteddCurrence: ICurrence | null;
 }
 const Currency = (props: IProps) => {
-  const { setIsOpenCurrency, isOpenCurrency, setSelectedCurrence, currencies, selectedCurrence } =
-    props;
+  const {
+    setIsOpenCurrency,
+    isOpenCurrency,
+    setSelectedCurrence,
+    currencies,
+    selectedCurrence,
+    selecteddCurrence,
+  } = props;
   return (
     <>
       <div
@@ -26,7 +33,7 @@ const Currency = (props: IProps) => {
         <div className='flex items-center gap-4'>
           <div className='flex items-center gap-61'>
             <p className='text-xs font-unbounded text-customGray2 font-normal'>
-              UZS
+              {selecteddCurrence?.code}
             </p>
           </div>
           <ArrowRight />
@@ -49,14 +56,14 @@ const Currency = (props: IProps) => {
         <p className='text-center font-medium font-unbounded text-customBlack'>
           Валюта
         </p>
-        <div className='py-3 px-4 flex items-center gap-3 bg-customGray8 rounded-xl overflow-hidden mt-4'>
+        {/* <div className='py-3 px-4 flex items-center gap-3 bg-customGray8 rounded-xl overflow-hidden mt-4'>
           <Search />
           <input
             type='text'
             placeholder='Поиск'
             className='bg-inherit flex-1 w-full border-none outline-none'
           />
-        </div>
+        </div> */}
         <div className='mt-3'>
           {currencies &&
             currencies.map((currency: ICurrence, index: number) => (
