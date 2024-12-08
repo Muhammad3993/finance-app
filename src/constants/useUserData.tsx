@@ -42,6 +42,8 @@ const useUserData = () => {
 
   const reminderCash = Number(finance) - remainderAll;
 
+
+
   const userData = {
     name: name,
     telegram_id: telegram_id,
@@ -61,6 +63,7 @@ const useUserData = () => {
     desires: cultural,
     savingNeed: saving,
     reminderCash: reminderCash,
+    curency: state.userData?.currency,
   };
   return userData;
 };

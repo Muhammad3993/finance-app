@@ -2,15 +2,14 @@ import ArrowLeft from "@/assets/icons/arrowLeft";
 import Plus from "@/assets/icons/plus";
 import Navigation from "@/components/navigation/Navigation";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import { db } from "@/firebaseConfig";
-import { collection, doc, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ICurrence } from "../create-card/CreateCard";
-import useUserData from "@/constants/useUserData";
 import Bill from "./Bill";
+import useGetCards from "@/data/hooks/currencies";
 
 export interface ICards {
+  id?: string;
   card_currency?: ICurrence;
   card_expiry_date?: string;
   card_finance?: number;
@@ -20,34 +19,12 @@ export interface ICards {
 }
 const Bills = () => {
   const navigate = useNavigate();
-  const useData = useUserData();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cards, setCards] = useState<ICards[] | null>(null);
 
-  console.log(cards);
-
-  const fetchAllCard = async () => {
-    try {
-      setIsLoading(true);
-      const userDocRef = doc(db, "users", `${useData.telegram_id}`);
-      const cardsCollectionRef = collection(userDocRef, "cards");
-      const querySnapshot = await getDocs(cardsCollectionRef);
-
-      if (!querySnapshot.empty) {
-        const cards: ICards[] = querySnapshot.docs.map((doc) => doc.data());
-        setCards(cards);
-      }
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { cards, isLoading, fetchAllCard } = useGetCards();
 
   useEffect(() => {
     fetchAllCard();
   }, []);
-
-
 
   if (isLoading) {
     return <p>Loading...</p>;

@@ -1,69 +1,144 @@
 import ArrowLeft from "@/assets/icons/arrowLeft";
-import Edit from "@/assets/icons/edit";
 import Settings from "@/assets/icons/settings";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AnalyticsChart from "./Chart";
 import OperationCards from "@/components/operation-cards/OperationCards";
 import Plus from "@/assets/icons/plus";
+import { IGroups, useGetGroups } from "@/data/hooks/groups";
+import { Fragment, useEffect } from "react";
+import formatBalance from "@/constants/useFormatBalance";
+import NecessaryIcon from "@/assets/icons/necessaryIcon";
+import { useOperation } from "@/data/hooks/operation";
 
 const Card = () => {
   const navigate = useNavigate();
+  const { card } = useParams();
+
+  const { groups, fetchGroups, isLoading } = useGetGroups();
+
+  const { getCardOperations, operations } = useOperation();
+
+  const oprationsValue = operations?.reduce((total, operation) => {
+    return total + +(operation.value || 0);
+  }, 0);
+
+  useEffect(() => {
+    fetchGroups();
+    if (card) {
+      getCardOperations(card);
+    }
+  }, []);
+
+  const group: IGroups[] | undefined = groups?.filter(
+    (group) => group.name === card,
+  );
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <UserNavbar
         isText
-        text='Необходимые'
+        text={`${card}`}
         leftIconBoxClick={() => navigate(-1)}
         leftIcon={<ArrowLeft />}
         rightIcon={<Settings />}
       />
-      <div className='px-4 mt-6'>
-        <div className='bg-customGray p-3 rounded-25 flex flex-col gap-4 mb-6'>
-          <div className='flex justify-between p-3'>
-            <div>
-              <p className='text-2xl font-bold font-unbounded text-customGray2'>
-                12 млн. сум
-              </p>
-              <p className='text-10 font-normal font-unbounded text-customGray2'>
-                бюджет на месяц
-              </p>
+      {group?.map((group, index) => (
+        <Fragment key={index}>
+          <div className='px-4 flex items-center justify-center flex-col'>
+            <div className='w-14 h-14 bg-customGray8 flex items-center justify-center rounded-full'>
+              <NecessaryIcon />
             </div>
-            <Edit />
+            <p className='text-2xl font-bold font-unbounded text-customGray2'>
+              {card}
+            </p>
           </div>
-          <div className='w-full h-9 bg-customGray3 rounded-25 overflow-hidden mt-[-8px]'>
-            <div className='w-[50%] h-full bg-customGray2 rounded-25'></div>
-          </div>
-          <div className='flex justify-between gap-2'>
-            <div className='bg-white rounded-2xl flex flex-col gap-1 p-3 flex-1'>
-              <p className='font-semibold font-unbounded text-customGray2 text-center'>
-                1,1 млн сум
-              </p>
-              <p className='font-normal text-10 text-customGray2 font-unbounded text-center'>
-                потрачено за ноябрь
-              </p>
+          {card === "Сбережения" ? (
+            <div className='grid grid-cols-2 px-4 gap-1 mt-10'>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {oprationsValue
+                    ? formatBalance(Number(group.value) - oprationsValue)
+                    : formatBalance(group.value)}
+                  cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {formatBalance(group.value)} cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
             </div>
-            <div className='bg-white rounded-2xl flex flex-col gap-1 p-3 flex-1'>
-              <p className='font-semibold font-unbounded text-customGray2 text-center'>
-                9,8 млн сум
-              </p>
-              <p className='font-normal text-10 text-customGray2 font-unbounded text-center'>
-                осталось на ноябрь
-              </p>
+          ) : (
+            <div className='grid grid-cols-2 grid-rows-2 px-4 gap-1 mt-10'>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {formatBalance(group.dailyValue)} cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {formatBalance(group.value)} cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {oprationsValue
+                    ? formatBalance(
+                        Number(group.dailySpendValue) - oprationsValue,
+                      )
+                    : formatBalance(group.dailySpendValue)}{" "}
+                  cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
+              <div className='bg-customGray8 rounded-2xl p-3 flex items-center justify-center flex-col'>
+                <p className='font-bold font-unbounded text-customGray2'>
+                  {oprationsValue
+                    ? formatBalance(Number(group.spendValue) - oprationsValue)
+                    : formatBalance(group.spendValue)}
+                  cym
+                </p>
+                <p className='font-unbounded font-normal text-10 text-customGray2'>
+                  бюджет на день
+                </p>
+              </div>
             </div>
+          )}
+          <div className='px-4 mt-6'>
+            <div className='bg-customGray p-3 rounded-25 flex flex-col gap-4 mb-6'>
+              <AnalyticsChart />
+            </div>
+            <OperationCards />
+            <Link
+              to={"add-expense"}
+              className='fixed bottom-6 left-[50%] translate-x-[-50%] border-2 border-customGray6 rounded-full shadow-customshadow'
+            >
+              <div className='h-68 w-68 bg-customGray2 flex items-center justify-center rounded-full backdrop-blur-[50px]'>
+                <Plus />
+              </div>
+            </Link>
           </div>
-          <AnalyticsChart />
-        </div>
-        <OperationCards />
-        <Link
-          to={"add-expense"}
-          className='fixed bottom-6 left-[50%] translate-x-[-50%] border-2 border-customGray6 rounded-full shadow-customshadow'
-        >
-          <div className='h-68 w-68 bg-customGray2 flex items-center justify-center rounded-full backdrop-blur-[50px]'>
-            <Plus />
-          </div>
-        </Link>
-      </div>
+        </Fragment>
+      ))}
     </>
   );
 };

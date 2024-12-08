@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
+import { ICurrence } from "@/pages/create-card/CreateCard";
 
 interface IUser {
   telegram_id?: number;
@@ -37,6 +38,7 @@ interface IUser {
     saving?: number;
     debt?: number;
   };
+  currency?: ICurrence;
 }
 
 interface IState {
@@ -85,7 +87,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.viewportStableHeight;
     WebApp.setBackgroundColor("#ffffff");
     WebApp.setHeaderColor("#cccccc");
-    WebApp.requestFullscreen();
+    // WebApp.requestFullscreen();
     WebApp.Accelerometer
 
     WebApp.BackButton.onClick(() => {
@@ -158,10 +160,13 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe?.user?.id);
-    }
+    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(5673577167);
+    // }
   }, [isTelegramWebApp]);
+
+  console.log(state.userData);
+  
 
 
   const contextValue = {

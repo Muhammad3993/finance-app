@@ -9,6 +9,7 @@ export default {
       padding: {
         "6": "6px",
         "22": "22px",
+        "24": "24px",
         "190": "190px"
       },
       gap: {
@@ -20,6 +21,7 @@ export default {
         "20": "20px",
         "22": "22px",
         "25": "25px",
+        "35": "35px",
         "50": "50px",
       },
       fontFamily: {
@@ -51,6 +53,7 @@ export default {
         "customGray10": "rgba(64, 64, 64, 0.3)",
         "customGray11": "#989CB0",
         "customBlack": "#0F0F0F",
+        "customBlack50": "rgba(0, 0, 0, .5)",
         "customBlue": "#3634A3"
       },
       height: {
@@ -62,16 +65,19 @@ export default {
         "66": "66px",
         "68": "68px",
         "74": "74px",
+        "76": "76px",
         "82": "82px",
         "180": "180px",
         "249": "249px",
       },
       width: {
         "44px": "44px",
+        "54": "54px",
         "60p": "60%",
         "60px": "60px",
         "66": "66px",
         "68": "68px",
+        "76": "76px",
         "84": "84px",
       },
       margin: {

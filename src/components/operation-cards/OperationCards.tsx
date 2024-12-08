@@ -1,67 +1,53 @@
-import Card from "@/assets/icons/card";
-import Transport from "@/assets/icons/transport";
-import { Link } from "react-router-dom";
+import Home from "@/assets/icons/home";
+import formatBalance from "@/constants/useFormatBalance";
+import { useOperation } from "@/data/hooks/operation";
+import { IOperationData } from "@/pages/AddExpense";
+import { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
 const OperationCards = () => {
+  const { card } = useParams();
+
+  const { getCardOperations, operations } = useOperation();
+
+  useEffect(() => {
+    if (card) {
+      getCardOperations(card);
+    }
+  }, []);
+
   return (
-    <div className="pb-4">
-      <div className='flex justify-between'>
-        <p className='text-customGray2 text-xs opacity-65 font-normal font-unbounded'>
-          Операции
-        </p>
+    <div className='pb-4'>
+      <div className='flex justify-between items-center'>
+        <p className='font-unbounded font-medium text-black '>Операции</p>
         <Link
           to={""}
-          className='text-customGray2 text-xs font-normal font-unbounded'
+          className='font-unbounded font-medium text-10 text-customGray2 flex items-center justify-center bg-customGray py-6 px-3 rounded-25'
         >
-          Все операции
+          Смотреть все
         </Link>
       </div>
-      <div className="mt-3 flex flex-col gap-2">
-        <div className='flex flex-col bg-customGray rounded-2xl p-3 gap-2'>
-          <div className='flex justify-between'>
-            <p className='text-13 font-medium font-unbounded text-customGray2'>
-              - 1700 <span className='text-10'>сум</span>
-            </p>
-            <p className='text-10 font-normal text-customGray2 opacity-35'>
-              24 ноя 2024
-            </p>
-          </div>
-          <div className="flex gap-1">
-            <div className='py-1 px-6 bg-customGray5 w-max flex items-center gap-61 rounded-25'>
-              <Card width={12} height={12} />
-              <p className='text-customGray2 text-8 font-unbounded font-normal'>
-                HUMO 4820*
-              </p>
-            </div>      <div className='py-1 px-6 bg-customGray5 w-max flex items-center gap-61 rounded-25'>
-              <Transport />
-              <p className='text-customGray2 text-8 font-unbounded font-normal'>
-                HUMO 4820*
-              </p>
+      <div className='mt-4 flex flex-col gap-2'>
+        {operations?.map((operation: IOperationData, index: number) => (
+          <div className='flex justify-between items-start' key={index}>
+            <div className='flex items-center gap-3'>
+              <div className='w-11 h-11 flex items-center justify-center bg-customGray8 rounded-[14px]'>
+                <Home />
+              </div>
+              <div>
+                <p className='font-unbounded font-normal text-xs text-customGray2 opacity-50 leading-4'>
+                  {operation.category?.name}
+                </p>
+                <p className='font-medium font-unbounded text-sm text-customGray2 leading-5'>
+                  – {formatBalance(operation.value)}сум
+                </p>
+              </div>
             </div>
-          </div>
-        </div>        <div className='flex flex-col bg-customGray rounded-2xl p-3 gap-2'>
-          <div className='flex justify-between'>
-            <p className='text-13 font-medium font-unbounded text-customGray2'>
-              - 1700 <span className='text-10'>сум</span>
-            </p>
-            <p className='text-10 font-normal text-customGray2 opacity-35'>
-              24 ноя 2024
+            <p className='font-unbounded font-normal text-10 text-customGray2 opacity-35'>
+              {operation.date}
             </p>
           </div>
-          <div className="flex gap-1">
-            <div className='py-1 px-6 bg-customGray5 w-max flex items-center gap-61 rounded-25'>
-              <Card width={12} height={12} />
-              <p className='text-customGray2 text-8 font-unbounded font-normal'>
-                HUMO 4820*
-              </p>
-            </div>      <div className='py-1 px-6 bg-customGray5 w-max flex items-center gap-61 rounded-25'>
-              <Transport />
-              <p className='text-customGray2 text-8 font-unbounded font-normal'>
-                HUMO 4820*
-              </p>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
