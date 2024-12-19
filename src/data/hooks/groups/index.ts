@@ -14,9 +14,11 @@ export interface IGroups {
 }
 
 export const usePostGroups = () => {
+  const [isLoadingCreate, setIsLoadingCreate] = useState<boolean>(false);
   const userData = useUserData();
 
   const createGroup = async (groups: IGroups[]) => {
+    setIsLoadingCreate(true);
     try {
       await setDoc(doc(db, "groups", `${userData.telegram_id}`), {
         groups: groups,
@@ -25,9 +27,10 @@ export const usePostGroups = () => {
     } catch (e) {
       console.error("Error creating group:", e);
     }
+    setIsLoadingCreate(false);
   };
 
-  return { createGroup };
+  return { createGroup, isLoadingCreate };
 };
 
 export const useGetGroups = () => {

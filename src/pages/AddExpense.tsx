@@ -280,8 +280,8 @@ const AddExpense = () => {
                   "0"} */}
                 {regex.test(input)
                   ? formatBalance(result)
-                  : formatBalance(input) || "0"}{" "}
-                {userData.curency?.symbol?.toUpperCase()}
+                  : formatBalance(input) || "0"}
+                {userData?.currency?.symbol?.toUpperCase()}
               </p>
             </div>
           </div>

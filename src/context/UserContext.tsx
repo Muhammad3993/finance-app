@@ -103,7 +103,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       };
 
       const docRef = await setDoc(
-        doc(db, "users", `${userData.telegram_id}`),
+        doc(db, "users", `${5673577167}`),
         docData,
       );
       console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);

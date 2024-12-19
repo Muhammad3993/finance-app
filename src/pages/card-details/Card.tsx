@@ -1,5 +1,3 @@
-import ArrowLeft from "@/assets/icons/arrowLeft";
-import Settings from "@/assets/icons/settings";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AnalyticsChart from "./Chart";
@@ -10,6 +8,7 @@ import { Fragment, useEffect } from "react";
 import formatBalance from "@/constants/useFormatBalance";
 import NecessaryIcon from "@/assets/icons/necessaryIcon";
 import { useOperation } from "@/data/hooks/operation";
+import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -41,11 +40,10 @@ const Card = () => {
   return (
     <>
       <UserNavbar
-        isText
-        text={`${card}`}
         leftIconBoxClick={() => navigate(-1)}
-        leftIcon={<ArrowLeft />}
-        rightIcon={<Settings />}
+        leftIcon={<ArrowLeftShort />}
+        rightIconBoxClass="bg-inherit"
+        leftIconBoxClass="bg-inherit w-max"
       />
       {group?.map((group, index) => (
         <Fragment key={index}>

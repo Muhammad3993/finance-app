@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Onboarding from "./pages/onboarding/Onboarding";
 import i18n, { DEFAULT_LANGUAGE } from "./i18n";
 import Welcome from "./pages/onboarding/welcome/Welcome";
@@ -42,7 +42,7 @@ const AppRoutes = () => {
   }
 
   return (
-    <main className='max-w-[768px] bg-[#FFFFFF] max-h-[100vh] mx-auto w-full relative overflow-y-scroll'>
+    <main className='max-w-[768px] max-h-[100vh] mx-auto w-full relative overflow-y-scroll'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/onboarding' element={<Onboarding />}>

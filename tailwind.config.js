@@ -54,6 +54,11 @@ export default {
         "customGray11": "#989CB0",
         "customBlack": "#0F0F0F",
         "customBlack50": "rgba(0, 0, 0, .5)",
+        "1B1A1E-50": "rgba(27, 26, 30, 0.5)",
+        "FFFFFF-8": "rgba(255, 255, 255, 0.08)",
+        "FFFFFF-50": "rgba(255, 255, 255, 0.5)",
+        "FFFFFF-80": "rgba(255, 255, 255, 0.8)",
+        "00BF33": "rgba(0, 191, 51, 1)",
         "customBlue": "#3634A3"
       },
       height: {
@@ -69,6 +74,8 @@ export default {
         "82": "82px",
         "180": "180px",
         "249": "249px",
+        "342": "342px",
+        "220": "220px",
       },
       width: {
         "44px": "44px",
@@ -79,12 +86,23 @@ export default {
         "68": "68px",
         "76": "76px",
         "84": "84px",
+        "220": "220px",
       },
       margin: {
         "18": "18px",
       },
       boxShadow: {
-        "customshadow": "0px 4px 16px 0px rgba(0, 0, 0, 0.4)"
+        "customshadow": "0px 4px 16px 0px rgba(0, 0, 0, 0.4)",
+        "swipe_box": "0px 6px 12px 0px rgba(0, 0, 0, 0.08)",
+        "navigate_shadow": "0px 0px 25px -2px rgba(0, 191, 51, 0.5)"
+        
+      },
+      backdropBlur: {
+        "50": "50px"
+      },
+      lineHeight: {
+        "14": "14px",
+        "22": "22px",
       },
       screens: {
         "390": "390px"

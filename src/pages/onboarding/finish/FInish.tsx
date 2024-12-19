@@ -102,6 +102,7 @@ const Finish = () => {
           cy='50%'
           innerRadius={60}
           outerRadius={120}
+          cornerRadius={10}
           dataKey='value'
           paddingAngle={5}
           label={({ percent, x, y }) => (
@@ -118,12 +119,15 @@ const Finish = () => {
           )}
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
+            <Cell
+              style={{ outline: "none" }}
+              key={`cell-${index}`}
+              fill={entry.color}
+            />
           ))}
         </Pie>
       </PieChart>
 
-      {/* Kategoriyalar va summalar */}
       <div className='mt-6 text-sm w-full max-w-sm'>
         {data.map((item, index) => (
           <div key={index} className='flex justify-between items-center mt-2'>
@@ -141,7 +145,6 @@ const Finish = () => {
         </div>
       </div>
 
-      {/* Tugma */}
       <button
         className='mt-8 bg-gray-200 text-black py-2 px-4 rounded-lg'
         onClick={() => handleReady()}
