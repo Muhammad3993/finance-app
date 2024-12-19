@@ -87,7 +87,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.viewportStableHeight;
     WebApp.setBackgroundColor("#ffffff");
     WebApp.setHeaderColor("#cccccc");
-    // WebApp.requestFullscreen();
+    WebApp.requestFullscreen();
     WebApp.Accelerometer
 
     WebApp.BackButton.onClick(() => {
