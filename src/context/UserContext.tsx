@@ -88,7 +88,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.setBackgroundColor("#040308");
     WebApp.setHeaderColor("#cccccc");
     WebApp.safeAreaInset
-    // WebApp.requestFullscreen();
+    WebApp.requestFullscreen();
 
     WebApp.BackButton.onClick(() => {
       window.history.back();
