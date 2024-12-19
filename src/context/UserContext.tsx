@@ -84,9 +84,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     setState({ isTelegramWebApp });
     WebApp.expand();
     WebApp.disableVerticalSwipes();
-    WebApp.viewportStableHeight;
-    WebApp.setBackgroundColor("#040308");
-    WebApp.setHeaderColor("#ffffff");
+    // WebApp.viewportStableHeight;
+    // WebApp.setBackgroundColor("#040308");
+    // WebApp.setHeaderColor("#ffffff");
     if (WebApp.themeParams && WebApp.themeParams.text_color) {
       const textColor = WebApp.themeParams.text_color;
       document.body.style.color = textColor;
