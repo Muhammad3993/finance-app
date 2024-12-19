@@ -84,12 +84,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     setState({ isTelegramWebApp });
     WebApp.expand();
     WebApp.disableVerticalSwipes();
-    if (WebApp.themeParams && WebApp.themeParams.text_color) {
-      const textColor = WebApp.themeParams.text_color;
-      document.body.style.color = textColor;
-    } else {
-      document.body.style.color = "#ffffff"; // Force white text color
-    }
     WebApp.themeParams.text_color;
     WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
