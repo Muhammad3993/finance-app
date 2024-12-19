@@ -87,6 +87,13 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.viewportStableHeight;
     WebApp.setBackgroundColor("#040308");
     WebApp.setHeaderColor("#ffffff");
+    if (WebApp.themeParams && WebApp.themeParams.text_color) {
+      const textColor = WebApp.themeParams.text_color;
+      document.body.style.color = textColor;
+    } else {
+      document.body.style.color = '#ffffff'; // Force white text color
+    }
+    WebApp.themeParams.text_color;
     WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset
     WebApp.safeAreaInset
