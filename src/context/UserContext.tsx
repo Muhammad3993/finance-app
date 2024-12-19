@@ -85,10 +85,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.viewportStableHeight;
-    WebApp.setBackgroundColor("#ffffff");
+    WebApp.setBackgroundColor("#040308");
     WebApp.setHeaderColor("#cccccc");
-    WebApp.requestFullscreen();
-    WebApp.Accelerometer
+    WebApp.safeAreaInset
+    // WebApp.requestFullscreen();
 
     WebApp.BackButton.onClick(() => {
       window.history.back();

@@ -48,17 +48,16 @@ export default function GroupCards() {
 
   return (
     <>
-      <div className='px-4 w-full'>
+      <div className='w-full'>
         <Swiper
           key={groupsPer?.length || 0}
           slidesPerView={"auto"}
           centeredSlides={true}
-          spaceBetween={7}
           onSlideChange={(swiper) => {
             setActiveIndex(swiper.activeIndex);
           }}
           initialSlide={1}
-          className='mySwiper px-8'
+          className='mySwiper px-10'
         >
           {groupsPer?.map((group: IGroups, index: number) => (
             <SwiperSlide key={index}>
