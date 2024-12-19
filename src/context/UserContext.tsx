@@ -84,19 +84,16 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     setState({ isTelegramWebApp });
     WebApp.expand();
     WebApp.disableVerticalSwipes();
-    // WebApp.viewportStableHeight;
-    // WebApp.setBackgroundColor("#040308");
-    // WebApp.setHeaderColor("#ffffff");
     if (WebApp.themeParams && WebApp.themeParams.text_color) {
       const textColor = WebApp.themeParams.text_color;
       document.body.style.color = textColor;
     } else {
-      document.body.style.color = '#ffffff'; // Force white text color
+      document.body.style.color = "#ffffff"; // Force white text color
     }
     WebApp.themeParams.text_color;
     WebApp.requestFullscreen();
-    WebApp.contentSafeAreaInset
-    WebApp.safeAreaInset
+    WebApp.contentSafeAreaInset;
+    WebApp.safeAreaInset;
 
     WebApp.BackButton.onClick(() => {
       window.history.back();
@@ -110,10 +107,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         onBoarding: onboardingData || null,
       };
 
-      const docRef = await setDoc(
-        doc(db, "users", `${5673577167}`),
-        docData,
-      );
+      const docRef = await setDoc(doc(db, "users", `${5673577167}`), docData);
       console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);
     } catch (e) {
       console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
@@ -169,13 +163,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(5673577167);
+    fetchUserByTelegramId(5673577167);
     // }
   }, [isTelegramWebApp]);
 
   console.log(state.userData);
-  
-
 
   const contextValue = {
     state,
