@@ -85,8 +85,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.themeParams.text_color;
-    // WebApp.requestFullscreen();
-    WebApp.setHeaderColor("#FF0000")
+    WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
     WebApp.safeAreaInset;
 
