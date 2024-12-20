@@ -55,7 +55,7 @@ const UserNavbar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className="h-[70px]"></div>
+      <div className="h-[118px]"></div>
     </>
   );
 };
