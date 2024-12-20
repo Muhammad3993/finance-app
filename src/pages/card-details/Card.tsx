@@ -132,6 +132,8 @@ const Card = () => {
           <div className='px-4 mt-6'>
             <div className='bg-customGray p-3 rounded-25 flex flex-col gap-4 mb-6'>
               <AnalyticsChart />
+              <AnalyticsChart />
+              <AnalyticsChart />
             </div>
             <OperationCards />
             <Link
