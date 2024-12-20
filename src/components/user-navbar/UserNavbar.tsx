@@ -31,7 +31,7 @@ const UserNavbar = (props: IProps) => {
       <div
         className={clsx(
           "fixed top-[-10px] left-0 right-0 backdrop-blur-50 duration-300 border-1B1A1E-100",
-          isScrolled && "bg-1B1A1E-80 border",
+          isScrolled && "bg-1B1A1E-80 border-b",
         )}
         id='user-navbar'
       >
