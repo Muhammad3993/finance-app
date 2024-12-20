@@ -26,7 +26,7 @@ const UserNavbar = (props: IProps) => {
   return (
     <>
       <div className='fixed top-[-10px] left-0 right-0'>
-        <div className={clsx("w-full h-[70px] bg-red-500")}></div>
+        <div className={clsx("w-full h-[70px] backdrop-blur-50")}></div>
         <div className='px-4 flex justify-between items-center h-12 my-2 backdrop-blur-50 relative top-[-10px]'>
           <div
             className={clsx(
