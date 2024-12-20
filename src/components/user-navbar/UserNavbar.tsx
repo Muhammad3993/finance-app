@@ -22,34 +22,38 @@ const UserNavbar = (props: IProps) => {
     rightIconBoxClick,
     rightIcon,
   } = props;
+
   return (
-    <div className='px-4 flex justify-between items-center h-12 my-2 fixed top-[-10px] left-0 right-0 backdrop-blur-50'>
-      <div
-        className={clsx(
-          "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
-          leftIconBoxClass,
-        )}
-        onClick={leftIconBoxClick}
-      >
-        {leftIcon}
-      </div>
-      {isText && (
-        <div>
-          <p className='text-sm font-semibold font-unbounded text-customGray2'>
-            {text}
-          </p>
+    <>
+      <div className={clsx("w-full h-[50px] bg-red-500")}></div>
+      <div className='px-4 flex justify-between items-center h-12 my-2 fixed top-[-10px] left-0 right-0 backdrop-blur-50'>
+        <div
+          className={clsx(
+            "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
+            leftIconBoxClass,
+          )}
+          onClick={leftIconBoxClick}
+        >
+          {leftIcon}
         </div>
-      )}
-      <div
-        className={clsx(
-          "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
-          rightIconBoxClass,
+        {isText && (
+          <div>
+            <p className='text-sm font-semibold font-unbounded text-customGray2'>
+              {text}
+            </p>
+          </div>
         )}
-        onClick={rightIconBoxClick}
-      >
-        {rightIcon}
+        <div
+          className={clsx(
+            "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
+            rightIconBoxClass,
+          )}
+          onClick={rightIconBoxClick}
+        >
+          {rightIcon}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
