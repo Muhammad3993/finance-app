@@ -4,6 +4,7 @@ import {
   useReducer,
   Dispatch,
   useEffect,
+  useState,
 } from "react";
 import {
   collection,
@@ -53,6 +54,8 @@ interface IContext {
   setState: Dispatch<Partial<IState>>;
   handleSaveWithOnboarding: () => void;
   handleSaveBasic: () => void;
+  handleScroll: (e: React.UIEvent) => void;
+  isScrolled: boolean;
 }
 
 const UserContext = createContext<IContext | undefined>(undefined);
@@ -85,7 +88,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.themeParams.text_color;
-    WebApp.requestFullscreen();
+    // WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
     WebApp.safeAreaInset;
 
@@ -161,13 +164,25 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     // }
   }, [isTelegramWebApp]);
 
-  console.log(state.userData);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Divni scroll qilish
+  const handleScroll = (e: React.UIEvent) => {
+    const scrollTop = e.currentTarget.scrollTop;
+    if (scrollTop > 0) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  };
 
   const contextValue = {
     state,
     setState,
     handleSaveWithOnboarding,
     handleSaveBasic,
+    isScrolled,
+    handleScroll,
   };
 
   return (

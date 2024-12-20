@@ -55,6 +55,8 @@ export default {
         "customBlack": "#0F0F0F",
         "customBlack50": "rgba(0, 0, 0, .5)",
         "1B1A1E-50": "rgba(27, 26, 30, 0.5)",
+        "1B1A1E-80": "rgba(27, 26, 30, 0.8)",
+        "1B1A1E-100": "rgba(27, 26, 30, 1)",
         "FFFFFF-8": "rgba(255, 255, 255, 0.08)",
         "FFFFFF-50": "rgba(255, 255, 255, 0.5)",
         "FFFFFF-80": "rgba(255, 255, 255, 0.8)",

@@ -11,7 +11,7 @@ html {
 }
 
 .mobile-body {
-  overflow: hidden;
+  overflow: hidden; 
   height: 100vh;
 }
 

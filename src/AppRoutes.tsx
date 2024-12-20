@@ -28,7 +28,7 @@ import Bills from "./pages/bills/Bills";
 import CreateCard from "./pages/create-card/CreateCard";
 
 const AppRoutes = () => {
-  const { state } = useUserContext();
+  const { state, handleScroll } = useUserContext();
   const userLang: string = "ru";
   const supportedLanguages = ["en", "ru", "uz"];
   if (supportedLanguages.includes(userLang)) {
@@ -42,7 +42,7 @@ const AppRoutes = () => {
   }
 
   return (
-    <main className='max-w-[768px] max-h-[100vh] mx-auto w-full relative overflow-y-scroll'>
+    <main className='max-w-[768px] max-h-[100vh] mx-auto w-full relative overflow-y-scroll' onScroll={handleScroll}>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/onboarding' element={<Onboarding />}>

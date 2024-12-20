@@ -1,3 +1,4 @@
+import { useUserContext } from "@/context/UserContext";
 import clsx from "clsx";
 
 interface IProps {
@@ -23,11 +24,19 @@ const UserNavbar = (props: IProps) => {
     rightIcon,
   } = props;
 
+  const { isScrolled } = useUserContext();
+
   return (
     <>
-      <div className='fixed top-[-10px] left-0 right-0 backdrop-blur-50'>
-        <div className={clsx("w-full h-[70px] ")}></div>
-        <div className='px-4 flex justify-between items-center h-12 my-2 relative top-[-10px]'>
+      <div
+        className={clsx(
+          "fixed top-[-10px] left-0 right-0 backdrop-blur-50 duration-300 border-1B1A1E-100",
+          isScrolled && "bg-1B1A1E-80 border",
+        )}
+        id='user-navbar'
+      >
+        <div className='w-full h-[70px]'></div>
+        <div className='px-4 flex justify-between items-center h-12 relative'>
           <div
             className={clsx(
               "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
@@ -55,7 +64,7 @@ const UserNavbar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className="h-[110px]"></div>
+      <div className='h-[110px]'></div>
     </>
   );
 };
