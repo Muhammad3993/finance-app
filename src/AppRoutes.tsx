@@ -42,7 +42,7 @@ const AppRoutes = () => {
   }
 
   return (
-    <main className='max-w-[768px] max-h-[100vh] mx-auto w-full relative overflow-y-scroll pt-[60px]'>
+    <main className='max-w-[768px] max-h-[100vh] mx-auto w-full relative overflow-y-scroll'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/onboarding' element={<Onboarding />}>
