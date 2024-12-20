@@ -88,7 +88,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.themeParams.text_color;
-    // WebApp.requestFullscreen();
+    WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
     WebApp.safeAreaInset;
 
