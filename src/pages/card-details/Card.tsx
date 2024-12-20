@@ -51,6 +51,8 @@ const Card = () => {
         rightIconBoxClass="bg-inherit"
         leftIconBoxClass="bg-inherit w-max"
       />
+
+      <div className="bg-00BF33 w-full h-[390px] blur-[150px] absolute z-[-1] -top-1/2"></div>
       {group?.map((group, index) => (
         <Fragment key={index}>
           <div className='px-4 flex items-center justify-center flex-col'>

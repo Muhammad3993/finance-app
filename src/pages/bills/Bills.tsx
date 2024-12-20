@@ -41,7 +41,7 @@ const Bills = () => {
         rightIconBoxClick={() => navigate("/create-card")}
       />
       {cards?.length === 0 ? (
-        <div className='px-4 mt-6'>
+        <div className='px-4'>
           <div className='bg-customGray8 border border-customGray9 border-dashed rounded-25 h-249 flex flex-col items-center justify-center py-10 px-12 gap-6'>
             <div>
               <div className='w-60px h-60px bg-customGray3 rounded-2xl'></div>
@@ -58,7 +58,7 @@ const Bills = () => {
           </div>
         </div>
       ) : (
-        <div className='px-4 mt-6 flex flex-col gap-4'>
+        <div className='px-4 flex flex-col gap-4'>
           {cards?.map((card, index) => (
             <Bill key={index} card={card} />
           ))}

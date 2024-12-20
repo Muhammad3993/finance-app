@@ -59,8 +59,7 @@ const Home = () => {
   }
 
   return (
-    <div>
-      {/* <UserNavbar leftIcon={<User />} rightIcon={<Notification />} /> */}
+    <div className="mt-[110px]">
       <div className='w-full flex flex-col gap-2 items-center my-18'>
         <div>
           <p className='text-10 font-unbounded font-normal text-white text-center'>
