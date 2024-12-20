@@ -6,6 +6,7 @@ import clsx from "clsx";
 import GroupCard from "./GroupCard";
 import { Link } from "react-router-dom";
 
+
 export default function GroupCards() {
   const [groupsPer, setGroupsPer] = useState<IGroups[] | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -42,6 +43,7 @@ export default function GroupCards() {
     } else {
       console.log("Total value is 0 or undefined.");
     }
+
   }, [totalValue]);
 
   if (isLoading) return <div>Loading...</div>;

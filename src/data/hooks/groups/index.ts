@@ -33,6 +33,28 @@ export const usePostGroups = () => {
   return { createGroup, isLoadingCreate };
 };
 
+export const useSetGroups = () => {
+  const [isLoadingCreate, setIsLoadingCreate] = useState<boolean>(false);
+  const userData = useUserData();
+
+  const setGroup = async (group: IGroups) => {
+    setIsLoadingCreate(true);
+
+    try {
+      const groupDocRef = doc(db, "groups", `${userData.telegram_id}`);
+
+      await setDoc(groupDocRef, group);
+
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoadingCreate(false);
+    }
+  };
+
+  return { setGroup, isLoadingCreate };
+};
+
 export const useGetGroups = () => {
   const userData = useUserData();
   const [groups, setGroups] = useState<IGroups[] | null>(null);

@@ -21,6 +21,7 @@ const Home = () => {
   const dailyValue = (useData.necessary / daysInMonth).toFixed(2);
   const dailyValueCul = (Number(useData?.cultural) / daysInMonth).toFixed(2);
 
+
   const groupss: IGroups[] = [
     {
       name: "Необходимые",

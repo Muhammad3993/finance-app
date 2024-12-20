@@ -14,9 +14,15 @@ const Card = () => {
   const navigate = useNavigate();
   const { card } = useParams();
 
+  console.log(card);
+  
+
   const { groups, fetchGroups, isLoading } = useGetGroups();
 
   const { getCardOperations, operations } = useOperation();
+
+  console.log(operations);
+  
 
   const oprationsValue = operations?.reduce((total, operation) => {
     return total + +(operation.value || 0);
@@ -101,7 +107,7 @@ const Card = () => {
                     ? formatBalance(
                         Number(group.dailySpendValue) - oprationsValue,
                       )
-                    : formatBalance(group.dailySpendValue)}{" "}
+                    : formatBalance(group.dailySpendValue)}
                   cym
                 </p>
                 <p className='font-unbounded font-normal text-10 text-customGray2'>

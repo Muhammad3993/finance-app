@@ -23,7 +23,7 @@ const UserNavbar = (props: IProps) => {
     rightIcon,
   } = props;
   return (
-    <div className='px-4 flex justify-between items-center h-12 my-2 fixed top-[-10px] left-0 right-0 backdrop-blur-50 bg-FFFFFF-8 py-[100px]'>
+    <div className='px-4 flex justify-between items-center h-12 my-2 fixed top-[-10px] left-0 right-0 backdrop-blur-50'>
       <div
         className={clsx(
           "w-12 h-full bg-customGray flex items-center justify-center rounded-full",

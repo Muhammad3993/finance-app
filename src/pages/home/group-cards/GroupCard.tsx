@@ -3,6 +3,8 @@ import Heart from "@/assets/icons/heart";
 import Savings from "@/assets/icons/savings";
 import formatBalance from "@/constants/useFormatBalance";
 import { IGroups } from "@/data/hooks/groups";
+import { useOperation } from "@/data/hooks/operation";
+import { useEffect } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 
 interface IProps {
@@ -11,6 +13,21 @@ interface IProps {
 
 const GroupCard = (props: IProps) => {
   const { group } = props;
+
+  const { getCardOperations, operations } = useOperation();
+
+  const oprationsValue = operations?.reduce((total, operation) => {
+    return total + +(operation.value || 0);
+  }, 0);
+
+  const dailySpendValueS = Number(group.dailyValue) - Number(oprationsValue);
+  const savings = Number(group.value) - Number(oprationsValue)
+
+  useEffect(() => {
+    if (group) {
+      getCardOperations(`${group.name}`);
+    }
+  }, []);
 
   const color =
     group.name === "Необходимые"
@@ -35,7 +52,7 @@ const GroupCard = (props: IProps) => {
     );
 
   const data = [
-    { value: 1000000, color: color },
+    { value: oprationsValue, color: color },
     { value: group.value, color: color1 },
   ];
   return (
@@ -85,7 +102,8 @@ const GroupCard = (props: IProps) => {
       <div className='w-full flex justify-between items-center py-2 px-6 rounded-20 bg-FFFFFF-8'>
         <div className='w-[47%]'>
           <p className='text-13 font-unbounded font-medium leading-4 text-center text-white'>
-            {group.dailySpendValue ? formatBalance(group.dailySpendValue) : 0}{" "}
+            {group.dailySpendValue && formatBalance(dailySpendValueS)}
+            {group.name === "Сбережения" && formatBalance(savings)}
             сум
           </p>
           <p className='text-9 font-unbounded font-medium text-center text-FFFFFF-50 leading-3'>

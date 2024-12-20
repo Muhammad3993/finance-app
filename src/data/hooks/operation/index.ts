@@ -6,6 +6,9 @@ import { useState } from "react";
 export const useOperation = () => {
   const [operations, setOperations] = useState<IOperationData[] | null>(null);
 
+  console.log(operations);
+  
+
   const getCardOperations = async (card: string) => {
     try {
       const operationDocRef = doc(db, "operations", `${card}`);
