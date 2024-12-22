@@ -64,7 +64,7 @@ const UserNavbar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className='h-[110px]'></div>
+      <div className='h-[157px]'></div>
     </>
   );
 };

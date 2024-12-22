@@ -88,7 +88,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.themeParams.text_color;
-    WebApp.requestFullscreen();
+    // WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
     WebApp.safeAreaInset;
 
@@ -165,12 +165,15 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   }, [isTelegramWebApp]);
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolledText, setIsScrolledText] = useState(false);
 
   // Divni scroll qilish
   const handleScroll = (e: React.UIEvent) => {
     const scrollTop = e.currentTarget.scrollTop;
     if (scrollTop > 0) {
       setIsScrolled(true);
+    } else if (scrollTop >= 241) {
+      setIsScrolledText(true);
     } else {
       setIsScrolled(false);
     }
@@ -182,6 +185,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     handleSaveWithOnboarding,
     handleSaveBasic,
     isScrolled,
+    isScrolledText,
     handleScroll,
   };
 

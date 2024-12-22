@@ -9,6 +9,7 @@ import formatBalance from "@/constants/useFormatBalance";
 import NecessaryIcon from "@/assets/icons/necessaryIcon";
 import { useOperation } from "@/data/hooks/operation";
 import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
+import Cash from "@/assets/icons/cash";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -56,12 +57,13 @@ const Card = () => {
       {group?.map((group, index) => (
         <Fragment key={index}>
           <div className='px-4 flex items-center justify-center flex-col'>
-            <div className='w-14 h-14 bg-customGray8 flex items-center justify-center rounded-full'>
-              <NecessaryIcon />
+            <div className='w-14 h-14 bg-FFFFFF-15 flex items-center justify-center rounded-full'>
+              <Cash />
             </div>
-            <p className='text-2xl font-bold font-unbounded text-customGray2'>
+            <p className='text-2xl font-bold font-unbounded text-white'>
               {card}
             </p>
+            <p className="text-FFFFFF-50 text-10 font-unbounded font-medium">50% от общего бюджета</p>
           </div>
           {card === "Сбережения" ? (
             <div className='grid grid-cols-2 px-4 gap-1 mt-10'>
