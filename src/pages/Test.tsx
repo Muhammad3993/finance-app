@@ -29,7 +29,7 @@ const KeyboardListener = () => {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', color: "white" }}>
       <p>Keyboard is {isKeyboardOpen ? 'Open' : 'Closed'}</p>
       <input
         type="text"
