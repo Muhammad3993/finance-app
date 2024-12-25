@@ -17,6 +17,9 @@ html {
 .mobile-body {
   overflow: hidden; 
   height: 100dvh;
+  position: fixed;
+  bottom: 0;
+  top: 0;
 }
 
 .mobile-wrap {
@@ -27,10 +30,16 @@ html {
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  position: fixed;
+  bottom: 0;
+  top: 0;
 }
 
 .mobile-content {
   height: calc(100% + 1px);
+  position: fixed;
+  bottom: 0;
+  top: 0;
 }
 
 .hide-scrollbar {

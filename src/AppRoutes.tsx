@@ -27,7 +27,7 @@ const AppRoutes = () => {
 
   return (
     <main
-      className="max-w-[768px] max-h-[100dvh] mx-auto w-full relative overflow-y-scroll"
+      className="max-w-[768px] max-h-[100dvh] mx-auto w-full fixed top-0 bottom-0 overflow-y-scroll"
       onScroll={handleScroll}
     >
       <Routes>
