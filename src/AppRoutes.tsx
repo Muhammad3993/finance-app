@@ -10,6 +10,7 @@ import AddExpense from "./pages/add-expense/AddExpense";
 import Bills from "./pages/bills/Bills";
 import CreateCard from "./pages/create-card/CreateCard";
 import Budget from "./pages/budget/Budget";
+import KeyboardListener from "./pages/Test";
 
 const AppRoutes = () => {
   const { state, handleScroll } = useUserContext();
@@ -41,6 +42,7 @@ const AppRoutes = () => {
         <Route path="/bills" element={<Bills />} />
         <Route path="/create-card" element={<CreateCard />} />
         <Route path="/budget" element={<Budget />} />
+        <Route path="/test" element={<KeyboardListener />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </main>
