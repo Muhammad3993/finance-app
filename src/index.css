@@ -8,6 +8,7 @@ html {
   height: auto;
   overflow: hidden;
   height: 100dvh;
+  position: fixed;
   background: #040308;
 }
 
