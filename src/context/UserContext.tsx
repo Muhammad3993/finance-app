@@ -72,7 +72,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     WebApp.expand();
     WebApp.disableVerticalSwipes();
     WebApp.themeParams.text_color;
-    WebApp.requestFullscreen();
+    // WebApp.requestFullscreen();
     WebApp.contentSafeAreaInset;
     WebApp.safeAreaInset;
 
@@ -107,9 +107,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         code: "uzs",
         intl: "uz-UZ",
         name: "Uzbekistani Som",
-        symbol: "лв",
+        symbol: "uzs",
         value: 1,
-      }
+      },
     };
     saveUserData(basicUserData);
   };
@@ -137,9 +137,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (isTelegramWebApp && dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe.user.id);
-    }
+    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(5673577167);
+    // }
   }, [isTelegramWebApp]);
 
   const [isScrolled, setIsScrolled] = useState(false);

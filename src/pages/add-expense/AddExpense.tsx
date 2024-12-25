@@ -18,6 +18,7 @@ import { addDoc, collection, doc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
 import "./add-expense.css";
+import EditIcon from "@/assets/icons/edit";
 
 interface IWeekDay {
   id: number;
@@ -45,6 +46,7 @@ export interface IOperationData {
 
 const AddExpense = () => {
   const { card } = useParams();
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const dateRef = useRef<HTMLInputElement>(null);
   const userData = useUserData();
@@ -98,7 +100,7 @@ const AddExpense = () => {
       console.error(e);
     }
   };
-  const { control, handleSubmit } = useForm<IOperationData>();
+  const { control, handleSubmit, setValue } = useForm<IOperationData>();
 
   const weekData: IWeekDay[] = [
     {
@@ -252,9 +254,6 @@ const AddExpense = () => {
     return formatted;
   }
 
-  console.log(userData);
-  
-
   return (
     <>
       <UserNavbar
@@ -292,16 +291,15 @@ const AddExpense = () => {
           <div className="px-4">
             <div
               className={clsx(
-                "bg-customGray h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
+                "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
               )}
             >
-              <p className="absolute top-1 text-10 font-unbounded font-normal text-customGray2 opacity-50">
+              <p className="absolute top-1 text-10 font-unbounded font-normal text-FFFFFF-80 opacity-50">
                 {regex.test(input) && input + "="}
               </p>
               <p
                 className={clsx(
-                  "font-medium text-2xl font-unbounded text-customGray2 duration-300",
-                  input.length === 0 && "opacity-35",
+                  "font-medium text-2xl font-unbounded text-white duration-300",
                 )}
               >
                 {(userData.currency?.code &&
@@ -329,8 +327,8 @@ const AddExpense = () => {
               className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenCard(true)}
             >
-              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
-                <Card />
+              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                <Card fill="#00BF33" />
               </div>
               <p className="text-10 font-unbounded font-medium text-customGray2">
                 {selectedCard === null ? "Счет" : selectedCard.card_name}
@@ -346,8 +344,8 @@ const AddExpense = () => {
                     dateRef?.current?.showPicker();
                   }}
                 >
-                  <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
-                    <DateIcon />
+                  <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                    <DateIcon fill="#00BF33" />
                   </div>
                   <p className="text-10 font-unbounded font-medium text-customGray2">
                     Дата
@@ -365,8 +363,8 @@ const AddExpense = () => {
               className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenCategory(true)}
             >
-              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
-                <Category />
+              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                <Category fill="#00BF33" />
               </div>
               <p className="text-10 font-unbounded font-medium text-customGray2">
                 Категория
@@ -376,35 +374,69 @@ const AddExpense = () => {
               className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenRepeat(true)}
             >
-              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
-                <Clock />
+              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                <Clock fill="#00BF33" />
               </div>
               <p className="text-10 font-unbounded font-medium text-customGray2">
                 Повтор
               </p>
             </div>
           </div>
-          <div className="px-4 mt-4">
-            <Controller
-              control={control}
-              name="description"
-              render={({ field }) => (
-                <textarea
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    const target = e.target as HTMLTextAreaElement;
-                    target.style.height = "auto";
-                    target.style.height = `${target.scrollHeight}px`;
-                  }}
-                  placeholder="Оставить комментарий"
-                  rows={3}
-                  style={{ overflow: "hidden", resize: "none" }}
-                  className="text-[14px] font-sans text-gray-500 w-full outline-none bg-customGray p-4 rounded-20"
-                />
-              )}
-            />
+          <div className="px-4 mt-4 flex justify-center items-center">
+            <div
+              className="px-4 py-3 bg-1B1A1E-50 w-max h-max flex items-center justify-center gap-2 rounded-20"
+              onClick={() => setIsOpenPopup(true)}
+            >
+              <EditIcon />
+              <p className="text-9 font-unbounded font-medium text-FFFFFF-80">
+                Заметка
+              </p>
+            </div>
           </div>
+          {isOpenPopup && (
+            <div
+              className="bg-black opacity-35 z-10 fixed top-0 left-0 w-full h-full"
+              onClick={() => {
+                setIsOpenPopup(false);
+                setValue("description", "");
+              }}
+            ></div>
+          )}
+
+          <div
+            className={clsx(
+              "fixed w-full h-[75%] bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
+              isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
+            )}
+          >
+            <div className="p-4 bg-customGray rounded-25 h-20">
+              <Controller
+                control={control}
+                name="description"
+                render={({ field }) => (
+                  <textarea
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                    }}
+                    placeholder="Ваша заметка"
+                    rows={3}
+                    style={{ overflow: "hidden", resize: "none" }}
+                    className="text-9 font-unbounded text-gray-500 w-full outline-none bg-inherit"
+                  />
+                )}
+              />
+            </div>
+            <div
+              className="bg-00BF33 w-full flex items-center justify-center h-14 rounded-35"
+              onClick={() => setIsOpenPopup(false)}
+            >
+              <p className="text-white text-xs font-medium font-unbounded">
+                Сохранить
+              </p>
+            </div>
+          </div>
+
           <div
             className={clsx(
               "bg-customGray8 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full",
@@ -433,7 +465,7 @@ const AddExpense = () => {
                 "8",
                 "9",
                 "-",
-                ",",
+                ".",
                 "0",
               ].map((btn, index) => (
                 <div
