@@ -72,9 +72,11 @@ const Budget = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpenPopup && inputRef.current) {
-      inputRef.current.focus();
-    }
+    setTimeout(() => {
+      if (isOpenPopup && inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 500);
   }, [isOpenPopup]);
 
   useEffect(() => {
