@@ -57,6 +57,9 @@ const Home = () => {
       <Link to="/onboarding" className="text-white">
         Start
       </Link>
+      <Link to="/test" className="text-white">
+        Start
+      </Link>
       <Navigation />
     </div>
   );
