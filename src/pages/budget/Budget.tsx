@@ -288,6 +288,7 @@ const Budget = () => {
                   {...field}
                   ref={inputRef}
                   type="number"
+                  inputMode="numeric"
                   className="h-full w-full bg-transparent outline-none font-unbounded text-2xl pr-1 text-right text-white placeholder:text-white"
                   value={formatNumber(field.value ?? "")}
                   placeholder="0"
