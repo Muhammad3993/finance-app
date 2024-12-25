@@ -71,6 +71,25 @@ const Budget = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (isFocused) {
+      // Agar input focus bo'lsa, 0.3 sekunddan keyin animatsiyani boshlash
+      setTimeout(() => {
+        setIsFocused(false); // Animatsiya tugagandan so'ng, holatni qayta o'zgartirish
+      }, 300); // 0.3 sekund
+    }
+  }, [isFocused]);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   // useEffect(() => {
   //   if (isOpenPopup) {
   //     setTimeout(() => {
@@ -80,17 +99,6 @@ const Budget = () => {
   //     }, 500);
   //   }
   // }, [isOpenPopup]);
-
-  useEffect(() => {
-    if (isOpenPopup) {
-      const timeout = setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 300); // 0.3 soniya kutish
-      return () => clearTimeout(timeout); // tozalash
-    }
-  }, [isOpenPopup]);
 
   useEffect(() => {
     fetchAllCard();
@@ -210,7 +218,10 @@ const Budget = () => {
           </p>
           <div
             className="bg-00BF33-12 py-6 px-3 mt-2 rounded-25 text-10 text-00BF33 font-medium"
-            onClick={() => setIsOpenPopup(true)}
+            onClick={() => {
+              setIsOpenPopup(true);
+              handleFocus();
+            }}
           >
             Изменить
           </div>
@@ -300,6 +311,7 @@ const Budget = () => {
             render={({ field }) => {
               return (
                 <input
+                  {...field}
                   ref={inputRef}
                   type="text"
                   inputMode="numeric"
