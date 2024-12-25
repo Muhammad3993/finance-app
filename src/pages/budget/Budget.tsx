@@ -71,34 +71,15 @@ const Budget = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [isFocused, setIsFocused] = useState(false);
-
   useEffect(() => {
-    if (isFocused) {
-      // Agar input focus bo'lsa, 0.3 sekunddan keyin animatsiyani boshlash
+    if (isOpenPopup) {
       setTimeout(() => {
-        setIsFocused(false); // Animatsiya tugagandan so'ng, holatni qayta o'zgartirish
-      }, 300); // 0.3 sekund
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 1000);
     }
-  }, [isFocused]);
-
-  const handleFocus = () => {
-    setIsFocused(true);
-
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
-  // useEffect(() => {
-  //   if (isOpenPopup) {
-  //     setTimeout(() => {
-  //       if (inputRef.current) {
-  //         inputRef.current.focus();
-  //       }
-  //     }, 500);
-  //   }
-  // }, [isOpenPopup]);
+  }, [isOpenPopup]);
 
   useEffect(() => {
     fetchAllCard();
@@ -220,7 +201,6 @@ const Budget = () => {
             className="bg-00BF33-12 py-6 px-3 mt-2 rounded-25 text-10 text-00BF33 font-medium"
             onClick={() => {
               setIsOpenPopup(true);
-              handleFocus();
             }}
           >
             Изменить
