@@ -36,7 +36,6 @@ interface IState {
 interface IContext {
   state: Partial<IState>;
   setState: Dispatch<Partial<IState>>;
-  handleSaveWithOnboarding: () => void;
   handleSaveBasic: () => void;
   handleScroll: (e: React.UIEvent) => void;
   isScrolled: boolean;
@@ -115,21 +114,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     saveUserData(basicUserData);
   };
 
-  const handleSaveWithOnboarding = () => {
-    const basicUserData: IUser = {
-      telegram_id: dataUnsafe?.user?.id,
-      name: dataUnsafe.user?.first_name,
-      lang: state.user?.lang,
-      photo: dataUnsafe.user?.photo_url,
-    };
-
-    const onboardingData = {
-      ...state.user,
-    };
-
-    saveUserData(basicUserData, onboardingData);
-  };
-
   const fetchUserByTelegramId = async (telegram_id: number) => {
     try {
       setState({ isLoading: true });
@@ -181,7 +165,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   const contextValue = {
     state,
     setState,
-    handleSaveWithOnboarding,
     handleSaveBasic,
     isScrolled,
     isScrolledText,
