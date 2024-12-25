@@ -3,7 +3,9 @@ import clsx from "clsx";
 
 interface IProps {
   isText?: boolean;
+  isScroll?: boolean;
   text?: string;
+  textClass?: string;
   leftIconBoxClass?: string;
   leftIconBoxClick?: () => void;
   leftIcon?: React.ReactElement;
@@ -15,6 +17,7 @@ interface IProps {
 const UserNavbar = (props: IProps) => {
   const {
     isText,
+    isScroll,
     text,
     leftIconBoxClass,
     leftIconBoxClick,
@@ -22,40 +25,61 @@ const UserNavbar = (props: IProps) => {
     rightIconBoxClass,
     rightIconBoxClick,
     rightIcon,
+    textClass,
   } = props;
 
-  const { isScrolled } = useUserContext();
+  const { isScrolled, isScrolledText } = useUserContext();
 
   return (
     <>
       <div
         className={clsx(
           "fixed top-[-30px] left-0 right-0 duration-300 border-b border-transparent ",
-          isScrolled && "bg-1B1A1E-80 border-b border-1B1A1E-100 backdrop-blur-[100px]",
+          isScrolled &&
+            "bg-1B1A1E-80 border-b border-1B1A1E-100 backdrop-blur-[100px]",
         )}
-        id='user-navbar'
+        id="user-navbar"
       >
-        <div className='w-full h-[129px]'></div>
-        <div className='px-4 flex justify-between items-center h-12 relative'>
+        <div className="w-full h-[129px]"></div>
+        <div className="px-4 flex justify-between items-center h-12 relative">
           <div
             className={clsx(
-              "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
+              "w-12 h-full flex items-center rounded-full",
               leftIconBoxClass,
             )}
             onClick={leftIconBoxClick}
           >
             {leftIcon}
           </div>
-          {isText && (
-            <div>
-              <p className='text-sm font-semibold font-unbounded text-customGray2'>
-                {text}
-              </p>
-            </div>
-          )}
+          {!isScroll
+            ? isScrolledText &&
+              isText && (
+                <div>
+                  <p
+                    className={clsx(
+                      "text-sm font-semibold font-unbounded text-customGray2",
+                      textClass,
+                    )}
+                  >
+                    {text}
+                  </p>
+                </div>
+              )
+            : isText && (
+                <div>
+                  <p
+                    className={clsx(
+                      "font-semibold font-unbounded text-customGray2",
+                      textClass,
+                    )}
+                  >
+                    {text}
+                  </p>
+                </div>
+              )}
           <div
             className={clsx(
-              "w-12 h-full bg-customGray flex items-center justify-center rounded-full",
+              "w-12 h-full flex items-center justify-center rounded-full",
               rightIconBoxClass,
             )}
             onClick={rightIconBoxClick}
@@ -64,7 +88,7 @@ const UserNavbar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className='h-[157px]'></div>
+      <div className="h-[157px]"></div>
     </>
   );
 };

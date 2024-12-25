@@ -1,158 +1,180 @@
-import { useUserContext } from "@/context/UserContext";
-import WebApp from "@twa-dev/sdk";
+import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
+import Cash from "@/assets/icons/cash";
+import Coin from "@/assets/icons/coin";
+import Savings from "@/assets/icons/savings";
+import UserNavbar from "@/components/user-navbar/UserNavbar";
+import formatBalance from "@/constants/useFormatBalance";
+import { useDaysInCurrentMonth } from "@/constants/useMonthDays";
+import useGetCards from "@/data/hooks/currencies";
+import { IGroups, usePostGroups } from "@/data/hooks/groups";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PieChart, Pie, Cell } from "recharts";
+import { Cell, Pie, PieChart } from "recharts";
 
-const Finish = () => {
-  const { state, handleSaveWithOnboarding } = useUserContext();
+const FInish = () => {
   const navigate = useNavigate();
-  const handleReady = () => {
-    handleSaveWithOnboarding();
-    navigate("/");
-  };
+
+  const { cards, isLoading, fetchAllCard } = useGetCards();
+  const { createGroup } = usePostGroups();
+  const { daysInMonth } = useDaysInCurrentMonth();
+
   useEffect(() => {
-    WebApp.BackButton.show();
+    fetchAllCard();
   }, []);
 
-  const finance: number | undefined = state?.user?.onBoarding?.finance;
-  const for_rent: number | undefined = state?.user?.onBoarding?.for_rent;
-  const for_meal: number | undefined = state?.user?.onBoarding?.for_meal;
-  const for_car: number | undefined = state?.user?.onBoarding?.for_car;
-  const debt: number | undefined = state?.user?.onBoarding?.debt;
-  const for_transport: number | undefined = !for_car
-    ? state?.user?.onBoarding?.for_transport
-    : 0;
-  const for_communal: number | undefined =
-    state?.user?.onBoarding?.for_communal;
-  const creditsTotal: number | undefined =
-    state?.user?.onBoarding?.credit?.reduce(
-      (total, credit) => total + (credit.price || 0),
-      0,
-    ) || 0;
-  const cultural: number | undefined = state?.user?.onBoarding?.cultural;
-  const saving: number | undefined = state?.user?.onBoarding?.saving;
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-  const remainder: number | undefined =
-    Number(finance) -
-    (Number(for_rent) +
-      Number(for_meal) +
-      Number(for_car) +
-      Number(for_communal) +
-      Number(for_transport) +
-      Number(debt) +
-      Number(creditsTotal));
+  const finance = cards
+    ?.slice(0)
+    ?.map((card) => card.card_finance)
+    .toString();
 
-  const remainderAll: number | undefined =
-    Number(for_rent) +
-    Number(for_meal) +
-    Number(for_car) +
-    Number(for_communal) +
-    Number(for_transport) +
-    Number(saving) +
-    Number(cultural) +
-    Number(debt) +
-    Number(creditsTotal);
+  const firstValue = (Number(finance) * 50) / 100;
+  const secondValue = (Number(finance) * 30) / 100;
+  const thirdValue = (Number(finance) * 20) / 100;
 
-  console.log(remainderAll);
+  const dailyValueNeed = +(firstValue / daysInMonth).toFixed(2);
+  const dailyValueCul = +(secondValue / daysInMonth).toFixed(2);
 
-  const totalIncome: number | undefined = state.user?.onBoarding?.finance;
-
-  const percentageNeed =
-    totalIncome && remainder
-      ? ((totalIncome - remainder) * 100) / totalIncome
-      : 0;
-  const culturalNeed =
-    totalIncome && cultural ? (cultural * 100) / totalIncome : 0;
-  const savingNeed = totalIncome && saving ? (saving * 100) / totalIncome : 0;
-  const reminderCash =
-    totalIncome && remainderAll
-      ? ((totalIncome - remainderAll) * 100) / totalIncome
-      : 0;
-
-  const data = [
-    { name: "Необходимые", value: percentageNeed, color: "#D9D9D9" },
-    { name: "Сбережения", value: savingNeed, color: "#D9D9D9" },
-    { name: "Развлечения", value: culturalNeed, color: "#D9D9D9" },
+  const groups: IGroups[] = [
+    {
+      name: "Necessary",
+      value: firstValue,
+      spendValue: firstValue,
+      dailyValue: dailyValueNeed,
+      dailySpendValue: dailyValueNeed,
+    },
+    {
+      name: "Desired",
+      value: secondValue,
+      spendValue: secondValue,
+      dailyValue: dailyValueCul,
+      dailySpendValue: dailyValueCul,
+    },
+    {
+      name: "Savings",
+      value: thirdValue,
+      spendValue: thirdValue,
+    },
   ];
 
-  const filteredData = data.filter((item) => item.value > 0);
+  const data = [
+    { value: thirdValue, color: "rgba(255, 255, 255, .25)" },
+    { value: secondValue, color: "rgba(255, 255, 255, 0.5)" },
+    { value: firstValue, color: "rgba(255, 255, 255, 1)" },
+  ];
 
   return (
-    <div className='w-full flex flex-col items-center justify-center min-h-[100vh] bg-white p-4 py-10'>
-      <p className='font-unbounded font-medium text-22 text-black text-center'>
-        Отлично! Мы распределили весь ваш бюджет на этот месяц
-      </p>
-
-      <div className='mt-6 bg-gray-200 w-full max-w-sm p-4 rounded-lg flex justify-between items-center'>
-        <span className='font-unbounded'>Доход</span>
-        <span className='font-unbounded'>
-          {totalIncome?.toLocaleString()} сум
-        </span>
-      </div>
-
-      <PieChart
-        width={350}
-        height={300}
-        className='mt-8 border-none outline-none'
-      >
-        <Pie
-          data={filteredData}
-          cx='50%'
-          cy='50%'
-          innerRadius={60}
-          outerRadius={120}
-          cornerRadius={10}
-          dataKey='value'
-          paddingAngle={5}
-          label={({ percent, x, y }) => (
-            <text
-              x={x}
-              y={y}
-              fill='black'
-              textAnchor='middle'
-              dominantBaseline='central'
-              fontWeight='bold'
+    <div className="bg-green-gradient h-full flex flex-col justify-between overflow-y-auto">
+      <div>
+        <UserNavbar
+          leftIcon={<ArrowLeftShort />}
+          leftIconBoxClick={() => navigate(-1)}
+        />
+        <div className="px-4">
+          <p className="font-unbounded font-bold text-2xl text-white text-center">
+            Ваш бюджет <br /> распределен
+          </p>
+          <div className="h-240 w-240 relative mt-24 m-auto">
+            <PieChart
+              width={240}
+              height={240}
+              className="border-none outline-none -rotate-90"
             >
-              {`${(percent * 100).toFixed(0)}%`}
-            </text>
-          )}
-        >
-          {data.map((entry, index) => (
-            <Cell
-              style={{ outline: "none" }}
-              key={`cell-${index}`}
-              fill={entry.color}
-            />
-          ))}
-        </Pie>
-      </PieChart>
-
-      <div className='mt-6 text-sm w-full max-w-sm'>
-        {data.map((item, index) => (
-          <div key={index} className='flex justify-between items-center mt-2'>
-            <span>{item.name}</span>
-            <span>
-              {((item.value / 100) * Number(totalIncome)).toLocaleString()} сум
-            </span>
+              <Pie
+                stroke="none"
+                data={data}
+                innerRadius={85}
+                outerRadius={110}
+                cornerRadius={6}
+                dataKey="value"
+                paddingAngle={2}
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    style={{ outline: "none" }}
+                    key={`cell-${index}`}
+                    fill={entry.color}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+            <div className="w-44 h-28 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center">
+              <p className="text-white text-2xl font-semibold font-unbounded leading-22">
+                50/30/20
+              </p>
+              <p className="text-10 font-unbounded font-normal text-FFFFFF-50">
+                Стандартная
+              </p>
+            </div>
           </div>
-        ))}
-        <div className='flex justify-between items-center mt-2'>
-          <span>Свободные</span>
-          <span>
-            {((reminderCash / 100) * Number(totalIncome)).toLocaleString()} сум
-          </span>
+          <div className="bg-FFFFFF-15 rounded-25 mt-12">
+            <div className="flex py-4 px-5 items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Cash width={24} height={25} />
+                <div>
+                  <p className="text-13 font-medium font-unbounded text-white leading-4">
+                    Необходимые расходы
+                  </p>
+                  <p className="text-10 text-FFFFFF-50 font-medium font-unbounded leading-[14px] ">
+                    {formatBalance(firstValue)} сум
+                  </p>
+                </div>
+              </div>
+              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+                50%
+              </div>
+            </div>
+            <div className="flex py-4 px-5 items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Coin fill="#ffffff" />
+                <div>
+                  <p className="text-13 font-medium font-unbounded text-white leading-4">
+                    Желаемые расходы
+                  </p>
+                  <p className="text-10 text-FFFFFF-50 font-medium font-unbounded leading-[14px] ">
+                    {formatBalance(secondValue)} сум
+                  </p>
+                </div>
+              </div>
+              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+                30%
+              </div>
+            </div>
+            <div className="flex py-4 px-5 items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Savings width={24} height={24} />
+                <div>
+                  <p className="text-13 font-medium font-unbounded text-white leading-4">
+                    Сбережения
+                  </p>
+                  <p className="text-10 text-FFFFFF-50 font-medium font-unbounded leading-[14px] ">
+                    {formatBalance(thirdValue)} сум
+                  </p>
+                </div>
+              </div>
+              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+                20%
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <button
-        className='mt-8 bg-gray-200 text-black py-2 px-4 rounded-lg'
-        onClick={() => handleReady()}
-      >
-        Продолжить
-      </button>
+      <div className="px-4 mb-8 mt-8">
+        <div
+          className="w-full py-4 text-black bg-white text-center rounded-50 text-xs font-medium font-unbounded"
+          onClick={() => {
+            createGroup(groups);
+            navigate("/");
+          }}
+        >
+          Далее
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Finish;
+export default FInish;

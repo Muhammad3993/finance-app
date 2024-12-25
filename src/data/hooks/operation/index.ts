@@ -1,20 +1,23 @@
+import useUserData from "@/constants/useUserData";
 import { db } from "@/firebaseConfig";
-import { IOperationData } from "@/pages/AddExpense";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { IOperationData } from "@/pages/add-expense/AddExpense";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
 
 export const useOperation = () => {
   const [operations, setOperations] = useState<IOperationData[] | null>(null);
+  const userData = useUserData();
 
-  console.log(operations);
-  
-
-  const getCardOperations = async (card: string) => {
+  const getCardOperations = async (type?: string) => {
     try {
-      const operationDocRef = doc(db, "operations", `${card}`);
+      const operationDocRef = doc(db, "users", `${userData.telegram_id}`);
       const operationsCollectionRef = collection(operationDocRef, "operations");
 
-      const querySnapshot = await getDocs(operationsCollectionRef);
+      const operationsQuery = type
+        ? query(operationsCollectionRef, where("type", "==", type))
+        : operationsCollectionRef;
+
+      const querySnapshot = await getDocs(operationsQuery);
 
       if (!querySnapshot.empty) {
         const operations: IOperationData[] = querySnapshot.docs.map((doc) => ({
@@ -24,11 +27,12 @@ export const useOperation = () => {
 
         setOperations(operations);
       } else {
-        console.log(`'${card}' hujjatining operations sub-kolleksiyasi bo'sh.`);
-        return [];
+        console.log("Empty.");
+        setOperations(null);
       }
     } catch (error) {
       console.error("Xato yuz berdi:", error);
+      setOperations(null);
     }
   };
 

@@ -16,12 +16,14 @@ const GroupCard = (props: IProps) => {
 
   const { getCardOperations, operations } = useOperation();
 
-  const oprationsValue = operations?.reduce((total, operation) => {
-    return total + +(operation.value || 0);
-  }, 0);
+  const oprationsValue =
+    operations?.reduce((total, operation) => {
+      return total + +(operation.value || 0);
+    }, 0) || 0;
 
-  const dailySpendValueS = Number(group.dailyValue) - Number(oprationsValue);
-  const savings = Number(group.value) - Number(oprationsValue)
+  const dailySpendValueS =
+    Number(group.dailySpendValue) - Number(oprationsValue);
+  const monthlySpendValueS = Number(group.spendValue) - Number(oprationsValue);
 
   useEffect(() => {
     if (group) {
@@ -30,22 +32,22 @@ const GroupCard = (props: IProps) => {
   }, []);
 
   const color =
-    group.name === "Необходимые"
+    group.name === "Necessary"
       ? "rgba(0, 191, 51, 0.12)"
-      : group.name === "Желания"
+      : group.name === "Desired"
       ? "rgba(51, 0, 191, 0.12)"
       : "rgba(0, 122, 255, 0.12)";
   const color1 =
-    group.name === "Необходимые"
+    group.name === "Necessary"
       ? "#00BF33"
-      : group.name === "Желания"
+      : group.name === "Desired"
       ? "#3300BF"
       : "#007AFF";
 
   const icon =
-    group.name === "Необходимые" ? (
+    group.name === "Necessary" ? (
       <Cash />
-    ) : group.name === "Желания" ? (
+    ) : group.name === "Desired" ? (
       <Heart />
     ) : (
       <Savings />
@@ -53,11 +55,12 @@ const GroupCard = (props: IProps) => {
 
   const data = [
     { value: oprationsValue, color: color },
-    { value: group.value, color: color1 },
+    { value: monthlySpendValueS, color: color1 },
   ];
+
   return (
     <>
-      <div className='h-220 w-220 relative'>
+      <div className="h-220 w-220 relative">
         <div
           className={`w-[100px] h-[100px] blur-[70px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2`}
           style={{
@@ -67,15 +70,15 @@ const GroupCard = (props: IProps) => {
         <PieChart
           width={220}
           height={220}
-          className='border-none outline-none -rotate-90 '
+          className="border-none outline-none -rotate-90 "
         >
           <Pie
-            stroke='none'
+            stroke="none"
             data={data}
             innerRadius={85}
             outerRadius={110}
             cornerRadius={6}
-            dataKey='value'
+            dataKey="value"
             paddingAngle={2}
           >
             {data.map((entry, index) => (
@@ -87,35 +90,38 @@ const GroupCard = (props: IProps) => {
             ))}
           </Pie>
         </PieChart>
-        <div className='w-44 h-28 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center'>
-          <div className='w-14 h-14 flex items-center justify-center'>
+        <div className="w-44 h-28 absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center">
+          <div className="w-14 h-14 flex items-center justify-center">
             {icon}
           </div>
-          <p className='text-white font-semibold font-unbounded leading-22'>
+          <p className="text-white font-semibold font-unbounded leading-22">
             {group.name}
           </p>
-          <p className='text-FFFFFF-80 text-10 font-medium font-unbounded leading-14'>
+          <p className="text-FFFFFF-80 text-10 font-medium font-unbounded leading-14">
             {group.value ? formatBalance(group.value) : 0} сум
           </p>
         </div>
       </div>
-      <div className='w-full flex justify-between items-center py-2 px-6 rounded-20 bg-FFFFFF-8'>
-        <div className='w-[47%]'>
-          <p className='text-13 font-unbounded font-medium leading-4 text-center text-white'>
-            {group.dailySpendValue && formatBalance(dailySpendValueS)}
-            {group.name === "Сбережения" && formatBalance(savings)}
+      <div className="w-full flex justify-between items-center py-2 px-6 rounded-20 bg-FFFFFF-8">
+        <div className="w-[47%]">
+          <p className="text-13 font-unbounded font-medium leading-4 text-center text-white">
+            {group.name !== "Savings" &&
+              (operations && operations.length > 0
+                ? formatBalance(dailySpendValueS)
+                : formatBalance(group.dailySpendValue))}
+            {group.name === "Savings" && formatBalance(monthlySpendValueS || 0)}{" "}
             сум
           </p>
-          <p className='text-9 font-unbounded font-medium text-center text-FFFFFF-50 leading-3'>
+          <p className="text-9 font-unbounded font-medium text-center text-FFFFFF-50 leading-3">
             осталось на сегодня
           </p>
         </div>
-        <div className='w-[1px] h-10 bg-FFFFFF-50 relative left-[-1px]' />
-        <div className='w-[47%]'>
-          <p className='text-13 font-unbounded font-medium leading-4 text-center text-white'>
-            {group.value ? formatBalance(group.value) : 0} сум
+        <div className="w-[1px] h-10 bg-FFFFFF-50 relative left-[-1px]" />
+        <div className="w-[47%]">
+          <p className="text-13 font-unbounded font-medium leading-4 text-center text-white">
+            {formatBalance(group.value)} сум
           </p>
-          <p className='text-9 font-unbounded font-medium text-center text-FFFFFF-50 leading-3'>
+          <p className="text-9 font-unbounded font-medium text-center text-FFFFFF-50 leading-3">
             осталось на ноябрь
           </p>
         </div>

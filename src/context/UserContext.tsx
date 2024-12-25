@@ -23,22 +23,6 @@ interface IUser {
   name?: string;
   lang?: string;
   photo?: string;
-  onBoarding?: {
-    finance?: number;
-    for_rent?: number;
-    for_meal?: number;
-    for_communal?: number;
-    for_car?: number;
-    for_transport?: number;
-    credit?: {
-      name?: string;
-      price?: number;
-      months?: number;
-    }[];
-    cultural?: number;
-    saving?: number;
-    debt?: number;
-  };
   currency?: ICurrence;
 }
 
@@ -56,6 +40,7 @@ interface IContext {
   handleSaveBasic: () => void;
   handleScroll: (e: React.UIEvent) => void;
   isScrolled: boolean;
+  isScrolledText: boolean;
 }
 
 const UserContext = createContext<IContext | undefined>(undefined);
@@ -105,9 +90,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       };
 
       const docRef = await setDoc(doc(db, "users", `${5673577167}`), docData);
-      console.log("Foydalanuvchi muvaffaqiyatli yaratildi, ID:", docRef);
+      console.log(docRef);
     } catch (e) {
-      console.error("Foydalanuvchini yaratishda xatolik yuz berdi:", e);
+      console.error(e);
     }
   };
 
@@ -130,7 +115,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     };
 
     const onboardingData = {
-      ...state.user?.onBoarding,
+      ...state.user,
     };
 
     saveUserData(basicUserData, onboardingData);
@@ -147,10 +132,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
-        console.log("Foydalanuvchi topildi:", userData);
+        console.log(userData);
         setState({ userData });
       } else {
-        console.log("Foydalanuvchi topilmadi, yangi foydalanuvchi qo'shiladi.");
+        console.log("Empty");
       }
       setState({ isLoading: false });
     } catch (e) {
@@ -172,10 +157,15 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     const scrollTop = e.currentTarget.scrollTop;
     if (scrollTop > 0) {
       setIsScrolled(true);
-    } else if (scrollTop >= 241) {
-      setIsScrolledText(true);
     } else {
       setIsScrolled(false);
+      setIsScrolledText(false);
+    }
+
+    if (scrollTop > 88) {
+      setIsScrolledText(true);
+    } else {
+      setIsScrolledText(false);
     }
   };
 

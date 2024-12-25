@@ -1,4 +1,3 @@
-import ArrowLeft from "@/assets/icons/arrowLeft";
 import Card from "@/assets/icons/card";
 import Category from "@/assets/icons/category";
 import Clock from "@/assets/icons/clock";
@@ -6,17 +5,19 @@ import Close from "@/assets/icons/close";
 import DateIcon from "@/assets/icons/dateIcon";
 import Symbol from "@/assets/icons/symbol";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import formatBalance from "@/constants/useFormatBalance";
+// import formatBalance from "@/constants/useFormatBalance";
 import useUserData from "@/constants/useUserData";
 import useGetCards from "@/data/hooks/currencies";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import { ICards } from "./bills/Bills";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { ICards } from "../bills/Bills";
 import useGetCategories, { ICategory } from "@/data/hooks/categories";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
+import "./add-expense.css";
 
 interface IWeekDay {
   id: number;
@@ -39,6 +40,7 @@ export interface IOperationData {
   weekDay: IWeekDay | null;
   monthDay: IMonthDay | null;
   date: string;
+  type: string | undefined;
 }
 
 const AddExpense = () => {
@@ -63,25 +65,37 @@ const AddExpense = () => {
   );
 
   const handleSave = async (operationData: IOperationData) => {
+    // try {
+    //   const operationDocRef = doc(db, "operations", `${card}`);
+
+    //   const docSnapshot = await getDoc(operationDocRef);
+
+    //   if (!docSnapshot.exists()) {
+    //     await setDoc(operationDocRef, { initialized: true });
+    //     console.log(`New '${card}' created successfully`);
+    //   }
+
+    //   const operationsCollectionRef = collection(operationDocRef, "operations");
+
+    //   await addDoc(operationsCollectionRef, {
+    //     ...operationData,
+    //   });
+
+    //   console.log("Doc created successfully");
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
     try {
-      const operationDocRef = doc(db, "operations", `${card}`);
+      const userDocRef = doc(db, "users", `${userData.telegram_id}`);
 
-      const docSnapshot = await getDoc(operationDocRef);
-
-      if (!docSnapshot.exists()) {
-        await setDoc(operationDocRef, { initialized: true });
-        console.log(`Yangi '${card}' hujjati yaratildi.`);
-      }
-
-      const operationsCollectionRef = collection(operationDocRef, "operations");
-
-      await addDoc(operationsCollectionRef, {
+      const cardsCollectionRef = collection(userDocRef, "operations");
+      await addDoc(cardsCollectionRef, {
         ...operationData,
       });
-
-      console.log("Ma'lumot muvaffaqiyatli saqlandi");
-    } catch (error) {
-      console.error("Xato yuz berdi:", error);
+      console.log("successfully added");
+    } catch (e) {
+      console.error(e);
     }
   };
   const { control, handleSubmit } = useForm<IOperationData>();
@@ -171,8 +185,6 @@ const AddExpense = () => {
   const { categories, fetchAllCategories, isCategoryLoading } =
     useGetCategories();
 
-  console.log(categories);
-
   useEffect(() => {
     try {
       const formattedInput = input.replace(/,/g, ".");
@@ -212,51 +224,78 @@ const AddExpense = () => {
       repeat: 0,
       weekDay: null,
       monthDay: null,
+      type: card,
     };
     handleSave(operotionData);
     navigate(-1);
   };
 
-  // function formatCurrency(amount: number, locale?: string, currency?: string) {
-  //   if (!locale || !currency) {
-  //     throw new Error("Locale and currency must be provided."); // Xatolik chiqarish
-  //   }
+  function formatCurrency(amount: number, locale?: string, currency?: string) {
+    if (!locale || !currency) {
+      throw new Error("Locale and currency must be provided."); // Xatolik chiqarish
+    }
 
-  //   const formatter = new Intl.NumberFormat(locale, {
-  //     style: "currency",
-  //     currency: currency,
-  //   });
+    const formatter = new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: currency,
+    });
 
-  //   const formatted = formatter.format(amount);
+    const formatted = formatter.format(amount);
 
-  //   if (userData.curency?.symbol) {
-  //     return `${formatted.replace(
-  //       userData.curency.symbol.toUpperCase(),
-  //       "",
-  //     )} ${userData.curency?.symbol.toUpperCase()}`;
-  //   }
+    if (userData.currency?.symbol) {
+      return `${formatted.replace(
+        userData.currency.symbol.toUpperCase(),
+        "",
+      )} ${userData.currency?.symbol.toUpperCase()}`;
+    }
 
-  //   return formatted;
-  // }
+    return formatted;
+  }
+
+  console.log(userData);
+  
 
   return (
     <>
       <UserNavbar
         leftIconBoxClick={() => navigate(-1)}
-        leftIcon={<ArrowLeft />}
+        leftIcon={<ArrowLeftShort />}
+        leftIconBoxClass="bg-inherit"
         isText
-        text='Расход'
-        rightIconBoxClass='bg-inherit'
+        textClass="text-white text-base"
+        text="Расход"
+        isScroll
+        rightIconBoxClass="bg-inherit"
       />
-      <div className='mt-6'>
-        <form action='' onSubmit={handleSubmit(onSubmit)}>
-          <div className='px-4'>
+      {card !== "Savings" && (
+        <div className="w-full flex justify-center gap-2 px-4">
+          <NavLink
+            to={"/card/Necessary/add-expense"}
+            className={
+              "py-10p px-4 bg-1B1A1E-50 text-FFFFFF-25 flex items-center justify-center w-116 h-max rounded-50 text-10 font-unbounded font-medium active_btn"
+            }
+          >
+            Необходимые
+          </NavLink>
+          <NavLink
+            to={"/card/Desired/add-expense"}
+            className={
+              "py-10p px-4 bg-1B1A1E-50 text-FFFFFF-25 flex items-center justify-center w-116 h-max rounded-50 text-10 font-unbounded font-medium active_btn"
+            }
+          >
+            Желаемые
+          </NavLink>
+        </div>
+      )}
+      <div className="mt-3">
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="px-4">
             <div
               className={clsx(
                 "bg-customGray h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
               )}
             >
-              <p className='absolute top-1 text-10 font-unbounded font-normal text-customGray2 opacity-50'>
+              <p className="absolute top-1 text-10 font-unbounded font-normal text-customGray2 opacity-50">
                 {regex.test(input) && input + "="}
               </p>
               <p
@@ -265,57 +304,57 @@ const AddExpense = () => {
                   input.length === 0 && "opacity-35",
                 )}
               >
-                {/* {(userData.curency?.code &&
+                {(userData.currency?.code &&
                   (regex.test(input)
                     ? formatCurrency(
                         +result,
-                        userData.curency.intl,
-                        userData.curency.code,
+                        userData.currency.intl,
+                        userData.currency.code,
                       )
                     : formatCurrency(
                         +input,
-                        userData.curency.intl,
-                        userData.curency.code,
+                        userData.currency.intl,
+                        userData.currency.code,
                       ))) ||
-                  "0"} */}
-                {regex.test(input)
+                  "0"}
+                {/* {regex.test(input)
                   ? formatBalance(result)
                   : formatBalance(input) || "0"}
-                {userData?.currency?.symbol?.toUpperCase()}
+                {userData?.currency?.symbol?.toUpperCase()} */}
               </p>
             </div>
           </div>
-          <div className='mt-4 flex gap-2 px-4'>
+          <div className="mt-4 flex gap-2 px-4">
             <div
-              className='flex-1 flex flex-col items-center justify-center gap-2'
+              className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenCard(true)}
             >
-              <div className='w-14 h-14 bg-customGray rounded-full flex justify-center items-center'>
+              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
                 <Card />
               </div>
-              <p className='text-10 font-unbounded font-medium text-customGray2'>
+              <p className="text-10 font-unbounded font-medium text-customGray2">
                 {selectedCard === null ? "Счет" : selectedCard.card_name}
               </p>
             </div>
             <Controller
               control={control}
-              name='date'
+              name="date"
               render={({ field }) => (
                 <div
-                  className='flex-1 flex flex-col items-center justify-center gap-2'
+                  className="flex-1 flex flex-col items-center justify-center gap-2"
                   onClick={() => {
                     dateRef?.current?.showPicker();
                   }}
                 >
-                  <div className='w-14 h-14 bg-customGray rounded-full flex justify-center items-center'>
+                  <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
                     <DateIcon />
                   </div>
-                  <p className='text-10 font-unbounded font-medium text-customGray2'>
+                  <p className="text-10 font-unbounded font-medium text-customGray2">
                     Дата
                   </p>
                   <input
-                    type='date'
-                    className='absolute opacity-0'
+                    type="date"
+                    className="absolute opacity-0"
                     {...field}
                     ref={dateRef}
                   />
@@ -323,32 +362,32 @@ const AddExpense = () => {
               )}
             />
             <div
-              className='flex-1 flex flex-col items-center justify-center gap-2'
+              className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenCategory(true)}
             >
-              <div className='w-14 h-14 bg-customGray rounded-full flex justify-center items-center'>
+              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
                 <Category />
               </div>
-              <p className='text-10 font-unbounded font-medium text-customGray2'>
+              <p className="text-10 font-unbounded font-medium text-customGray2">
                 Категория
               </p>
             </div>
             <div
-              className='flex-1 flex flex-col items-center justify-center gap-2'
+              className="flex-1 flex flex-col items-center justify-center gap-2"
               onClick={() => setIsOpenRepeat(true)}
             >
-              <div className='w-14 h-14 bg-customGray rounded-full flex justify-center items-center'>
+              <div className="w-14 h-14 bg-customGray rounded-full flex justify-center items-center">
                 <Clock />
               </div>
-              <p className='text-10 font-unbounded font-medium text-customGray2'>
+              <p className="text-10 font-unbounded font-medium text-customGray2">
                 Повтор
               </p>
             </div>
           </div>
-          <div className='px-4 mt-4'>
+          <div className="px-4 mt-4">
             <Controller
               control={control}
-              name='description'
+              name="description"
               render={({ field }) => (
                 <textarea
                   {...field}
@@ -358,10 +397,10 @@ const AddExpense = () => {
                     target.style.height = "auto";
                     target.style.height = `${target.scrollHeight}px`;
                   }}
-                  placeholder='Оставить комментарий'
+                  placeholder="Оставить комментарий"
                   rows={3}
                   style={{ overflow: "hidden", resize: "none" }}
-                  className='text-[14px] font-sans text-gray-500 w-full outline-none bg-customGray p-4 rounded-20'
+                  className="text-[14px] font-sans text-gray-500 w-full outline-none bg-customGray p-4 rounded-20"
                 />
               )}
             />
@@ -372,15 +411,15 @@ const AddExpense = () => {
             )}
           >
             <button
-              type='submit'
+              type="submit"
               disabled={!selectedCard || !result}
-              className='bg-customGray2 h-14 rounded-35 flex items-center justify-center'
+              className="bg-customGray2 h-14 rounded-35 flex items-center justify-center"
             >
-              <p className='text-white text-xs font-medium font-unbounded'>
+              <p className="text-white text-xs font-medium font-unbounded">
                 Добавить
               </p>
             </button>
-            <div className='grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61 bg-customGray8'>
+            <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61 bg-customGray8">
               {[
                 "1",
                 "2",
@@ -432,7 +471,7 @@ const AddExpense = () => {
       </div>
       {isOpenCard && (
         <div
-          className='bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full'
+          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
           onClick={() => {
             setIsOpenCard(false);
           }}
@@ -444,10 +483,10 @@ const AddExpense = () => {
           isOpenCard ? "bottom-0" : "bottom-[-100%]",
         )}
       >
-        <p className='font-unbounded text-customBlack text-center font-medium'>
+        <p className="font-unbounded text-customBlack text-center font-medium">
           Тип счета
         </p>
-        <div className='grid grid-cols-2 gap-2'>
+        <div className="grid grid-cols-2 gap-2">
           {isLoading && <p>Loading...</p>}
           {!isLoading &&
             cards?.map((card: ICards, index: number) => (
@@ -465,14 +504,14 @@ const AddExpense = () => {
                 key={index}
               >
                 <Card />
-                <p className='text-xs text-customGray2'>{card.card_name}</p>
+                <p className="text-xs text-customGray2">{card.card_name}</p>
               </div>
             ))}
         </div>
       </div>
       {isOpenCategory && (
         <div
-          className='bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full'
+          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
           onClick={() => {
             setIsOpenCategory(false);
           }}
@@ -484,10 +523,10 @@ const AddExpense = () => {
           isOpenCategory ? "bottom-0" : "bottom-[-100%]",
         )}
       >
-        <p className='font-unbounded text-customBlack text-center font-medium'>
+        <p className="font-unbounded text-customBlack text-center font-medium">
           Категория
         </p>
-        <div className='grid grid-cols-3'>
+        <div className="grid grid-cols-3">
           {isCategoryLoading && <p>Loading...</p>}
           {!isCategoryLoading &&
             categories?.map((category: ICategory, index: number) => (
@@ -511,12 +550,12 @@ const AddExpense = () => {
                 >
                   <Card width={28} height={28} />
                   {selectedCategory?.id === category.id && (
-                    <div className='absolute top-1 right-5'>
+                    <div className="absolute top-1 right-5">
                       <Symbol width={24} height={24} />
                     </div>
                   )}
                 </div>
-                <p className='font-normal text-10 font-unbounded uppercase'>
+                <p className="font-normal text-10 font-unbounded uppercase">
                   {category.name}
                 </p>
               </div>
@@ -525,7 +564,7 @@ const AddExpense = () => {
       </div>
       {isOpenRepeat && (
         <div
-          className='bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full'
+          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
           onClick={() => {
             setIsOpenRepeat(false);
           }}
@@ -537,10 +576,10 @@ const AddExpense = () => {
           isOpenRepeat ? "bottom-0" : "bottom-[-100%]",
         )}
       >
-        <p className='font-unbounded text-customBlack text-center font-medium'>
+        <p className="font-unbounded text-customBlack text-center font-medium">
           Повторение
         </p>
-        <div className='grid grid-cols-2 gap-2'>
+        <div className="grid grid-cols-2 gap-2">
           <div
             className={clsx(
               "bg-customGray8 py-24 px-6 rounded-2xl flex justify-center items-center border ",
@@ -548,7 +587,7 @@ const AddExpense = () => {
             )}
             onClick={() => setSelectedRepeat(0)}
           >
-            <p className='text-10 font-normal font-unbounded text-customGray2'>
+            <p className="text-10 font-normal font-unbounded text-customGray2">
               Никогда
             </p>
           </div>
@@ -559,7 +598,7 @@ const AddExpense = () => {
             )}
             onClick={() => setSelectedRepeat(1)}
           >
-            <p className='text-10 font-normal font-unbounded text-customGray2'>
+            <p className="text-10 font-normal font-unbounded text-customGray2">
               Ежедневно
             </p>
           </div>
@@ -570,7 +609,7 @@ const AddExpense = () => {
             )}
             onClick={() => setSelectedRepeat(2)}
           >
-            <p className='text-10 font-normal font-unbounded text-customGray2'>
+            <p className="text-10 font-normal font-unbounded text-customGray2">
               Еженедельно
             </p>
           </div>
@@ -581,17 +620,17 @@ const AddExpense = () => {
             )}
             onClick={() => setSelectedRepeat(3)}
           >
-            <p className='text-10 font-normal font-unbounded text-customGray2'>
+            <p className="text-10 font-normal font-unbounded text-customGray2">
               Ежемесячно
             </p>
           </div>
         </div>
         {selectedRepeat === 2 && (
           <div>
-            <p className='font-normal font-unbounded text-xs text-customGray2 opacity-65'>
+            <p className="font-normal font-unbounded text-xs text-customGray2 opacity-65">
               Выберите день недели
             </p>
-            <div className='grid grid-cols-7 gap-2 mt-3'>
+            <div className="grid grid-cols-7 gap-2 mt-3">
               {weekData.map((week: IWeekDay, index: number) => (
                 <div
                   key={index}
@@ -603,7 +642,7 @@ const AddExpense = () => {
                   )}
                   onClick={() => setSelectedWeekDay(week)}
                 >
-                  <p className='text-10 font-unbounded font-normal text-customGray2 uppercase'>
+                  <p className="text-10 font-unbounded font-normal text-customGray2 uppercase">
                     {week.name.slice(0, 2)}
                   </p>
                 </div>
@@ -613,10 +652,10 @@ const AddExpense = () => {
         )}
         {selectedRepeat === 3 && (
           <div>
-            <p className='font-normal font-unbounded text-xs text-customGray2 opacity-65'>
+            <p className="font-normal font-unbounded text-xs text-customGray2 opacity-65">
               Выберите число месяца
             </p>
-            <div className='grid grid-cols-6 gap-2 mt-3'>
+            <div className="grid grid-cols-6 gap-2 mt-3">
               {monthsData.map((month: IMonthDay, index: number) => (
                 <div
                   key={index}
@@ -628,7 +667,7 @@ const AddExpense = () => {
                   )}
                   onClick={() => setSelectedMonthDay(month)}
                 >
-                  <p className='text-10 font-unbounded font-normal text-customGray2 uppercase'>
+                  <p className="text-10 font-unbounded font-normal text-customGray2 uppercase">
                     {month.day}
                   </p>
                 </div>
@@ -636,8 +675,8 @@ const AddExpense = () => {
             </div>
           </div>
         )}
-        <div className='bg-customGray2 py-5 px-4 rounded-35'>
-          <p className='text-center text-white font-medium font-unbounded text-xs'>
+        <div className="bg-customGray2 py-5 px-4 rounded-35">
+          <p className="text-center text-white font-medium font-unbounded text-xs">
             Выбрать
           </p>
         </div>
