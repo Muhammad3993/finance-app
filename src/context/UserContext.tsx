@@ -89,7 +89,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         onBoarding: onboardingData || null,
       };
 
-      const docRef = await setDoc(doc(db, "users", `${5673577167}`), docData);
+      const docRef = await setDoc(
+        doc(db, "users", `${dataUnsafe?.user?.id}`),
+        docData,
+      );
       console.log(docRef);
     } catch (e) {
       console.error(e);
@@ -144,9 +147,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // if (isTelegramWebApp && dataUnsafe?.user?.id) {
-    fetchUserByTelegramId(5673577167);
-    // }
+    if (isTelegramWebApp && dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(dataUnsafe.user.id);
+    }
   }, [isTelegramWebApp]);
 
   const [isScrolled, setIsScrolled] = useState(false);
