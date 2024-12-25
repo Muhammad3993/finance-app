@@ -9,6 +9,8 @@ html {
   overflow: hidden;
   height: 100dvh;
   position: fixed;
+  bottom: 0;
+  top: 0;
   background: #040308;
 }
 
