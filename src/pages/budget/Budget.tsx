@@ -100,6 +100,14 @@ const Budget = () => {
     },
   ];
 
+  const reference = useRef<HTMLDivElement | null>(null);
+
+  const avoidKeyboard = () => {
+    setTimeout(() => {
+      reference.current.querySelector("#win").style.height = "calc(100vh)";
+    }, 2000);
+  };
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -277,7 +285,10 @@ const Budget = () => {
           isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
         )}
       >
-        <div className="w-full h-82 bg-FFFFFF-8 rounded-25 overflow- py-24 px-4 flex items-center">
+        <div
+          className="w-full h-82 bg-FFFFFF-8 rounded-25 overflow- py-24 px-4 flex items-center"
+          ref={reference}
+        >
           <Controller
             control={control}
             name="value"
@@ -291,6 +302,9 @@ const Budget = () => {
                   className="h-full w-full bg-transparent outline-none font-unbounded text-2xl pr-1 text-right text-white placeholder:text-white"
                   value={formatNumber(field.value ?? "")}
                   placeholder="0"
+                  onBlur={avoidKeyboard}
+                  onFocus={avoidKeyboard}
+                  id="win"
                 />
               );
             }}
