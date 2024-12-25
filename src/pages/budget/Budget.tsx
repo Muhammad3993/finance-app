@@ -87,8 +87,8 @@ const Budget = () => {
         if (inputRef.current) {
           inputRef.current.focus();
         }
-      }, 300);
-      return () => clearTimeout(timeout);
+      }, 300); // 0.3 soniya kutish
+      return () => clearTimeout(timeout); // tozalash
     }
   }, [isOpenPopup]);
 
@@ -300,7 +300,6 @@ const Budget = () => {
             render={({ field }) => {
               return (
                 <input
-                  {...field}
                   ref={inputRef}
                   type="text"
                   inputMode="numeric"
