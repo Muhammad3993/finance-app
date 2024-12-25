@@ -12,7 +12,7 @@ import { useOperation } from "@/data/hooks/operation";
 const Home = () => {
   const { state } = useUserContext();
 
-  const { cards, isLoading, fetchAllCard } = useGetCards();
+  const { cards, fetchAllCard } = useGetCards();
   const { getCardOperations, operations } = useOperation();
 
   const oprationsValue =
@@ -32,7 +32,7 @@ const Home = () => {
     getCardOperations();
   }, []);
 
-  if (isLoading) {
+  if (state.isLoading) {
     return <p>Loading...</p>;
   }
 
@@ -54,7 +54,9 @@ const Home = () => {
       </div>
       <GroupCards />
       <FollowAndAnalytics />
-      <Link to="/onboarding" className="text-white">Start</Link>
+      <Link to="/onboarding" className="text-white">
+        Start
+      </Link>
       <Navigation />
     </div>
   );
