@@ -82,15 +82,14 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     });
   }, [isTelegramWebApp]);
 
-  const saveUserData = async (userData: IUser, onboardingData?: object) => {
+  const saveUserData = async (userData: IUser) => {
     try {
       const docData = {
         ...userData,
-        onBoarding: onboardingData || null,
       };
 
       const docRef = await setDoc(
-        doc(db, "users", `${dataUnsafe?.user?.id}`),
+        doc(db, "users", `${userData.telegram_id}`),
         docData,
       );
       console.log(docRef);
