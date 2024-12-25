@@ -15,7 +15,6 @@ const Home = () => {
   const { cards, isLoading, fetchAllCard } = useGetCards();
   const { getCardOperations, operations } = useOperation();
 
-
   const oprationsValue =
     operations?.reduce((total, operation) => {
       return total + +(operation.value || 0);
@@ -55,7 +54,7 @@ const Home = () => {
       </div>
       <GroupCards />
       <FollowAndAnalytics />
-      {!state.user && <Link to="/onboarding">Start</Link>}
+      <Link to="/onboarding" className="text-white">Start</Link>
       <Navigation />
     </div>
   );
