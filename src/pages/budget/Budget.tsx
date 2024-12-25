@@ -274,7 +274,7 @@ const Budget = () => {
         onSubmit={handleSubmit(onSubmit)}
         className={clsx(
           "fixed w-full bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
-          isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
+          isOpenPopup ? "bottom-[50%]" : "bottom-[-100%]",
         )}
       >
         <div className="w-full h-82 bg-FFFFFF-8 rounded-25 overflow- py-24 px-4 flex items-center">
@@ -287,7 +287,7 @@ const Budget = () => {
                 <input
                   {...field}
                   ref={inputRef}
-                  type="number"
+                  type="text"
                   inputMode="numeric"
                   className="h-full w-full bg-transparent outline-none font-unbounded text-2xl pr-1 text-right text-white placeholder:text-white"
                   value={formatNumber(field.value ?? "")}
