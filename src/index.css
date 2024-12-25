@@ -5,13 +5,13 @@
 @tailwind utilities;
 
 html {
-  height: auto;
+  /* height: auto;
   overflow: hidden;
-  height: 100dvh;
+  height: 100dvh; */
   background: #040308;
 }
 
-.mobile-body {
+/* .mobile-body {
   overflow: hidden; 
   height: 100dvh;
 }
@@ -28,7 +28,7 @@ html {
 
 .mobile-content {
   height: calc(100% + 1px);
-}
+} */
 
 .hide-scrollbar {
   scrollbar-width: none;
