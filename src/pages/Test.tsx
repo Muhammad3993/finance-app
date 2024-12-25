@@ -1,32 +1,33 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const KeyboardListener = () => {
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
     const MIN_KEYBOARD_HEIGHT = window.screen.height * 0.4; // 40% of the screen height
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < 768; // Check if it's a mobile device
 
     const handleResize = () => {
       if (window.visualViewport) {
         const keyboardOpen =
           isMobile &&
           window.screen.height - MIN_KEYBOARD_HEIGHT > window.visualViewport.height;
-        setIsKeyboardOpen(keyboardOpen);
+
+        setIsKeyboardOpen(keyboardOpen); // Update the state based on the keyboard visibility
       }
     };
 
-    // Attach the listener
+    // Attach the resize listener
     window.visualViewport?.addEventListener('resize', handleResize);
 
-    // Initial check
+    // Initial check for keyboard state
     handleResize();
 
-    // Cleanup function
+    // Cleanup function to remove the event listener
     return () => {
       window.visualViewport?.removeEventListener('resize', handleResize);
     };
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []); // Empty array ensures this runs only once on mount
 
   return (
     <div style={{ padding: '20px', color: "white" }}>
