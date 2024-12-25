@@ -105,6 +105,13 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       name: dataUnsafe?.user?.first_name,
       lang: dataUnsafe.user?.language_code,
       photo: dataUnsafe.user?.photo_url,
+      currency: {
+        code: "uzs",
+        intl: "uz-UZ",
+        name: "Uzbekistani Som",
+        symbol: "лв",
+        value: 1,
+      }
     };
     saveUserData(basicUserData);
   };
