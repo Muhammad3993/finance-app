@@ -405,7 +405,7 @@ const AddExpense = () => {
 
           <div
             className={clsx(
-              "fixed w-full h-[75%] bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
+              "fixed w-full h-[50%] bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
               isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
             )}
           >
