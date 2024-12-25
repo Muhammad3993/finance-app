@@ -71,13 +71,11 @@ const Budget = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (isOpenPopup && inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 500);
-  }, [isOpenPopup]);
+  setTimeout(() => {
+    if (isOpenPopup && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, 500);
 
   useEffect(() => {
     fetchAllCard();
