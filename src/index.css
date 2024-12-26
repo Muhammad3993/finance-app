@@ -6,9 +6,8 @@
 
 html {
   height: auto;
-  overflow: hidden;
   height: 100dvh;
-  /* background: #040308; */
+  background: #040308;
 }
 
 .mobile-body {
