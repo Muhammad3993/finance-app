@@ -3,7 +3,7 @@ import { db } from "@/firebaseConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import { collection, doc, setDoc } from "firebase/firestore";
-import {  useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -68,22 +68,39 @@ const BudgetModal = (props: IProps) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useLayoutEffect(() => {
+  function delayCallback(callback: () => void, delay: number): void {
+    const start = Date.now();
+
+    function check(): void {
+      const now = Date.now();
+      if (now - start >= delay) {
+        callback();
+      } else {
+        requestAnimationFrame(check);
+      }
+    }
+
+    requestAnimationFrame(check);
+  }
+
+  useEffect(() => {
     if (isOpenPopup) {
       // requestAnimationFrame(() => {
+
+      // console.log("Loading...");
+      // });
+      setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus();
         }
-        // console.log("Loading...");
-      // });
-      // setTimeout(() => {
-      //   if (inputRef.current) {
-      //     inputRef.current.focus();
-
-      //   }
-      //   console.log("Loading...");
-
-      // }, 3000);
+        console.log("Loading...");
+      }, 3000);
+      delayCallback(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          console.log("Fokus o‘rnatildi!");
+        }
+      }, 2000);
     }
   }, [isOpenPopup]);
 
