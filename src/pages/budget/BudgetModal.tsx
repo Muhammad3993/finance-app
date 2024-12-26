@@ -71,19 +71,19 @@ const BudgetModal = (props: IProps) => {
   useLayoutEffect(() => {
     if (isOpenPopup) {
       // requestAnimationFrame(() => {
-        // if (inputRef.current) {
-        //   inputRef.current.focus();
-        // }
-        // console.log("Loading...");
-      // });
-      setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus();
-
         }
-        console.log("Loading...");
+        // console.log("Loading...");
+      // });
+      // setTimeout(() => {
+      //   if (inputRef.current) {
+      //     inputRef.current.focus();
 
-      }, 3000);
+      //   }
+      //   console.log("Loading...");
+
+      // }, 3000);
     }
   }, [isOpenPopup]);
 
