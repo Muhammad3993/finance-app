@@ -19,7 +19,9 @@ const Home = () => {
       return total + +(operation.value || 0);
     }, 0) || 0;
 
-  const finance = Number(cards?.map((card) => card.card_finance));
+  const finan = cards?.filter((card) => card.card_name === "Cash");
+
+  const finance = Number(finan?.map((card) => card.card_finance)) || 0;
 
   const resultFinance = finance - Number(oprationsValue);
 
