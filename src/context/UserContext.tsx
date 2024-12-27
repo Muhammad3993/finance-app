@@ -137,10 +137,10 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (isTelegramWebApp && dataUnsafe.user?.id) {
+    if (dataUnsafe.user?.id) {
       fetchUserByTelegramId(dataUnsafe.user.id);
     }
-  }, [isTelegramWebApp]);
+  }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrolledText, setIsScrolledText] = useState(false);
