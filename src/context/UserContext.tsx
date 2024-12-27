@@ -268,6 +268,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     setState({ isTelegramWebApp });
     WebApp.expand();
     WebApp.disableVerticalSwipes();
+    WebApp.requestFullscreen();
+    WebApp.contentSafeAreaInset;
+    WebApp.safeAreaInset;
 
     WebApp.BackButton.onClick(() => {
       window.history.back();

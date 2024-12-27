@@ -37,7 +37,7 @@ const Home = () => {
     return <p>Loading...</p>;
   }
 
-  if (cards?.length === 0) {
+  if (cards === null) {
     navigate("/onboarding");
   }
 
