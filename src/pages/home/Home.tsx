@@ -37,7 +37,7 @@ const Home = () => {
     return <p>Loading...</p>;
   }
 
-  if (!state.userData?.telegram_id) {
+  if (cards?.length === 0) {
     navigate("/onboarding");
   }
 
