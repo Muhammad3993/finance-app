@@ -340,6 +340,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (dataUnsafe?.user?.id) {
       fetchUserByTelegramId(dataUnsafe.user.id);
+      handleSaveBasic();
     }
   }, []);
 

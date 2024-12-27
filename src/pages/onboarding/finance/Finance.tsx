@@ -79,7 +79,7 @@ const Finance = () => {
       isBalance: true,
     };
     saveCardData(cardData);
-    handleSaveBasic();
+    // handleSaveBasic();
     navigate("/onboarding/finish");
   };
 
