@@ -11,7 +11,7 @@ import { useOperation } from "@/data/hooks/operation";
 const Home = () => {
   const { state } = useUserContext();
 
-  const { cards, fetchAllCard, isLoadingCard } = useGetCards();
+  const { cards, fetchAllCard, isLoading: isLoadingCard } = useGetCards();
   const { getCardOperations, operations } = useOperation();
 
   const oprationsValue =
