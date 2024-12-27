@@ -2,42 +2,57 @@ import Card from "@/assets/icons/card";
 import Chart from "@/assets/icons/chart";
 import Coin from "@/assets/icons/coin";
 import Date from "@/assets/icons/date";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./navigation.css";
 import User from "@/assets/icons/user";
+import clsx from "clsx";
 
 const Navigation = () => {
+  const location = useLocation();
+
+  const isShow =
+    location.pathname === "/" ||
+    location.pathname === "/bills" ||
+    location.pathname === "/date" ||
+    location.pathname === "/budget" ||
+    location.pathname === "/user";
+
   return (
-    <div className='w-max fixed bottom-6 left-[50%] translate-x-[-50%] flex items-center gap-2 p-2 bg-FFFFFF-8 rounded-50 backdrop-blur-[100px]'>
+    <div
+      className={clsx(
+        "w-max fixed bottom-6 left-[50%] translate-x-[-50%] items-center gap-2 p-2 bg-FFFFFF-8 rounded-50 backdrop-blur-[100px]",
+        isShow ? "flex" : "hidden",
+      )}
+    >
       <NavLink
         to={"/"}
-        className='w-14 h-14 flex justify-center items-center rounded-full nav_link'
+        className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
-        <Coin fill='white' />
+        <Coin fill="white" />
       </NavLink>
       <NavLink
         to={"/bills"}
-        className='w-14 h-14 flex justify-center items-center rounded-full nav_link'
+        className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
-        <Card fill='white' />
+        <Card fill="white" />
       </NavLink>
       <NavLink
         to={"/date"}
-        className='w-14 h-14 flex justify-center items-center rounded-full nav_link'
+        className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
-        <Date fill='white' />
+        <Date fill="white" />
       </NavLink>
       <NavLink
         to={"/budget"}
-        className='w-14 h-14 flex justify-center items-center rounded-full nav_link'
+        className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
-        <Chart fill='white' />
+        <Chart fill="white" />
       </NavLink>
       <NavLink
         to={"/user"}
-        className='w-14 h-14 flex justify-center items-center rounded-full nav_link'
+        className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
-        <User fill='white' />
+        <User fill="white" />
       </NavLink>
     </div>
   );

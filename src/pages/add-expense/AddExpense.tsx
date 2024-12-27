@@ -1,11 +1,6 @@
-import Card from "@/assets/icons/card";
-import Category from "@/assets/icons/category";
-import Clock from "@/assets/icons/clock";
 import Close from "@/assets/icons/close";
 import DateIcon from "@/assets/icons/dateIcon";
-import Symbol from "@/assets/icons/symbol";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-// import formatBalance from "@/constants/useFormatBalance";
 import useUserData from "@/constants/useUserData";
 import useGetCards from "@/data/hooks/currencies";
 import clsx from "clsx";
@@ -19,14 +14,18 @@ import { db } from "@/firebaseConfig";
 import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
 import "./add-expense.css";
 import EditIcon from "@/assets/icons/edit";
+import AddExpenseModal from "./modals/AddExpenseModal";
+import CardModal from "./modals/CardModal";
+import CategoryModal from "./modals/CategoryModal";
+import RepeatModal from "./modals/RepeatModal";
 
-interface IWeekDay {
+export interface IWeekDay {
   id: number;
   name: string;
   day: number;
 }
 
-interface IMonthDay {
+export interface IMonthDay {
   id: number;
   day: number;
 }
@@ -60,11 +59,7 @@ const AddExpense = () => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
     null,
   );
-  const [selectedRepeat, setSelectedRepeat] = useState<number>(0);
-  const [selectedWeekDay, setSelectedWeekDay] = useState<IWeekDay | null>(null);
-  const [selectedMonthDay, setSelectedMonthDay] = useState<IMonthDay | null>(
-    null,
-  );
+  const [isDate, setIsDate] = useState(false);
 
   const handleSave = async (operationData: IOperationData) => {
     // try {
@@ -101,78 +96,6 @@ const AddExpense = () => {
     }
   };
   const { control, handleSubmit, setValue } = useForm<IOperationData>();
-
-  const weekData: IWeekDay[] = [
-    {
-      id: 1,
-      name: "Понедельник",
-      day: 1,
-    },
-    {
-      id: 2,
-      name: "Вторник",
-      day: 2,
-    },
-    {
-      id: 3,
-      name: "Среда",
-      day: 3,
-    },
-    {
-      id: 4,
-      name: "Четверг",
-      day: 4,
-    },
-    {
-      id: 5,
-      name: "Пятница",
-      day: 5,
-    },
-    {
-      id: 6,
-      name: "Суббота",
-      day: 6,
-    },
-    {
-      id: 7,
-      name: "Воскресенье",
-      day: 7,
-    },
-  ];
-
-  const monthsData: IMonthDay[] = [
-    { id: 1, day: 1 },
-    { id: 2, day: 2 },
-    { id: 3, day: 3 },
-    { id: 4, day: 4 },
-    { id: 5, day: 5 },
-    { id: 6, day: 6 },
-    { id: 7, day: 7 },
-    { id: 8, day: 8 },
-    { id: 9, day: 9 },
-    { id: 10, day: 10 },
-    { id: 11, day: 11 },
-    { id: 12, day: 12 },
-    { id: 13, day: 13 },
-    { id: 14, day: 14 },
-    { id: 15, day: 15 },
-    { id: 16, day: 16 },
-    { id: 17, day: 17 },
-    { id: 18, day: 18 },
-    { id: 19, day: 19 },
-    { id: 20, day: 20 },
-    { id: 21, day: 21 },
-    { id: 22, day: 22 },
-    { id: 23, day: 23 },
-    { id: 24, day: 24 },
-    { id: 25, day: 25 },
-    { id: 26, day: 26 },
-    { id: 27, day: 27 },
-    { id: 28, day: 28 },
-    { id: 29, day: 29 },
-    { id: 30, day: 30 },
-    { id: 31, day: 31 },
-  ];
 
   const { cards, isLoading, fetchAllCard } = useGetCards();
 
@@ -254,6 +177,12 @@ const AddExpense = () => {
     return formatted;
   }
 
+  const isTrue: boolean =
+    Boolean(input) &&
+    Boolean(selectedCard) &&
+    isDate &&
+    Boolean(selectedCategory);
+
   return (
     <>
       <UserNavbar
@@ -323,64 +252,56 @@ const AddExpense = () => {
             </div>
           </div>
           <div className="mt-4 flex gap-2 px-4">
-            <div
-              className="flex-1 flex flex-col items-center justify-center gap-2"
-              onClick={() => setIsOpenCard(true)}
-            >
-              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-                <Card fill="#00BF33" />
-              </div>
-              <p className="text-10 font-unbounded font-medium text-customGray2">
-                {selectedCard === null ? "Счет" : selectedCard.card_name}
-              </p>
-            </div>
+            <CardModal
+              isOpenCard={isOpenCard}
+              setIsOpenCard={setIsOpenCard}
+              isLoading={isLoading}
+              cards={cards}
+              selectedCard={selectedCard}
+              setSelectedCard={setSelectedCard}
+            />
             <Controller
               control={control}
               name="date"
-              render={({ field }) => (
-                <div
-                  className="flex-1 flex flex-col items-center justify-center gap-2"
-                  onClick={() => {
-                    dateRef?.current?.showPicker();
-                  }}
-                >
-                  <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-                    <DateIcon fill="#00BF33" />
+              render={({ field }) => {
+                setIsDate(Boolean(field.value));
+                return (
+                  <div
+                    className="flex-1 flex flex-col items-center justify-center gap-2"
+                    onClick={() => {
+                      dateRef?.current?.showPicker();
+                    }}
+                  >
+                    <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                      <DateIcon fill="#00BF33" />
+                    </div>
+                    <p className="text-9 font-unbounded font-medium text-white">
+                      Дата
+                    </p>
+                    <input
+                      type="date"
+                      className="absolute opacity-0 input"
+                      {...field}
+                      ref={dateRef}
+                    />
                   </div>
-                  <p className="text-10 font-unbounded font-medium text-customGray2">
-                    Дата
-                  </p>
-                  <input
-                    type="date"
-                    className="absolute opacity-0"
-                    {...field}
-                    ref={dateRef}
-                  />
-                </div>
-              )}
+                );
+              }}
             />
-            <div
-              className="flex-1 flex flex-col items-center justify-center gap-2"
-              onClick={() => setIsOpenCategory(true)}
-            >
-              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-                <Category fill="#00BF33" />
-              </div>
-              <p className="text-10 font-unbounded font-medium text-customGray2">
-                Категория
-              </p>
-            </div>
-            <div
-              className="flex-1 flex flex-col items-center justify-center gap-2"
-              onClick={() => setIsOpenRepeat(true)}
-            >
-              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-                <Clock fill="#00BF33" />
-              </div>
-              <p className="text-10 font-unbounded font-medium text-customGray2">
-                Повтор
-              </p>
-            </div>
+
+            <CategoryModal
+              isOpenCategory={isOpenCategory}
+              setIsOpenCategory={setIsOpenCategory}
+              isCategoryLoading={isCategoryLoading}
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+
+            <RepeatModal
+              isOpenRepeat={isOpenRepeat}
+              setIsOpenRepeat={setIsOpenRepeat}
+            />
           </div>
           <div className="px-4 mt-4 flex justify-center items-center">
             <div
@@ -393,65 +314,31 @@ const AddExpense = () => {
               </p>
             </div>
           </div>
-          {isOpenPopup && (
-            <div
-              className="bg-black opacity-35 z-10 fixed top-0 left-0 w-full h-full"
-              onClick={() => {
-                setIsOpenPopup(false);
-                setValue("description", "");
-              }}
-            ></div>
-          )}
+
+          <AddExpenseModal
+            isOpenPopup={isOpenPopup}
+            setIsOpenPopup={setIsOpenPopup}
+            setValue={setValue}
+            control={control}
+          />
 
           <div
             className={clsx(
-              "fixed w-full h-[70%] bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
-              isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
-            )}
-          >
-            <div className="p-4 bg-customGray rounded-25 h-20">
-              <Controller
-                control={control}
-                name="description"
-                render={({ field }) => (
-                  <textarea
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e);
-                    }}
-                    placeholder="Ваша заметка"
-                    rows={3}
-                    style={{ overflow: "hidden", resize: "none" }}
-                    className="text-9 font-unbounded text-gray-500 w-full outline-none bg-inherit"
-                  />
-                )}
-              />
-            </div>
-            <div
-              className="bg-00BF33 w-full flex items-center justify-center h-14 rounded-35"
-              onClick={() => setIsOpenPopup(false)}
-            >
-              <p className="text-white text-xs font-medium font-unbounded">
-                Сохранить
-              </p>
-            </div>
-          </div>
-
-          <div
-            className={clsx(
-              "bg-customGray8 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full",
             )}
           >
             <button
               type="submit"
-              disabled={!selectedCard || !result}
-              className="bg-customGray2 h-14 rounded-35 flex items-center justify-center"
+              className={clsx(
+                "h-14 rounded-35 flex items-center justify-center duration-300",
+                isTrue
+                  ? "bg-00BF33 text-white"
+                  : "bg-1B1A1E-100 text-FFFFFF-25",
+              )}
             >
-              <p className="text-white text-xs font-medium font-unbounded">
-                Добавить
-              </p>
+              <p className=" text-xs font-medium font-unbounded">Добавить</p>
             </button>
-            <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61 bg-customGray8">
+            <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-[16px] w-full max-390:gap-x-61 bg-transparent">
               {[
                 "1",
                 "2",
@@ -474,8 +361,7 @@ const AddExpense = () => {
                     btn === "AC" ? clear() : handleClick(btn);
                   }}
                   className={clsx(
-                    "bg-white h-66 w-84 flex justify-center items-center rounded-2xl col-span-1 text-25 font-unbounded text-customGray2 max-390:w-auto",
-                    (index + 1) % 4 === 0 && "w-[66px] ml-",
+                    "bg-1B1A1E-100 h-66 w-84 flex justify-center items-center rounded-2xl col-span-1 text-25 font-unbounded text-white max-390:w-auto",
                     btn === "," && "bg-[#f2f2f7]",
                   )}
                 >
@@ -484,234 +370,15 @@ const AddExpense = () => {
               ))}
               <div
                 className={
-                  "bg-inherit h-66 w-84 rounded-2xl flex justify-center items-center max-390:w-auto"
+                  "bg-inherit w-full rounded-2xl flex justify-center items-center max-390:w-auto col-span-1 ml-[102px]"
                 }
                 onClick={() => handleBackSpace()}
               >
-                <Close />
-              </div>
-              <div
-                className={
-                  "bg-customGray2 h-66 w-66 rounded-2xl flex justify-center items-center max-390:w-auto"
-                }
-              >
-                <Symbol />
+                <Close fill="white" />
               </div>
             </div>
           </div>
         </form>
-      </div>
-      {isOpenCard && (
-        <div
-          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
-          onClick={() => {
-            setIsOpenCard(false);
-          }}
-        ></div>
-      )}
-      <div
-        className={clsx(
-          "fixed w-full bg-white p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8",
-          isOpenCard ? "bottom-0" : "bottom-[-100%]",
-        )}
-      >
-        <p className="font-unbounded text-customBlack text-center font-medium">
-          Тип счета
-        </p>
-        <div className="grid grid-cols-2 gap-2">
-          {isLoading && <p>Loading...</p>}
-          {!isLoading &&
-            cards?.map((card: ICards, index: number) => (
-              <div
-                className={clsx(
-                  "bg-customGray8 py-4 px-4 rounded-20 border-2 flex flex-col justify-between gap-3",
-                  selectedCard?.id === card?.id
-                    ? "border-customBlack"
-                    : "border-white",
-                )}
-                onClick={() => {
-                  setSelectedCard(card);
-                  setIsOpenCard(false);
-                }}
-                key={index}
-              >
-                <Card />
-                <p className="text-xs text-customGray2">{card.card_name}</p>
-              </div>
-            ))}
-        </div>
-      </div>
-      {isOpenCategory && (
-        <div
-          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
-          onClick={() => {
-            setIsOpenCategory(false);
-          }}
-        ></div>
-      )}
-      <div
-        className={clsx(
-          "fixed w-full bg-white p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8",
-          isOpenCategory ? "bottom-0" : "bottom-[-100%]",
-        )}
-      >
-        <p className="font-unbounded text-customBlack text-center font-medium">
-          Категория
-        </p>
-        <div className="grid grid-cols-3">
-          {isCategoryLoading && <p>Loading...</p>}
-          {!isCategoryLoading &&
-            categories?.map((category: ICategory, index: number) => (
-              <div
-                className={clsx(
-                  "flex flex-col items-center justify-center gap-3 relative ",
-                  selectedCategory?.id === category.id
-                    ? "opacity-1"
-                    : "opacity-50",
-                )}
-                key={index}
-                onClick={() => {
-                  setSelectedCategory(category);
-                  setIsOpenCategory(false);
-                }}
-              >
-                <div
-                  className={clsx(
-                    "w-76 h-76 bg-customGray6 flex items-center justify-center rounded-full",
-                  )}
-                >
-                  <Card width={28} height={28} />
-                  {selectedCategory?.id === category.id && (
-                    <div className="absolute top-1 right-5">
-                      <Symbol width={24} height={24} />
-                    </div>
-                  )}
-                </div>
-                <p className="font-normal text-10 font-unbounded uppercase">
-                  {category.name}
-                </p>
-              </div>
-            ))}
-        </div>
-      </div>
-      {isOpenRepeat && (
-        <div
-          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
-          onClick={() => {
-            setIsOpenRepeat(false);
-          }}
-        ></div>
-      )}
-      <div
-        className={clsx(
-          "fixed w-full bg-white p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8",
-          isOpenRepeat ? "bottom-0" : "bottom-[-100%]",
-        )}
-      >
-        <p className="font-unbounded text-customBlack text-center font-medium">
-          Повторение
-        </p>
-        <div className="grid grid-cols-2 gap-2">
-          <div
-            className={clsx(
-              "bg-customGray8 py-24 px-6 rounded-2xl flex justify-center items-center border ",
-              selectedRepeat === 0 ? "border-customBlack50" : "border-white",
-            )}
-            onClick={() => setSelectedRepeat(0)}
-          >
-            <p className="text-10 font-normal font-unbounded text-customGray2">
-              Никогда
-            </p>
-          </div>
-          <div
-            className={clsx(
-              "bg-customGray8 py-24 px-6 rounded-2xl flex justify-center items-center border ",
-              selectedRepeat === 1 ? "border-customBlack50" : "border-white",
-            )}
-            onClick={() => setSelectedRepeat(1)}
-          >
-            <p className="text-10 font-normal font-unbounded text-customGray2">
-              Ежедневно
-            </p>
-          </div>
-          <div
-            className={clsx(
-              "bg-customGray8 py-24 px-6 rounded-2xl flex justify-center items-center border ",
-              selectedRepeat === 2 ? "border-customBlack50" : "border-white",
-            )}
-            onClick={() => setSelectedRepeat(2)}
-          >
-            <p className="text-10 font-normal font-unbounded text-customGray2">
-              Еженедельно
-            </p>
-          </div>
-          <div
-            className={clsx(
-              "bg-customGray8 py-24 px-6 rounded-2xl flex justify-center items-center border ",
-              selectedRepeat === 3 ? "border-customBlack50" : "border-white",
-            )}
-            onClick={() => setSelectedRepeat(3)}
-          >
-            <p className="text-10 font-normal font-unbounded text-customGray2">
-              Ежемесячно
-            </p>
-          </div>
-        </div>
-        {selectedRepeat === 2 && (
-          <div>
-            <p className="font-normal font-unbounded text-xs text-customGray2 opacity-65">
-              Выберите день недели
-            </p>
-            <div className="grid grid-cols-7 gap-2 mt-3">
-              {weekData.map((week: IWeekDay, index: number) => (
-                <div
-                  key={index}
-                  className={clsx(
-                    "col-span-1 border border-customBlack50 h-54 flex items-center justify-center rounded-2xl bg-customGray8",
-                    selectedWeekDay?.name === week.name
-                      ? "border-customBlack50"
-                      : "border-customGray8",
-                  )}
-                  onClick={() => setSelectedWeekDay(week)}
-                >
-                  <p className="text-10 font-unbounded font-normal text-customGray2 uppercase">
-                    {week.name.slice(0, 2)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {selectedRepeat === 3 && (
-          <div>
-            <p className="font-normal font-unbounded text-xs text-customGray2 opacity-65">
-              Выберите число месяца
-            </p>
-            <div className="grid grid-cols-6 gap-2 mt-3">
-              {monthsData.map((month: IMonthDay, index: number) => (
-                <div
-                  key={index}
-                  className={clsx(
-                    "col-span-1 border border-customBlack50 w-54 h-54 flex items-center justify-center rounded-2xl bg-customGray8",
-                    selectedMonthDay?.day === month.day
-                      ? "border-customBlack50"
-                      : "border-customGray8",
-                  )}
-                  onClick={() => setSelectedMonthDay(month)}
-                >
-                  <p className="text-10 font-unbounded font-normal text-customGray2 uppercase">
-                    {month.day}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        <div className="bg-customGray2 py-5 px-4 rounded-35">
-          <p className="text-center text-white font-medium font-unbounded text-xs">
-            Выбрать
-          </p>
-        </div>
       </div>
     </>
   );

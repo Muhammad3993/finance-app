@@ -57,7 +57,7 @@ const UserNavbar = (props: IProps) => {
                 <div>
                   <p
                     className={clsx(
-                      "text-sm font-semibold font-unbounded text-customGray2",
+                      "font-semibold font-unbounded text-customGray2",
                       textClass,
                     )}
                   >

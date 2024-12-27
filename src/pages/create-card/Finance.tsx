@@ -50,7 +50,7 @@ const Finance = (props: IProps) => {
     setResult("");
   };
   const regex = /[+-]/;
-  
+
   const formatter = new Intl.NumberFormat(selectedCurrence?.intl, {
     style: "currency",
     currency: selectedCurrence?.code,
@@ -58,23 +58,20 @@ const Finance = (props: IProps) => {
   return (
     <>
       <div
-        className='cursor-pointer'
+        className="cursor-pointer"
         onClick={() => {
           setIsOpenCalc(true);
         }}
       >
-        <div className='h-74 w-full bg-customGray flex items-center justify-end rounded-20 py-5 px-4 gap-4'>
-          <p className='text-2xl font-semibold font-unbounded text-customGray2'>
-            {realResult ? formatter.format(Number(realResult)) : "0"}
-          </p>
-          <p className='text-13 font-normal font-unbounded text-customGray2'>
-            сум
+        <div className="h-74 w-full bg-transparent border-b-[.5px] border-FFFFFF-25 flex items-center justify-end py-5 px-4 gap-4">
+          <p className="text-2xl font-normal font-unbounded text-white">
+            {realResult ? formatter.format(Number(realResult)) : "0"} сум
           </p>
         </div>
       </div>
       {isOpenCalc && (
         <div
-          className='bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full'
+          className="bg-black opacity-45 z-10 fixed top-0 left-0 w-full h-full"
           onClick={() => {
             setIsOpenCalc(false);
           }}
@@ -92,7 +89,7 @@ const Finance = (props: IProps) => {
             regex.test(input) && "h-82",
           )}
         >
-          <p className='absolute top-1'>{regex.test(input) && input + "="}</p>
+          <p className="absolute top-1">{regex.test(input) && input + "="}</p>
           <p
             className={clsx(
               "font-medium text-2xl font-unbounded text-customGray2 duration-300",
@@ -110,7 +107,7 @@ const Finance = (props: IProps) => {
             сум
           </p>
         </div>
-        <div className='grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61'>
+        <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-7 w-full max-390:gap-x-61">
           {[
             "1",
             "2",

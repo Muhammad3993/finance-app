@@ -1,6 +1,5 @@
 import ArrowRight from "@/assets/icons/arrowRight";
 import Cash from "@/assets/icons/cash";
-import Navigation from "@/components/navigation/Navigation";
 import formatBalance from "@/constants/useFormatBalance";
 import { useGetBudget } from "@/data/hooks/budget";
 import useGetCards from "@/data/hooks/currencies";
@@ -57,7 +56,7 @@ const Budget = () => {
             outerRadius={130}
             cornerRadius={6}
             dataKey="value"
-            label={({ percent, x, y, index }) => {
+            label={({ index }) => {
               const entry = data[index];
               return (
                 <>
@@ -79,29 +78,20 @@ const Budget = () => {
                     </filter>
                   </defs>
 
-                  <foreignObject
-                    x={x - 30}
-                    y={y - 20}
-                    width={73}
-                    height={34}
-                    transform={`rotate(135 ${x} ${y})`}
+                  {/* <text
+                    x={x}
+                    y={y}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill={entry.color}
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
                   >
-                    <div
-                      style={{
-                        backgroundColor: entry.secondayColor,
-                        color: entry.color,
-                        textAlign: "center",
-                        width: "73px",
-                        height: "34px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                      className="backdrop-blur-50 rounded-25 text-base font-extrabold font-unbounded absolute right-0"
-                    >
-                      {`${(percent * 100).toFixed(0)}%`}
-                    </div>
-                  </foreignObject>
+                    {(percent * 100).toFixed(0)}%
+                  </text> */}
                 </>
               );
             }}
@@ -119,6 +109,34 @@ const Budget = () => {
             ))}
           </Pie>
         </PieChart>
+
+        {data.map(({ color, secondayColor }, index) => {
+          const x = (index === 1 && 140) || (index === 2 && 260);
+          const y =
+            (index === 0 && 150) || (index === 1 && 310) || (index === 2 && 70);
+          return (
+            <div
+              key={index}
+              style={{
+                position: "absolute",
+                top: `${y}px`,
+                left: `${x}px`,
+                backgroundColor: secondayColor,
+                color: color,
+                textAlign: "center",
+                width: "73px",
+                height: "34px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "25px",
+              }}
+              className="font-unbounded font-semibold backdrop-blur-50"
+            >
+              {((data[index].value / 100) * 100).toFixed(0)}%
+            </div>
+          );
+        })}
 
         <div className="w-[200px] h-[200px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center mt-2">
           <p className="text-white text-2xl font-semibold font-unbounded leading-34">
@@ -140,21 +158,7 @@ const Budget = () => {
         </div>
       </div>
 
-      <div className="px-4 z-1">
-        <div className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4">
-          <div className="w-14 h-14 bg-00BF33-12 flex items-center justify-center rounded-50">
-            <Cash width={24} height={24} fill="#00BF33" />
-          </div>
-          <div className="w-[65%]">
-            <p className="text-xs font-medium font-unbounded text-white leading-4">
-              Необходимые расходы
-            </p>
-            <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
-              5 млн. сум на месяц
-            </p>
-          </div>
-          <ArrowRight fill="white" />
-        </div>
+      <div className="px-4 z-1 flex flex-col gap-3">
         <div className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4">
           <div className="w-14 h-14 bg-00BF33-12 flex items-center justify-center rounded-50">
             <Cash width={24} height={24} fill="#00BF33" />
@@ -200,7 +204,6 @@ const Budget = () => {
       </div>
 
       <BudgetModal isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup} />
-      <Navigation />
     </div>
   );
 };

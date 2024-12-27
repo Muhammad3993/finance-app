@@ -1,5 +1,4 @@
 import GroupCards from "@/pages/home/group-cards/GroupCards";
-import Navigation from "@/components/navigation/Navigation";
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
@@ -60,7 +59,6 @@ const Home = () => {
       <Link to="/test" className="text-white">
         Start
       </Link>
-      <Navigation />
     </div>
   );
 };

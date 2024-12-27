@@ -1,12 +1,12 @@
-import ArrowLeft from "@/assets/icons/arrowLeft";
-import Plus from "@/assets/icons/plus";
-import Navigation from "@/components/navigation/Navigation";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ICurrence } from "../create-card/CreateCard";
-import Bill from "./Bill";
 import useGetCards from "@/data/hooks/currencies";
+import Bag from "@/assets/icons/bag";
+import ArrowRight from "@/assets/icons/arrowRight";
+import Plus from "@/assets/icons/plus";
+import formatBalance from "@/constants/useFormatBalance";
 
 export interface ICards {
   id?: string;
@@ -18,8 +18,6 @@ export interface ICards {
   isBalance?: boolean;
 }
 const Bills = () => {
-  const navigate = useNavigate();
-
   const { cards, isLoading, fetchAllCard } = useGetCards();
 
   useEffect(() => {
@@ -32,46 +30,43 @@ const Bills = () => {
 
   return (
     <div>
-      <UserNavbar
-        leftIcon={<ArrowLeft />}
-        leftIconBoxClick={() => navigate(-1)}
-        isText
-        text='Счета'
-        rightIcon={<Plus fill='#404040' />}
-        rightIconBoxClick={() => navigate("/create-card")}
-      />
-      {cards?.length === 0 ? (
-        <div className='px-4'>
-          <div className='bg-customGray8 border border-customGray9 border-dashed rounded-25 h-249 flex flex-col items-center justify-center py-10 px-12 gap-6'>
-            <div>
-              <div className='w-60px h-60px bg-customGray3 rounded-2xl'></div>
-            </div>
-            <p className='text-10 font-normal font-unbounded text-center text-customGray2'>
-              Добавляйте свои счет, чтобы вести по ним учет расходов и доходов
-            </p>
-            <Link
-              to={"/cards"}
-              className='py-3 px-5 bg-white rounded-xl text-xs font-medium font-unbounded'
-            >
-              Добавьте счет
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <div className='px-4 flex flex-col gap-4'>
-          {cards?.map((card, index) => (
-            <Bill key={index} card={card} />
-          ))}
-          <Link
-            to={"/create-card"}
-            className='rounded-20 border border-customGray9 border-dashed bg-customGray8 h-57 flex items-center justify-center text-xs font-normal font-unbounded text-customGray2'
+      <UserNavbar isText text="Счета" textClass="text-white text-base" />
+      <div className="px-4 flex flex-col gap-2">
+        {cards?.map((card, index) => (
+          <div
+            className="bg-1B1A1E-50 h-20 p-4 flex items-center justify-between gap-4 rounded-20 leading-22"
+            key={index}
           >
-            Добавить счет
-          </Link>
-        </div>
-      )}
-
-      <Navigation />
+            <div className="w-12 h-12 bg-00BF33-12 rounded-15 flex items-center justify-center">
+              <Bag />
+            </div>
+            <div className="w-[70%] flex flex-col justify-center">
+              <p className="text-white font-unbounded font-medium ">
+                {formatBalance(card.card_finance)}
+              </p>
+              <p className="text-9 leading-3 text-FFFFFF-50 font-unbounded">
+                Основной
+              </p>
+            </div>
+            <ArrowRight fill="#FFFFFF80" />
+          </div>
+        ))}
+        <Link
+          to={"/create-card"}
+          className="bg-1B1A1E-50 h-20 p-4 flex items-center justify-between gap-4 rounded-20 leading-22"
+        >
+          <div className="w-12 h-12 bg-00BF33-12 rounded-15 flex items-center justify-center">
+            <Plus width={16} height={16} />
+          </div>
+          <div className="w-[70%] flex flex-col justify-center">
+            <p className="text-white font-unbounded font-medium ">Новый</p>
+            <p className="text-9 leading-3 text-FFFFFF-50 font-unbounded">
+              Карта и наличные
+            </p>
+          </div>
+          <ArrowRight fill="#FFFFFF80" />
+        </Link>
+      </div>
     </div>
   );
 };

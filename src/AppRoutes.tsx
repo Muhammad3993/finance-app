@@ -11,6 +11,7 @@ import Bills from "./pages/bills/Bills";
 import CreateCard from "./pages/create-card/CreateCard";
 import Budget from "./pages/budget/Budget";
 import KeyboardListener from "./pages/Test";
+import Navigation from "./components/navigation/Navigation";
 
 const AppRoutes = () => {
   const { state, handleScroll } = useUserContext();
@@ -45,6 +46,7 @@ const AppRoutes = () => {
         <Route path="/test" element={<KeyboardListener />} />
         <Route path="*" element={<Home />} />
       </Routes>
+      <Navigation />
     </main>
   );
 };

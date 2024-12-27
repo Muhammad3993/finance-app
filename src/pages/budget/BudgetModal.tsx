@@ -3,7 +3,6 @@ import { db } from "@/firebaseConfig";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -66,44 +65,6 @@ const BudgetModal = (props: IProps) => {
     setIsOpenPopup(false);
   };
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  function delayCallback(callback: () => void, delay: number): void {
-    const start = Date.now();
-
-    function check(): void {
-      const now = Date.now();
-      if (now - start >= delay) {
-        callback();
-      } else {
-        requestAnimationFrame(check);
-      }
-    }
-
-    requestAnimationFrame(check);
-  }
-
-  useEffect(() => {
-    if (isOpenPopup) {
-      // requestAnimationFrame(() => {
-
-      // console.log("Loading...");
-      // });
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-        console.log("Loading...");
-      }, 3000);
-      delayCallback(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-          console.log("Fokus o‘rnatildi!");
-        }
-      }, 2000);
-    }
-  }, [isOpenPopup]);
-
   return (
     <>
       {isOpenPopup && (
@@ -118,7 +79,7 @@ const BudgetModal = (props: IProps) => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={clsx(
-          "fixed w-full bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
+          "fixed w-full h-[70%] bg-1B1A1E-80 p-4 rounded-tl-35 rounded-tr-35 flex flex-col gap-4 z-20 duration-300 pb-8 backdrop-blur-[100px]",
           isOpenPopup ? "bottom-[0]" : "bottom-[-100%]",
         )}
       >
@@ -131,7 +92,6 @@ const BudgetModal = (props: IProps) => {
               return (
                 <input
                   {...field}
-                  ref={inputRef}
                   type="text"
                   inputMode="numeric"
                   className="h-full w-full bg-transparent outline-none font-unbounded text-2xl pr-1 text-right text-white placeholder:text-white"
