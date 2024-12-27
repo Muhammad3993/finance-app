@@ -1,5 +1,5 @@
 import useUserData from "@/constants/useUserData";
-import { useUserContext } from "@/context/UserContext";
+// import { useUserContext } from "@/context/UserContext";
 import { db } from "@/firebaseConfig";
 import { ICurrence } from "@/pages/create-card/CreateCard";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,7 +21,7 @@ interface IFormValues {
 }
 
 const Finance = () => {
-  const { handleSaveBasic } = useUserContext();
+  // const { handleSaveBasic } = useUserContext();
   const userData = useUserData();
   useEffect(() => {
     WebApp.BackButton.show();
