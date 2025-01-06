@@ -47,7 +47,7 @@ const UserContext = createContext<IContext | undefined>(undefined);
 function UserProvider({ children }: { children: React.ReactNode }) {
   const dataUnsafe = WebApp.initDataUnsafe;
   useEffect(() => {
-    console.log("WebApp.initDataUnsafe:", WebApp.initDataUnsafe);
+    console.log("WebApp.initDataUnsafe:", dataUnsafe);
   }, []);
 
   const isTelegramWebApp = !!dataUnsafe?.user;
