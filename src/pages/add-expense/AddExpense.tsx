@@ -2,7 +2,7 @@ import Close from "@/assets/icons/close";
 import DateIcon from "@/assets/icons/dateIcon";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import useUserData from "@/constants/useUserData";
-import useGetCards from "@/data/hooks/currencies";
+import useGetCards from "@/data/hooks/cards";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";

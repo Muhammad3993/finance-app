@@ -72,7 +72,12 @@ export default {
         "FAC21C-12": "rgba(250, 194, 28, 0.12)",
         "FAC21C-100": "rgba(250, 194, 28, 1)",
         "customBlue": "#3634A3",
-        "404040": "rgba(64, 64, 64, 1)"
+        "6F00FF": "rgba(111, 0, 255, 1)",
+        "6F00FF-25": "rgba(111, 0, 255, 0.25)",
+        "008CBF": "rgba(0, 140, 191, 1)",
+        "008CBF-25": "rgba(0, 140, 191, 0.25)",
+        "404040": "rgba(64, 64, 64, 1)",
+        "040308": "rgba(4, 3, 8, 1)"
       },
       backgroundImage: {
         'green-gradient': 'linear-gradient(to bottom, rgba(0, 191, 51, 1), rgba(0, 19, 5, 1))',
@@ -125,7 +130,14 @@ export default {
         "swipe_box": "0px 6px 12px 0px rgba(0, 0, 0, 0.08)",
         "navigate_shadow": "0px 0px 25px -2px rgba(0, 191, 51, 0.5)",
         "green-shadow": "0px 8px 24px 0px rgba(0, 191, 51, 0.25)",
-        "category_shadow": "0px 0px 0px 4px"
+        "category_shadow": "0px 0px 0px 4px",
+        "some-shadows":  `
+          0px 0px 0.86px 0px rgba(0, 191, 51, 0.5),
+          0px 0px 1.72px 0px rgba(0, 191, 51, 0.5),
+          0px 0px 6.01px 0px rgba(0, 191, 51, 0.5),
+          0px 0px 12.03px 0px rgba(0, 191, 51, 0.5),
+          0px 0px 36px 0px rgba(0, 191, 51, 0.5)
+        `,
       },
       backdropBlur: {
         "50": "50px"

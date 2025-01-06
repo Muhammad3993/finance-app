@@ -12,6 +12,8 @@ import CreateCard from "./pages/create-card/CreateCard";
 import Budget from "./pages/budget/Budget";
 import KeyboardListener from "./pages/Test";
 import Navigation from "./components/navigation/Navigation";
+import ChooseValue from "./pages/onboarding/choose-value/ChooseValue";
+import Income from "./pages/onboarding/income/Income";
 
 const AppRoutes = () => {
   const { state, handleScroll } = useUserContext();
@@ -35,8 +37,10 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/onboarding" element={<Onboarding />}>
-          <Route index element={<Finance />} />
+          <Route index element={<ChooseValue />} />
+          <Route path="income" element={<Income />} />
           <Route path="finish" element={<Finish />} />
+          <Route path="finance" element={<Finance />} />
         </Route>
         <Route path="/card/:card" element={<Card />} />
         <Route path="/card/:card/add-expense" element={<AddExpense />} />

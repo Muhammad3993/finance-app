@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export interface IBudget {
   id?: string;
-  value?: number;
+  card_finance?: number;
 }
 
 export const useGetBudget = () => {

@@ -1,15 +1,15 @@
 import ArrowRight from "@/assets/icons/arrowRight";
 import Flag from "@/assets/icons/flag";
+import { ICurrency } from "@/data/hooks/currencies";
 import clsx from "clsx";
-import { ICurrence } from "./CreateCard";
 
 interface IProps {
   setIsOpenCurrency: (value: boolean) => void;
   isOpenCurrency: boolean;
-  setSelectedCurrence: (value: ICurrence) => void;
-  currencies: ICurrence[] | null;
-  selectedCurrence: ICurrence | null;
-  selecteddCurrence: ICurrence | null;
+  setSelectedCurrence: (value: ICurrency) => void;
+  currencies: ICurrency[] | null;
+  selectedCurrence: ICurrency | null;
+  selecteddCurrence: ICurrency | null;
 }
 const Currency = (props: IProps) => {
   const {
@@ -55,7 +55,7 @@ const Currency = (props: IProps) => {
         </p>
         <div className="mt-3">
           {currencies &&
-            currencies.map((currency: ICurrence, index: number) => (
+            currencies.map((currency: ICurrency, index: number) => (
               <div
                 className={clsx(
                   "flex justify-between items-center h-66 rounded-20 p-3",

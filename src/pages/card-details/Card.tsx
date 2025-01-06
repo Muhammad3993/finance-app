@@ -2,7 +2,7 @@ import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import OperationCards from "@/components/operation-cards/OperationCards";
 import Plus from "@/assets/icons/plus";
-import { IGroups, useGetGroups } from "@/data/hooks/groups";
+import { IGroups, useGetGroupsBalance } from "@/data/hooks/groups";
 import { Fragment, useEffect } from "react";
 import formatBalance from "@/constants/useFormatBalance";
 import { useOperation } from "@/data/hooks/operation";
@@ -17,7 +17,7 @@ const Card = () => {
   const navigate = useNavigate();
   const { card } = useParams();
 
-  const { groups, fetchGroups, isLoading } = useGetGroups();
+  const { groupsBudget, fetchGroups, isLoading } = useGetGroupsBalance();
 
   const { getCardOperations, operations } = useOperation();
 
@@ -32,7 +32,7 @@ const Card = () => {
     }
   }, []);
 
-  const group: IGroups[] | undefined = groups?.filter(
+  const group: IGroups[] | undefined = groupsBudget?.filter(
     (group) => group.name === card,
   );
 

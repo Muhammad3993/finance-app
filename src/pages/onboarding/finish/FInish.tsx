@@ -4,9 +4,9 @@ import Coin from "@/assets/icons/coin";
 import Savings from "@/assets/icons/savings";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import formatBalance from "@/constants/useFormatBalance";
-import { useDaysInCurrentMonth } from "@/constants/useMonthDays";
-import useGetCards from "@/data/hooks/currencies";
-import { IGroups, usePostGroups } from "@/data/hooks/groups";
+import useSettingBudget from "@/constants/useSettingBudget";
+import { IBudget, useGetBudget } from "@/data/hooks/budget";
+import { usePostGroupsBudget } from "@/data/hooks/groups";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Cell, Pie, PieChart } from "recharts";
@@ -14,73 +14,52 @@ import { Cell, Pie, PieChart } from "recharts";
 const FInish = () => {
   const navigate = useNavigate();
 
-  const { cards, isLoading, fetchAllCard } = useGetCards();
-  const { createGroup } = usePostGroups();
-  const { daysInMonth } = useDaysInCurrentMonth();
+  const { budgets, getBudget } = useGetBudget();
+  const { createGroup } = usePostGroupsBudget();
+
+  const budget =
+    budgets?.map((budget: IBudget) => budget.card_finance).toString() || "0";
 
   useEffect(() => {
-    fetchAllCard();
+    getBudget();
   }, []);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  const finance = cards
-    ?.slice(0)
-    ?.map((card) => card.card_finance)
-    .toString();
-
-  const firstValue = (Number(finance) * 50) / 100;
-  const secondValue = (Number(finance) * 30) / 100;
-  const thirdValue = (Number(finance) * 20) / 100;
-
-  const dailyValueNeed = +(firstValue / daysInMonth).toFixed(2);
-  const dailyValueCul = +(secondValue / daysInMonth).toFixed(2);
-
-  const groups: IGroups[] = [
-    {
-      name: "Necessary",
-      value: firstValue,
-      spendValue: firstValue,
-      dailyValue: dailyValueNeed,
-      dailySpendValue: dailyValueNeed,
-    },
-    {
-      name: "Desired",
-      value: secondValue,
-      spendValue: secondValue,
-      dailyValue: dailyValueCul,
-      dailySpendValue: dailyValueCul,
-    },
-    {
-      name: "Savings",
-      value: thirdValue,
-      spendValue: thirdValue,
-    },
-  ];
+  const { groups, firstValue, secondValue, thirdValue } =
+    useSettingBudget(budget);
 
   const data = [
-    { value: thirdValue, color: "rgba(255, 255, 255, .25)" },
-    { value: secondValue, color: "rgba(255, 255, 255, 0.5)" },
-    { value: firstValue, color: "rgba(255, 255, 255, 1)" },
+    {
+      value: thirdValue,
+      color: "rgba(0, 140, 191, 1)",
+      secondayColor: "rgba(0, 140, 191, 0.12)",
+    },
+    {
+      value: secondValue,
+      color: "rgba(111, 0, 255, 1)",
+      secondayColor: "rgba(111, 0, 255, 0.12)",
+    },
+    {
+      value: firstValue,
+      color: "rgba(0, 191, 51, 1)",
+      secondayColor: "rgba(0, 191, 51, 0.12)",
+    },
   ];
 
   return (
-    <div className="bg-green-gradient h-full flex flex-col justify-between overflow-y-auto">
+    <div className="bg-040308 h-full flex flex-col justify-between overflow-y-auto">
       <div>
         <UserNavbar
           leftIcon={<ArrowLeftShort />}
           leftIconBoxClick={() => navigate(-1)}
         />
-        <div className="px-4">
+        <div className="px-4 w-full">
           <p className="font-unbounded font-bold text-2xl text-white text-center">
             Ваш бюджет <br /> распределен
           </p>
-          <div className="h-240 w-240 relative mt-24 m-auto">
+          <div className="w-[240px] relative mt-24 m-auto">
             <PieChart
-              width={240}
-              height={240}
+              width={250}
+              height={250}
               className="border-none outline-none -rotate-90"
             >
               <Pie
@@ -90,13 +69,41 @@ const FInish = () => {
                 outerRadius={110}
                 cornerRadius={6}
                 dataKey="value"
+                label={({ index }) => {
+                  const entry = data[index];
+                  return (
+                    <>
+                      <defs>
+                        <filter
+                          id={`shadow-${index}`}
+                          x="-50%"
+                          y="-50%"
+                          width="200%"
+                          height="200%"
+                        >
+                          <feDropShadow
+                            dx="0"
+                            dy="0"
+                            stdDeviation="10"
+                            floodColor={entry.color}
+                            result="shadow"
+                          />
+                        </filter>
+                      </defs>
+                    </>
+                  );
+                }}
+                labelLine={false}
                 paddingAngle={2}
               >
                 {data.map((entry, index) => (
                   <Cell
-                    style={{ outline: "none" }}
+                    style={{
+                      outline: "none",
+                    }}
                     key={`cell-${index}`}
                     fill={entry.color}
+                    filter={`url(#shadow-${index})`}
                   />
                 ))}
               </Pie>
@@ -110,10 +117,10 @@ const FInish = () => {
               </p>
             </div>
           </div>
-          <div className="bg-FFFFFF-15 rounded-25 mt-12">
+          <div className="bg-1B1A1E-50 rounded-25 mt-12">
             <div className="flex py-4 px-5 items-center justify-between">
               <div className="flex items-center gap-4">
-                <Cash width={24} height={25} />
+                <Cash width={24} height={25} fill="#00BF33" />
                 <div>
                   <p className="text-13 font-medium font-unbounded text-white leading-4">
                     Необходимые расходы
@@ -123,13 +130,13 @@ const FInish = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+              <div className="bg-00BF33-12 w-52 h-8 flex items-center justify-center rounded-[100px] text-00BF33 text-xs font-medium font-unbounded">
                 50%
               </div>
             </div>
             <div className="flex py-4 px-5 items-center justify-between">
               <div className="flex items-center gap-4">
-                <Coin fill="#ffffff" />
+                <Coin fill="#6F00FF" />
                 <div>
                   <p className="text-13 font-medium font-unbounded text-white leading-4">
                     Желаемые расходы
@@ -139,13 +146,13 @@ const FInish = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+              <div className="bg-6F00FF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-6F00FF text-xs font-medium font-unbounded">
                 30%
               </div>
             </div>
             <div className="flex py-4 px-5 items-center justify-between">
               <div className="flex items-center gap-4">
-                <Savings width={24} height={24} />
+                <Savings width={24} height={24} fill="#008CBF" />
                 <div>
                   <p className="text-13 font-medium font-unbounded text-white leading-4">
                     Сбережения
@@ -155,7 +162,7 @@ const FInish = () => {
                   </p>
                 </div>
               </div>
-              <div className="bg-FFFFFF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-white text-xs font-medium font-unbounded">
+              <div className="bg-008CBF-25 w-52 h-8 flex items-center justify-center rounded-[100px] text-008CBF text-xs font-medium font-unbounded">
                 20%
               </div>
             </div>
@@ -164,10 +171,10 @@ const FInish = () => {
       </div>
       <div className="px-4 mb-8 mt-8">
         <div
-          className="w-full py-4 text-black bg-white text-center rounded-50 text-xs font-medium font-unbounded"
+          className="w-full py-4 px-6 rounded-[50px] bg-00BF33 text-xs font-medium font-unbounded mb-8 text-white shodow-some-shadows flex items-center justify-center cursor-pointer"
           onClick={() => {
             createGroup(groups);
-            navigate("/");
+            navigate("/onboarding/finance");
           }}
         >
           Далее

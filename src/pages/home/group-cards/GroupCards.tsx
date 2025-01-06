@@ -1,4 +1,8 @@
-import { IGroups, useGetGroups, usePostGroups } from "@/data/hooks/groups";
+import {
+  IGroups,
+  useGetGroupsBalance,
+  usePostGroupsBudget,
+} from "@/data/hooks/groups";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -6,12 +10,11 @@ import clsx from "clsx";
 import GroupCard from "./GroupCard";
 import { Link } from "react-router-dom";
 
-
 export default function GroupCards() {
   const [groupsPer, setGroupsPer] = useState<IGroups[] | null>(null);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const { groups, isLoading, fetchGroups } = useGetGroups();
-  const { isLoadingCreate } = usePostGroups();
+  const { groupsBudget, isLoading, fetchGroups } = useGetGroupsBalance();
+  const { isLoadingCreate } = usePostGroupsBudget();
 
   useEffect(() => {
     if (!isLoadingCreate) {
@@ -19,7 +22,7 @@ export default function GroupCards() {
     }
   }, []);
 
-  const totalValue = groups?.reduce((accumulator, currentGroup) => {
+  const totalValue = groupsBudget?.reduce((accumulator, currentGroup) => {
     if (currentGroup.value !== undefined) {
       return accumulator + currentGroup.value;
     }
@@ -28,7 +31,7 @@ export default function GroupCards() {
 
   useEffect(() => {
     if (totalValue) {
-      const groupsWithPercentage: IGroups[] | undefined = groups?.map(
+      const groupsWithPercentage: IGroups[] | undefined = groupsBudget?.map(
         (group) => {
           if (group.value !== undefined) {
             const spendPercentage = (group.value / totalValue) * 100;
@@ -43,14 +46,13 @@ export default function GroupCards() {
     } else {
       console.log("Total value is 0 or undefined.");
     }
-
   }, [totalValue]);
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
-      <div className='w-full'>
+      <div className="w-full">
         <Swiper
           key={groupsPer?.length || 0}
           slidesPerView={"auto"}
@@ -59,7 +61,7 @@ export default function GroupCards() {
             setActiveIndex(swiper.activeIndex);
           }}
           initialSlide={1}
-          className='mySwiper px-10'
+          className="mySwiper px-10"
         >
           {groupsPer?.map((group: IGroups, index: number) => (
             <SwiperSlide key={index}>

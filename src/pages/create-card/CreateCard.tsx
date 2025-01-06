@@ -1,26 +1,19 @@
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { db } from "@/firebaseConfig";
 import clsx from "clsx";
-import { addDoc, collection, doc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Currency from "./Currency";
 import useUserData from "@/constants/useUserData";
 import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
-
-export interface ICurrence {
-  name?: string;
-  code?: string;
-  intl?: string;
-  symbol?: string;
-  value?: number;
-}
+import useCurrencies, { ICurrency } from "@/data/hooks/currencies";
 
 export interface ICardData {
   card_finance: number | string;
   card_name: string;
-  card_currency: ICurrence;
+  card_currency: ICurrency;
   isBalance: boolean;
 }
 
@@ -28,16 +21,15 @@ const CreateCard = () => {
   const navigate = useNavigate();
 
   const [isOpenCurrency, setIsOpenCurrency] = useState(false);
+  const { fetchAllCurriense, currencies, isLoading } = useCurrencies();
 
-  const [currencies, setCurrencies] = useState<ICurrence[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [codeCountry, setCodeCountry] = useState<string>();
-  const currenciesGets: ICurrence[] | null =
+  const currenciesGets: ICurrency[] | null =
     currencies && currencies?.filter((curr) => curr.code === codeCountry);
 
-  const currencyGet: ICurrence | null = currenciesGets && currenciesGets[0];
+  const currencyGet: ICurrency | null = currenciesGets && currenciesGets[0];
 
-  const [selectedCurrence, setSelectedCurrence] = useState<ICurrence | null>({
+  const [selectedCurrence, setSelectedCurrence] = useState<ICurrency | null>({
     code: "usd",
   });
 
@@ -46,21 +38,6 @@ const CreateCard = () => {
       setSelectedCurrence(currencyGet);
     }
   }, [currencyGet]);
-
-  const fetchAllCurriense = async () => {
-    try {
-      setIsLoading(true);
-      const querySnapshot = await getDocs(collection(db, "currencies"));
-
-      if (!querySnapshot.empty) {
-        const currencies = querySnapshot.docs.map((doc) => doc.data());
-        setCurrencies(currencies);
-      }
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const { control, handleSubmit } = useForm<ICardData>({
     defaultValues: { card_name: "", isBalance: false },

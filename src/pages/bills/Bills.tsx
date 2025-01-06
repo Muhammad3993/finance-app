@@ -1,16 +1,16 @@
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ICurrence } from "../create-card/CreateCard";
-import useGetCards from "@/data/hooks/currencies";
+import useGetCards from "@/data/hooks/cards";
 import Bag from "@/assets/icons/bag";
 import ArrowRight from "@/assets/icons/arrowRight";
 import Plus from "@/assets/icons/plus";
 import formatBalance from "@/constants/useFormatBalance";
+import { ICurrency } from "@/data/hooks/currencies";
 
 export interface ICards {
   id?: string;
-  card_currency?: ICurrence;
+  card_currency?: ICurrency;
   card_expiry_date?: string;
   card_finance?: number;
   card_name?: string;

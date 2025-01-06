@@ -1,12 +1,12 @@
 import Close from "@/assets/icons/close";
-import { ICurrence } from "./CreateCard";
 import Symbol from "@/assets/icons/symbol";
+import { ICurrency } from "@/data/hooks/currencies";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 interface IProps {
   setIsOpenCalc: (value: boolean) => void;
-  selectedCurrence: ICurrence | null | undefined;
+  selectedCurrence: ICurrency | null | undefined;
   isOpenCalc?: boolean;
   realResult?: string | number;
   setRealResult: (value: string) => void;

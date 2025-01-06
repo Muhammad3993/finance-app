@@ -2,7 +2,7 @@ import ArrowRight from "@/assets/icons/arrowRight";
 import Cash from "@/assets/icons/cash";
 import formatBalance from "@/constants/useFormatBalance";
 import { useGetBudget } from "@/data/hooks/budget";
-import useGetCards from "@/data/hooks/currencies";
+import useGetCards from "@/data/hooks/cards";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import BudgetModal from "./BudgetModal";
@@ -39,7 +39,9 @@ const Budget = () => {
     return <p>Loading...</p>;
   }
   const finance = Number(cards?.slice(0)?.map((card) => card.card_finance));
-  const budget = Number(budgets?.slice(0)?.map((card) => card.value));
+  const budget = Number(
+    budgets?.slice(0)?.map((budget) => budget.card_finance),
+  );
 
   return (
     <div className="mt-[45px] overflow-hidden pb-[100px]">
@@ -77,21 +79,6 @@ const Budget = () => {
                       />
                     </filter>
                   </defs>
-
-                  {/* <text
-                    x={x}
-                    y={y}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill={entry.color}
-                    style={{
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    {(percent * 100).toFixed(0)}%
-                  </text> */}
                 </>
               );
             }}
