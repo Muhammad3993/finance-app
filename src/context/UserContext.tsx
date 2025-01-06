@@ -102,7 +102,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
     try {
       const docData = { ...userData };
-      await setDoc(doc(db, "users", `${5673577167}`), docData);
+      await setDoc(doc(db, "users", `${userData.telegram_id}`), docData);
       console.log("Foydalanuvchi ma'lumotlari saqlandi:", docData);
     } catch (e) {
       console.error("Foydalanuvchi ma'lumotlarini saqlashda xatolik:", e);
