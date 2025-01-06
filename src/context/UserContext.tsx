@@ -99,14 +99,14 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   }, [isTelegramWebApp]);
 
   const saveUserData = async (userData: IUser) => {
-    if (!userData.telegram_id) {
+    if (!dataUnsafe?.user?.id) {
       console.error("Telegram ID mavjud emas. Foydalanuvchi saqlanmaydi.");
       return;
     }
 
     try {
       const docData = { ...userData };
-      await setDoc(doc(db, "users", `${userData.telegram_id}`), docData);
+      await setDoc(doc(db, "users", `${dataUnsafe.user.id}`), docData);
       console.log("Foydalanuvchi ma'lumotlari saqlandi:", docData);
     } catch (e) {
       console.error("Foydalanuvchi ma'lumotlarini saqlashda xatolik:", e);
@@ -126,7 +126,13 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       name: dataUnsafe.user.first_name,
       lang: dataUnsafe.user.language_code,
       photo: dataUnsafe.user.photo_url,
-      currency: state.userData?.currency,
+      currency: state.userData?.currency || {
+        code: "uzs",
+        intl: "uz-UZ",
+        name: "Uzbekistani Som",
+        symbol: "uzs",
+        value: 1,
+      },
     };
 
     saveUserData(basicUserData);
