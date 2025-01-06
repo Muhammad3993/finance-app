@@ -14,6 +14,8 @@ const useSettingBudget = (finance?: string | number) => {
   const groups: IGroups[] = [
     {
       name: "Necessary",
+      title: "Необходимые расходы",
+      subtitle: "сум на месяц",
       value: firstValue,
       spendValue: firstValue,
       dailyValue: dailyValueNeed,
@@ -21,6 +23,8 @@ const useSettingBudget = (finance?: string | number) => {
     },
     {
       name: "Desired",
+      title: "Желаемые расходы",
+      subtitle: "сум на месяц",
       value: secondValue,
       spendValue: secondValue,
       dailyValue: dailyValueCul,
@@ -28,6 +32,8 @@ const useSettingBudget = (finance?: string | number) => {
     },
     {
       name: "Savings",
+      title: "Сбережения",
+      subtitle: "сум на месяц",
       value: thirdValue,
       spendValue: thirdValue,
     },

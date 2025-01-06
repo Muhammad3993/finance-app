@@ -6,6 +6,8 @@ import { useState } from "react";
 export interface IGroups {
   id?: string;
   name?: string;
+  title?: string;
+  subtitle?: string;
   value?: number;
   spendValue?: number;
   spendPercentage?: number;
