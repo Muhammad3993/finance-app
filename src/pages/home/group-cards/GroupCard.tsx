@@ -4,7 +4,6 @@ import Savings from "@/assets/icons/savings";
 import formatBalance from "@/constants/useFormatBalance";
 import { IGroups } from "@/data/hooks/groups";
 import { useOperation } from "@/data/hooks/operation";
-import { useEffect } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 
 interface IProps {
@@ -14,7 +13,7 @@ interface IProps {
 const GroupCard = (props: IProps) => {
   const { group } = props;
 
-  const { getCardOperations, operations } = useOperation();
+  const { data: operations } = useOperation(`${group.name}`, "Cash");
 
   const oprationsValue =
     operations?.reduce((total, operation) => {
@@ -24,12 +23,6 @@ const GroupCard = (props: IProps) => {
   const dailySpendValueS =
     Number(group.dailySpendValue) - Number(oprationsValue);
   const monthlySpendValueS = Number(group.spendValue) - Number(oprationsValue);
-
-  useEffect(() => {
-    if (group) {
-      getCardOperations(`${group.name}`);
-    }
-  }, []);
 
   const color =
     group.name === "Necessary"

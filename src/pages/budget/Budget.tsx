@@ -2,27 +2,29 @@ import ArrowRight from "@/assets/icons/arrowRight";
 import Cash from "@/assets/icons/cash";
 import formatBalance from "@/constants/useFormatBalance";
 import { IBudget, useGetBudget } from "@/data/hooks/budget";
-import useGetCards from "@/data/hooks/cards";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import BudgetModal from "./BudgetModal";
 import Heart from "@/assets/icons/heart";
 import Savings from "@/assets/icons/savings";
-import useSettingBudget from "@/constants/useSettingBudget";
+import { useGetGroups } from "@/data/hooks/groups";
+import { Link } from "react-router-dom";
+import { useGetCards } from "@/data/hooks/cards";
+import { ICards } from "../bills/Bills";
 
 const Budget = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  const { cards, isLoading, fetchAllCard } = useGetCards();
+  const { data: cards, isLoading } = useGetCards();
   const { budgets, getBudget } = useGetBudget();
 
   const budget =
     budgets?.map((budget: IBudget) => budget.card_finance).toString() || "0";
 
-  const { firstValue, secondValue, thirdValue } = useSettingBudget(budget);
+  const { fetchGroups, groupsBudget } = useGetGroups();
 
   useEffect(() => {
-    fetchAllCard();
     getBudget();
+    fetchGroups();
   }, []);
 
   const data = [
@@ -46,11 +48,13 @@ const Budget = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  const finance = Number(cards?.slice(0)?.map((card) => card.card_finance));
+  const finance = Number(
+    cards?.slice(0)?.map((card: ICards) => card.card_finance),
+  );
 
   return (
     <div className="mt-[45px] overflow-hidden pb-[100px]">
-      <div className="h-[380px] w-[380px] relative mt-24 m-auto">
+      <div className="h-[380px] w-[380px] relative mt-24 m-auto z-0">
         <PieChart
           width={380}
           height={380}
@@ -140,7 +144,7 @@ const Budget = () => {
             Месячный бюджет
           </p>
           <div
-            className="bg-00BF33-12 py-6 px-3 mt-2 rounded-25 text-10 text-00BF33 font-medium cursor-pointer"
+            className="bg-00BF33-12 py-6 px-3 mt-2 rounded-25 text-10 text-00BF33 font-medium cursor-pointer "
             onClick={() => {
               setIsOpenPopup(true);
             }}
@@ -150,49 +154,32 @@ const Budget = () => {
         </div>
       </div>
 
-      <div className="px-4 z-1 flex flex-col gap-3">
-        <div className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4">
-          <div className="w-14 h-14 bg-00BF33-12 flex items-center justify-center rounded-50">
-            <Cash width={24} height={24} fill="#00BF33" />
-          </div>
-          <div className="w-[65%]">
-            <p className="text-xs font-medium font-unbounded text-white leading-4">
-              Необходимые расходы
-            </p>
-            <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
-              {formatBalance(firstValue)} сум на месяц
-            </p>
-          </div>
-          <ArrowRight fill="white" />
-        </div>
-        <div className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4">
-          <div className="w-14 h-14 bg-6F00FF-12 flex items-center justify-center rounded-50">
-            <Heart width={24} height={24} fill="#6F00FF" />
-          </div>
-          <div className="w-[65%]">
-            <p className="text-xs font-medium font-unbounded text-white leading-4">
-              Желаемые расходы
-            </p>
-            <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
-              {formatBalance(secondValue)} сум на месяц
-            </p>
-          </div>
-          <ArrowRight fill="white" />
-        </div>
-        <div className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4">
-          <div className="w-14 h-14 bg-008CBF-12 flex items-center justify-center rounded-50">
-            <Savings width={24} height={24} fill="#008CBF" />
-          </div>
-          <div className="w-[65%]">
-            <p className="text-xs font-medium font-unbounded text-white leading-4">
-              Сбережения
-            </p>
-            <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
-              {formatBalance(thirdValue)} сум на месяц
-            </p>
-          </div>
-          <ArrowRight fill="white" />
-        </div>
+      <div className="px-4 z-20 flex flex-col gap-3">
+        {groupsBudget?.map((group, i: number) => (
+          <Link
+            to={`/card/${group.name}`}
+            className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4"
+            key={i}
+          >
+            <div className="w-14 h-14 bg-00BF33-12 flex items-center justify-center rounded-50">
+              {(group.name === "Necessary" && (
+                <Cash width={24} height={24} fill="#00BF33" />
+              )) ||
+                (group.name === "Desired" && (
+                  <Heart width={24} height={24} fill="#6F00FF" />
+                )) || <Savings width={24} height={24} fill="#008CBF" />}
+            </div>
+            <div className="w-[65%]">
+              <p className="text-xs font-medium font-unbounded text-white leading-4">
+                Необходимые расходы
+              </p>
+              <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
+                {formatBalance(group.value)} сум на месяц
+              </p>
+            </div>
+            <ArrowRight fill="white" />
+          </Link>
+        ))}
       </div>
 
       <BudgetModal isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup} />

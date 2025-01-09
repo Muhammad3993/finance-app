@@ -2,9 +2,15 @@ interface IProps {
   fill?: string;
 }
 const Close = (props: IProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={32}
+    height={32}
+    viewBox="0 0 32 32"
+    fill="none"
+  >
     <path
-      fill={props.fill || "#404040"}
+      fill={props.fill || "red"}
       d="M15.214 13.525a.75.75 0 1 1 1.061-1.06l2.475 2.474 2.475-2.475a.75.75 0 1 1 1.06 1.061L19.811 16l2.474 2.475a.75.75 0 1 1-1.06 1.06l-2.475-2.474-2.475 2.474a.75.75 0 1 1-1.06-1.06L17.688 16l-2.475-2.475Z"
     />
     <path

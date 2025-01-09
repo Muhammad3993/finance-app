@@ -4,17 +4,18 @@ import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FollowAndAnalytics from "./follow_and_analytics";
-import useGetCards from "@/data/hooks/cards";
 import formatBalance from "@/constants/useFormatBalance";
 import { useOperation } from "@/data/hooks/operation";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { usePostGroupsBalance } from "@/data/hooks/groups";
+import { useGetCards } from "@/data/hooks/cards";
+import { ICards } from "../bills/Bills";
 
 const Home = () => {
   const { state } = useUserContext();
 
-  const { cards, fetchAllCard, isLoading: isLoadingCard } = useGetCards();
-  const { getCardOperations, operations } = useOperation();
+  const { data: cards, isLoading: isLoadingCard } = useGetCards();
+  const { data: operations, isLoading } = useOperation(undefined, "Cash");
   const { createGroup } = usePostGroupsBalance();
 
   const oprationsValue =
@@ -22,9 +23,9 @@ const Home = () => {
       return total + +(operation.value || 0);
     }, 0) || 0;
 
-  const finan = cards?.filter((card) => card.card_name === "Cash");
+  const finan = cards?.filter((card: ICards) => card.card_name === "Cash");
 
-  const finance = Number(finan?.map((card) => card.card_finance)) || 0;
+  const finance = Number(finan?.map((card: ICards) => card.card_finance)) || 0;
   const { groups } = useSettingBudget(finance);
 
   const resultFinance = finance - Number(oprationsValue);
@@ -33,8 +34,6 @@ const Home = () => {
 
   useEffect(() => {
     WebApp.BackButton.hide();
-    fetchAllCard();
-    getCardOperations();
   }, []);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const Home = () => {
     }
   }, [finance]);
 
-  if (state.isLoading || isLoadingCard) {
+  if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
   }
 

@@ -2,7 +2,6 @@ import Close from "@/assets/icons/close";
 import DateIcon from "@/assets/icons/dateIcon";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import useUserData from "@/constants/useUserData";
-import useGetCards from "@/data/hooks/cards";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -18,6 +17,7 @@ import AddExpenseModal from "./modals/AddExpenseModal";
 import CardModal from "./modals/CardModal";
 import CategoryModal from "./modals/CategoryModal";
 import RepeatModal from "./modals/RepeatModal";
+import { useGetCards } from "@/data/hooks/cards";
 
 export interface IWeekDay {
   id: number;
@@ -97,7 +97,7 @@ const AddExpense = () => {
   };
   const { control, handleSubmit, setValue } = useForm<IOperationData>();
 
-  const { cards, isLoading, fetchAllCard } = useGetCards();
+  const { data: cards, isLoading } = useGetCards();
 
   const handleClick = (value: string) => {
     if (value === ",") {
@@ -121,7 +121,6 @@ const AddExpense = () => {
   }, [input]);
 
   useEffect(() => {
-    fetchAllCard();
     fetchAllCategories();
   }, []);
 
@@ -324,7 +323,7 @@ const AddExpense = () => {
 
           <div
             className={clsx(
-              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full select-none",
             )}
           >
             <button
@@ -338,7 +337,7 @@ const AddExpense = () => {
             >
               <p className=" text-xs font-medium font-unbounded">Добавить</p>
             </button>
-            <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-[16px] w-full max-390:gap-x-61 bg-transparent">
+            <div className="grid grid-cols-4 grid-rows-4 gap-y-61 gap-x-[16px] w-full max-390:gap-x-61 bg-transparent cursor-pointer">
               {[
                 "1",
                 "2",
@@ -370,11 +369,15 @@ const AddExpense = () => {
               ))}
               <div
                 className={
-                  "bg-inherit w-full rounded-2xl flex justify-center items-center max-390:w-auto col-span-1 ml-[102px]"
+                  "bg-inherit w-full rounded-2xl flex justify-end items-center max-390:w-auto col-span-2"
                 }
-                onClick={() => handleBackSpace()}
               >
-                <Close fill="white" />
+                <div
+                  className="w-84 flex items-center justify-center"
+                  onClick={() => handleBackSpace()}
+                >
+                  <Close fill="white" />
+                </div>
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ interface IProps {
   isOpenCard: boolean;
   setIsOpenCard: (value: boolean) => void;
   isLoading: boolean;
-  cards: ICards[] | null;
+  cards: ICards[] | null | undefined;
   selectedCard: ICards | null;
   setSelectedCard: (value: ICards) => void;
 }

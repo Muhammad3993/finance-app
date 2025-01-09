@@ -11,7 +11,7 @@ import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
 import useCurrencies, { ICurrency } from "@/data/hooks/currencies";
 
 export interface ICardData {
-  card_finance: number | string;
+  card_finance: number;
   card_name: string;
   card_currency: ICurrency;
   isBalance: boolean;
@@ -23,24 +23,20 @@ const CreateCard = () => {
   const [isOpenCurrency, setIsOpenCurrency] = useState(false);
   const { fetchAllCurriense, currencies, isLoading } = useCurrencies();
 
-  const [codeCountry, setCodeCountry] = useState<string>();
-  const currenciesGets: ICurrency[] | null =
-    currencies && currencies?.filter((curr) => curr.code === codeCountry);
-
-  const currencyGet: ICurrency | null = currenciesGets && currenciesGets[0];
-
-  const [selectedCurrence, setSelectedCurrence] = useState<ICurrency | null>({
-    code: "usd",
+  const [selectedCurrence, setSelectedCurrence] = useState<ICurrency>({
+    code: "uzs",
+    intl: "uz-UZ",
+    name: "Uzbekistani Som",
+    symbol: "uzs",
+    value: 1,
   });
 
-  useEffect(() => {
-    if (currencyGet) {
-      setSelectedCurrence(currencyGet);
-    }
-  }, [currencyGet]);
-
-  const { control, handleSubmit } = useForm<ICardData>({
-    defaultValues: { card_name: "", isBalance: false },
+  const { control, handleSubmit, setValue } = useForm<ICardData>({
+    defaultValues: {
+      card_name: "",
+      isBalance: false,
+      card_currency: selectedCurrence,
+    },
   });
 
   const userData = useUserData();
@@ -51,7 +47,10 @@ const CreateCard = () => {
 
       const cardsCollectionRef = collection(userDocRef, "cards");
       await addDoc(cardsCollectionRef, {
-        ...cardData,
+        card_finance: cardData.card_finance,
+        card_name: cardData.card_name,
+        card_currency: cardData.card_currency,
+        isBalance: cardData.isBalance,
       });
     } catch (e) {
       console.error(e);
@@ -60,7 +59,7 @@ const CreateCard = () => {
 
   const onSubmit = async (data: ICardData) => {
     const cardData: ICardData = {
-      card_finance: data.card_finance,
+      card_finance: +data.card_finance.toString().replace(/\D/g, ""),
       card_name: data.card_name,
       card_currency: data.card_currency,
       isBalance: data.isBalance,
@@ -71,42 +70,13 @@ const CreateCard = () => {
 
   useEffect(() => {
     fetchAllCurriense();
+    setValue("card_currency", selectedCurrence);
   }, []);
-
-  const currencyMapping: { [key: string]: string } = {
-    uz: "uzs",
-    ru: "rub",
-    us: "usd",
-    eu: "eur",
-  };
-
-  const getCurrencyByCountry = (countryCode: string) => {
-    const code = currencyMapping[countryCode] || "usd";
-    setCodeCountry(code);
-  };
 
   const formatNumber = (value: string | number): string => {
     if (typeof value === "number") value = value.toString();
     return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const response = await fetch(
-            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
-          );
-          const data = await response.json();
-          const detectedCountryCode = data.countryCode.toLowerCase();
-          getCurrencyByCountry(detectedCountryCode);
-        } catch (error) {
-          console.error("Mamlakat kodini olishda xato:", error);
-        }
-      });
-    }
-  }, [codeCountry]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -125,7 +95,7 @@ const CreateCard = () => {
       />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="px-4 pt-4 mt-6 flex justify-between flex-col gap-3 bg-1B1A1E-50 min-h-[80vh] rounded-tl-45 rounded-tr-45"
+        className="px-4 pt-4 mt-6 flex justify-between flex-col gap-3 bg-1B1A1E-50 min-h-[calc(100vh-164px)] rounded-tl-45 rounded-tr-45"
       >
         <div className="flex flex-col gap-3">
           <Controller
@@ -224,7 +194,7 @@ const CreateCard = () => {
 
         <button
           type="submit"
-          className="bg-customGray2 h-14 rounded-50 flex items-center justify-center"
+          className="bg-customGray2 h-14 rounded-50 flex items-center justify-center mb-24"
         >
           <p className="text-white font-medium text-xs font-unbounded">
             Сохранить

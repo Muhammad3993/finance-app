@@ -48,7 +48,7 @@ export default function GroupCards() {
     }
   }, [totalValue]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading || isLoadingCreate) return <div className="h-342">Loading...</div>;
 
   return (
     <>

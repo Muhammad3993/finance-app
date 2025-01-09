@@ -1,8 +1,11 @@
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import OperationCards from "@/components/operation-cards/OperationCards";
-import Plus from "@/assets/icons/plus";
-import { IGroups, useGetGroupsBalance } from "@/data/hooks/groups";
+import {
+  IGroups,
+  useGetGroups,
+  useGetGroupsBalance,
+} from "@/data/hooks/groups";
 import { Fragment, useEffect } from "react";
 import formatBalance from "@/constants/useFormatBalance";
 import { useOperation } from "@/data/hooks/operation";
@@ -12,6 +15,7 @@ import PlansCards from "@/components/plans/PlansCards";
 import clsx from "clsx";
 import Heart from "@/assets/icons/heart";
 import Savings from "@/assets/icons/savings";
+import PlusComponent from "@/components/plus/Plus";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -19,20 +23,23 @@ const Card = () => {
 
   const { groupsBudget, fetchGroups, isLoading } = useGetGroupsBalance();
 
-  const { getCardOperations, operations } = useOperation();
+  const { data: operations } = useOperation(card, "Cash");
 
   const oprationsValue = operations?.reduce((total, operation) => {
     return total + +(operation.value || 0);
   }, 0);
+  const { fetchGroups: fetchGroupsBudget, groupsBudget: budgetGroups } =
+    useGetGroups();
 
   useEffect(() => {
     fetchGroups();
-    if (card) {
-      getCardOperations(card);
-    }
+    fetchGroupsBudget();
   }, []);
 
   const group: IGroups | undefined = groupsBudget?.filter(
+    (group) => group.name === card,
+  )[0];
+  const groupBudget: IGroups | undefined = budgetGroups?.filter(
     (group) => group.name === card,
   )[0];
 
@@ -97,7 +104,7 @@ const Card = () => {
           <div className="grid grid-cols-2 grid-rows-2 px-4 gap-1 mt-10">
             <div className="bg-1B1A1E-50 rounded-2xl p-3 flex items-center justify-center flex-col border-[.5px] border-1B1A1E-100">
               <p className="font-bold font-unbounded text-white">
-                {formatBalance(group?.dailyValue)} cym
+                {formatBalance(groupBudget?.dailyValue)} cym
               </p>
               <p className="font-unbounded font-normal text-10 text-FFFFFF-50">
                 бюджет на день
@@ -105,7 +112,7 @@ const Card = () => {
             </div>
             <div className="bg-1B1A1E-50 rounded-2xl p-3 flex items-center justify-center flex-col border-[.5px] border-1B1A1E-100">
               <p className="font-bold font-unbounded text-white">
-                {formatBalance(group?.value)} cym
+                {formatBalance(groupBudget?.value)} cym
               </p>
               <p className="font-unbounded font-normal text-10 text-FFFFFF-50">
                 бюджет на день
@@ -143,14 +150,7 @@ const Card = () => {
             </div> */}
           <OperationCards />
           <PlansCards />
-          <div className="fixed bottom-6 left-[50%] translate-x-[-50%] border-4 border-00BF33-12 rounded-full shadow-green-shadow backdrop-blur-50">
-            <Link
-              to={"add-expense"}
-              className="h-60px w-60px bg-00BF33 flex items-center justify-center rounded-full backdrop-blur-[50px]"
-            >
-              <Plus />
-            </Link>
-          </div>
+          <PlusComponent link="add-expense" />
         </div>
       </Fragment>
     </div>

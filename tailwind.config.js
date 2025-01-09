@@ -58,6 +58,7 @@ export default {
         "customGray11": "#989CB0",
         "customBlack": "#0F0F0F",
         "customBlack50": "rgba(0, 0, 0, .5)",
+        "1B1A1E-8": "rgba(27, 26, 30, 0.08)",
         "1B1A1E-50": "rgba(27, 26, 30, 0.5)",
         "1B1A1E-80": "rgba(27, 26, 30, 0.8)",
         "1B1A1E-100": "rgba(27, 26, 30, 1)",
@@ -79,7 +80,11 @@ export default {
         "008CBF-12": "rgba(0, 140, 191, 0.12)",
         "008CBF-25": "rgba(0, 140, 191, 0.25)",
         "404040": "rgba(64, 64, 64, 1)",
-        "040308": "rgba(4, 3, 8, 1)"
+        "040308": "rgba(4, 3, 8, 1)",
+        "DE3A31": "rgba(222, 58, 49, 1)",
+        "DE3A31-8": "rgba(222, 58, 49, 0.08)",
+        "DE3A31-12": "rgba(222, 58, 49, 0.12)",
+        "1CFA52-12": "rgba(28, 250, 83, 0.12)"
       },
       backgroundImage: {
         'green-gradient': 'linear-gradient(to bottom, rgba(0, 191, 51, 1), rgba(0, 19, 5, 1))',
@@ -87,6 +92,7 @@ export default {
       height: {
         "9": "9px",
         "34": "34px",
+        "38": "38px",
         "44px": "44px",
         "54": "54px",
         "57": "57px",
@@ -142,10 +148,12 @@ export default {
         `,
       },
       backdropBlur: {
-        "50": "50px"
+        "50": "50px",
+        "100": "100px",
       },
       lineHeight: {
         "14": "14px",
+        "15": "15px",
         "22": "22px",
         "34": "34px",
       },

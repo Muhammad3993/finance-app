@@ -1,34 +1,99 @@
 import useUserData from "@/constants/useUserData";
+import { editCardData, fetchCard, fetchCards } from "@/data/api/cards";
 import { db } from "@/firebaseConfig";
 import { ICards } from "@/pages/bills/Bills";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { collection, deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 
-const useGetCards = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [cards, setCards] = useState<ICards[] | null>(null);
+// export const useGetCards = () => {
+//   const [isLoading, setIsLoading] = useState<boolean>(false);
+//   const [cards, setCards] = useState<ICards[] | null>(null);
+//   const useData = useUserData();
+
+//   const fetchAllCard = async () => {
+//     try {
+//       setIsLoading(true);
+//       const userDocRef = doc(db, "users", `${useData.telegram_id}`);
+//       const cardsCollectionRef = collection(userDocRef, "cards");
+//       const querySnapshot = await getDocs(cardsCollectionRef);
+
+//       if (!querySnapshot.empty) {
+//         const cards: ICards[] = querySnapshot.docs.map((doc) => ({
+//           id: doc.id,
+//           ...doc.data(),
+//         }));
+//         setCards(cards);
+//       }
+//       setIsLoading(false);
+//     } catch (e) {
+//       console.error(e);
+//     }
+//   };
+//   return { fetchAllCard, isLoading, cards };
+// };
+
+export const useGetCards = () => {
   const useData = useUserData();
 
-  const fetchAllCard = async () => {
-    try {
-      setIsLoading(true);
-      const userDocRef = doc(db, "users", `${useData.telegram_id}`);
-      const cardsCollectionRef = collection(userDocRef, "cards");
-      const querySnapshot = await getDocs(cardsCollectionRef);
-
-      if (!querySnapshot.empty) {
-        const cards: ICards[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setCards(cards);
-      }
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  return { fetchAllCard, isLoading, cards };
+  return useQuery({
+    queryKey: ["cards", useData.telegram_id],
+    queryFn: () => fetchCards(`${useData.telegram_id}`),
+  });
 };
 
-export default useGetCards;
+export const useGetCard = (cardId?: string) => {
+  const useData = useUserData();
+
+  return useQuery({
+    queryKey: ["card", useData.telegram_id, cardId],
+    queryFn: () => fetchCard(`${useData.telegram_id}`, cardId as string),
+  });
+};
+
+export const useEditCard = () => {
+  const userData = useUserData();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ cardData, bill }: { cardData: ICards; bill: string }) =>
+      editCardData({ cardData, bill }, `${userData.telegram_id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["card"] });
+    },
+    onError: (error: Error) => {
+      console.error("Error updating card:", error);
+    },
+  });
+};
+
+export const useDeleteCard = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const useData = useUserData();
+
+  const deleteCardById = async (cardId: string | undefined) => {
+    try {
+      setIsLoading(true);
+
+      const userDocRef = collection(
+        db,
+        "users",
+        `${useData.telegram_id}`,
+        "cards",
+      );
+
+      const cardDocRef = doc(userDocRef, cardId);
+
+      await deleteDoc(cardDocRef);
+
+      console.log(`Card with ID "${cardId}" deleted successfully.`);
+
+      setIsLoading(false);
+    } catch (e) {
+      console.error("Error deleting card:", e);
+      setIsLoading(false);
+    }
+  };
+
+  return { deleteCardById, isLoading };
+};

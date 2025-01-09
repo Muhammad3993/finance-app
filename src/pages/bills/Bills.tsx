@@ -1,12 +1,11 @@
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import useGetCards from "@/data/hooks/cards";
 import Bag from "@/assets/icons/bag";
 import ArrowRight from "@/assets/icons/arrowRight";
 import Plus from "@/assets/icons/plus";
 import formatBalance from "@/constants/useFormatBalance";
 import { ICurrency } from "@/data/hooks/currencies";
+import { useGetCards } from "@/data/hooks/cards";
 
 export interface ICards {
   id?: string;
@@ -18,11 +17,7 @@ export interface ICards {
   isBalance?: boolean;
 }
 const Bills = () => {
-  const { cards, isLoading, fetchAllCard } = useGetCards();
-
-  useEffect(() => {
-    fetchAllCard();
-  }, []);
+  const { data: cards, isLoading } = useGetCards();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -30,10 +25,16 @@ const Bills = () => {
 
   return (
     <div>
-      <UserNavbar isText text="Счета" textClass="text-white text-base" />
+      <UserNavbar
+        isText
+        text="Счета"
+        isScroll
+        textClass="text-white text-base"
+      />
       <div className="px-4 flex flex-col gap-2">
-        {cards?.map((card, index) => (
-          <div
+        {cards?.map((card: ICards, index: number) => (
+          <Link
+            to={`/bills/${card.id}`}
             className="bg-1B1A1E-50 h-20 p-4 flex items-center justify-between gap-4 rounded-20 leading-22"
             key={index}
           >
@@ -49,7 +50,7 @@ const Bills = () => {
               </p>
             </div>
             <ArrowRight fill="#FFFFFF80" />
-          </div>
+          </Link>
         ))}
         <Link
           to={"/create-card"}

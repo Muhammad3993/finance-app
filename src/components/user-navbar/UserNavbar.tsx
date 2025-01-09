@@ -44,7 +44,7 @@ const UserNavbar = (props: IProps) => {
         <div className="px-4 flex justify-between items-center h-12 relative">
           <div
             className={clsx(
-              "w-12 h-full flex items-center rounded-full",
+              "w-12 h-full flex items-center rounded-full cursor-pointer",
               leftIconBoxClass,
             )}
             onClick={leftIconBoxClick}
