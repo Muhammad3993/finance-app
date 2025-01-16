@@ -359,7 +359,7 @@ const AddExpense = () => {
 
           <div
             className={clsx(
-              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 bottom-0 pb-10 w-full select-none",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 bottom-0 pb-10 w-full select-none mt-3",
             )}
           >
             <button
