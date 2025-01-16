@@ -25,7 +25,7 @@ export default function GroupCards() {
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full h-342">
         <Swiper
           key={groupsBudget?.length || 0}
           slidesPerView={"auto"}
