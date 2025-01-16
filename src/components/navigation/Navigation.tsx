@@ -21,7 +21,7 @@ const Navigation = () => {
   return (
     <div
       className={clsx(
-        "w-max fixed bottom-6 left-[50%] translate-x-[-50%] items-center gap-2 p-2 bg-FFFFFF-8 rounded-50 backdrop-blur-[100px]",
+        "w-max fixed bottom-6 left-[50%] translate-x-[-50%] items-center gap-2 p-2 bg-FFFFFF-8 rounded-50 backdrop-blur-[100px] z-10",
         isShow ? "flex" : "hidden",
       )}
     >

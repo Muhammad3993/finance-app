@@ -170,7 +170,7 @@ export default {
       },
       screens: {
         "390": "390px"
-      }
+      },
     },
   },
   plugins: [],

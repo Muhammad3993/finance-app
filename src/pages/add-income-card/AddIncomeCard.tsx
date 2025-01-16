@@ -131,32 +131,10 @@ const AddIncomeCard = () => {
     navigate(-1);
   };
 
-  function formatCurrency(amount: number, locale?: string, currency?: string) {
-    if (!locale || !currency) {
-      throw new Error("Locale and currency must be provided.");
-    }
-
-    const formatter = new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency: currency,
-    });
-
-    const formatted = formatter.format(amount);
-
-    if (userData.currency?.symbol) {
-      return `${formatted.replace(
-        userData.currency.symbol.toUpperCase(),
-        "",
-      )} ${userData.currency?.symbol.toUpperCase()}`;
-    }
-
-    return formatted;
-  }
-
   const isTrue: boolean = Boolean(input);
 
   return (
-    <>
+    <div className="min-h-[100vh] max-h-max">
       <UserNavbar
         leftIconBoxClick={() => navigate(-1)}
         leftIcon={<ArrowLeftShort />}
@@ -178,10 +156,10 @@ const AddIncomeCard = () => {
             setSelectedCard={setSelectedCard}
             bill={bill}
           />
-          <div className="px-4 mt-3">
+          <div className="mt-3 px-4 sticky top-[148px]">
             <div
               className={clsx(
-                "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
+                "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative backdrop-blur-100",
               )}
             >
               <p className="absolute top-1 text-10 font-unbounded font-normal text-FFFFFF-80 opacity-50">
@@ -189,26 +167,15 @@ const AddIncomeCard = () => {
               </p>
               <p
                 className={clsx(
-                  "font-medium text-2xl font-unbounded text-white duration-300",
+                  "font-medium text-2xl font-unbounded text-white duration-300 flex gap-2",
                 )}
               >
                 {(userData.currency?.code &&
                   (regex.test(input)
-                    ? formatCurrency(
-                        +result,
-                        userData.currency.intl,
-                        userData.currency.code,
-                      )
-                    : formatCurrency(
-                        +input,
-                        userData.currency.intl,
-                        userData.currency.code,
-                      ))) ||
+                    ? result.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                    : input.replace(/\B(?=(\d{3})+(?!\d))/g, " "))) ||
                   "0"}
-                {/* {regex.test(input)
-                  ? formatBalance(result)
-                  : formatBalance(input) || "0"}
-                {userData?.currency?.symbol?.toUpperCase()} */}
+                <p>{userData?.currency?.symbol?.toUpperCase()}</p>
               </p>
             </div>
           </div>
@@ -268,7 +235,7 @@ const AddIncomeCard = () => {
 
           <div
             className={clsx(
-              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full select-none",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 bottom-0 pb-10 w-full select-none",
             )}
           >
             <button
@@ -329,7 +296,7 @@ const AddIncomeCard = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

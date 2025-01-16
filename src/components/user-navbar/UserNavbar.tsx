@@ -12,6 +12,7 @@ interface IProps {
   rightIconBoxClass?: string;
   rightIconBoxClick?: () => void;
   rightIcon?: React.ReactElement;
+  isSpace?: boolean;
 }
 
 const UserNavbar = (props: IProps) => {
@@ -26,6 +27,7 @@ const UserNavbar = (props: IProps) => {
     rightIconBoxClick,
     rightIcon,
     textClass,
+    isSpace,
   } = props;
 
   const { isScrolled, isScrolledText } = useUserContext();
@@ -88,7 +90,7 @@ const UserNavbar = (props: IProps) => {
           </div>
         </div>
       </div>
-      <div className="h-[157px]"></div>
+      <div className={clsx("h-[157px]", isSpace && "hidden")}></div>
     </>
   );
 };

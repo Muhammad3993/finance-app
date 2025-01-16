@@ -90,7 +90,7 @@ const PlansCreate = () => {
   const isTrue: boolean = Boolean(input);
 
   return (
-    <>
+    <div className="min-h-[100vh] max-h-max">
       <UserNavbar
         leftIcon={<ArrowLeftShort />}
         leftIconBoxClick={() => navigate(-1)}
@@ -121,10 +121,10 @@ const PlansCreate = () => {
           </NavLink>
         </div>
         <form action="" onSubmit={handleSubmit(onSubmit)}>
-          <div className="px-4 mt-3">
+          <div className=" mt-3 sticky top-[148px] z-10">
             <div
               className={clsx(
-                "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
+                "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative backdrop-blur-100",
               )}
             >
               <p className="absolute top-1 text-10 font-unbounded font-normal text-FFFFFF-80 opacity-50">
@@ -201,7 +201,7 @@ const PlansCreate = () => {
 
           <div
             className={clsx(
-              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full select-none",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 bottom-0 pb-10 w-full select-none",
             )}
           >
             <button
@@ -261,7 +261,7 @@ const PlansCreate = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -136,7 +136,7 @@ const AddExpense = () => {
   const isTrue: boolean = Boolean(input);
 
   return (
-    <>
+    <div className="min-h-[100vh] max-h-max">
       <UserNavbar
         leftIconBoxClick={() => navigate(-1)}
         leftIcon={<ArrowLeftShort />}
@@ -171,10 +171,10 @@ const AddExpense = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           {card !== "Savings" ? (
             <>
-              <div className="px-4">
+              <div className="px-4 sticky top-[148px]">
                 <div
                   className={clsx(
-                    "bg-1B1A1E-50 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
+                    "bg-1B1A1E-50 backdrop-blur-100 h-82 flex items-center justify-end p-4 rounded-2xl duration-300 overflow-hidden relative",
                   )}
                 >
                   <p className="absolute top-1 text-10 font-unbounded font-normal text-FFFFFF-80 opacity-50">
@@ -359,7 +359,7 @@ const AddExpense = () => {
 
           <div
             className={clsx(
-              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 fixed bottom-0 pb-10 w-full select-none",
+              "bg-1B1A1E-50 p-4 rounded-tr-35 rounded-tl-35 flex flex-col gap-4 duration-300 bottom-0 pb-10 w-full select-none",
             )}
           >
             <button
@@ -419,7 +419,7 @@ const AddExpense = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

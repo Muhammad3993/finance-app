@@ -24,7 +24,7 @@ const Bills = () => {
   }
 
   return (
-    <div>
+    <div >
       <UserNavbar
         isText
         text="Счета"
