@@ -25,7 +25,7 @@ const Budget = () => {
 
   const { groups } = useSettingBudget(+budget);
   const { data: groupsBudget, isLoading: isLoadingGroups } = useGetGroups();
-  const { createGroup } = usePostGroupsBudget();
+  const { mutate: createGroup } = usePostGroupsBudget();
 
   useEffect(() => {
     if (groups && budget && !isLoadingGroups) {

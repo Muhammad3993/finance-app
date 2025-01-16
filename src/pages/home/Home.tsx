@@ -16,7 +16,7 @@ const Home = () => {
 
   const { data: cards, isLoading: isLoadingCard } = useGetCards();
   const { data: operations, isLoading } = useGetOperations(undefined, "Cash");
-  const { createGroup, isLoadingCreate } = usePostGroupsBalance();
+  const { mutate: createGroup } = usePostGroupsBalance();
 
   const oprationsValue =
     operations?.reduce((total, operation) => {
@@ -45,7 +45,7 @@ const Home = () => {
     }
   }, [finance]);
 
-  if (state.isLoading || isLoadingCard || isLoading || isLoadingCreate) {
+  if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
   }
 

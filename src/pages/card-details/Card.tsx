@@ -6,7 +6,7 @@ import {
   useGetGroups,
   useGetGroupsBalance,
 } from "@/data/hooks/groups";
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import ArrowLeftShort from "@/assets/icons/arrowLeftShort";
 import Cash from "@/assets/icons/cash";
 import PlansCards from "@/components/plans/PlansCards";
@@ -21,7 +21,7 @@ const Card = () => {
   const navigate = useNavigate();
   const { card } = useParams();
 
-  const { groupsBudget, fetchGroups, isLoading } = useGetGroupsBalance();
+  const { data: groupsBudget, isLoading } = useGetGroupsBalance();
 
   const { data: operations } = useGetOperations(card, "Cash");
 
@@ -29,10 +29,6 @@ const Card = () => {
     return total + +(operation.value || 0);
   }, 0);
   const { data: budgetGroups } = useGetGroups();
-
-  useEffect(() => {
-    fetchGroups();
-  }, []);
 
   const group: IGroups | undefined = groupsBudget?.filter(
     (group: IGroups) => group.name === card,

@@ -14,7 +14,7 @@ const FInish = () => {
   const navigate = useNavigate();
 
   const { data: budgets, isLoading } = useGetBudget();
-  const { createGroup } = usePostGroupsBudget();
+  const { mutate: createGroup } = usePostGroupsBudget();
 
   const budget =
     budgets?.map((budget: IBudget) => budget.value).toString() || "0";

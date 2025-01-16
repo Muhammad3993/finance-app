@@ -1,9 +1,5 @@
-import {
-  IGroups,
-  useGetGroupsBalance,
-  usePostGroupsBudget,
-} from "@/data/hooks/groups";
-import { useEffect, useState } from "react";
+import { IGroups, useGetGroupsBalance } from "@/data/hooks/groups";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import clsx from "clsx";
@@ -12,16 +8,9 @@ import { Link } from "react-router-dom";
 
 export default function GroupCards() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const { groupsBudget, isLoading, fetchGroups } = useGetGroupsBalance();
+  const { data: groupsBudget, isLoading } = useGetGroupsBalance();
 
-  const { isLoadingCreate } = usePostGroupsBudget();
-
-  useEffect(() => {
-    fetchGroups();
-  }, []);
-
-
-  if (isLoading || isLoadingCreate) return <div className="h-342">Loading...</div>;
+  if (isLoading) return <div className="h-342">Loading...</div>;
 
   return (
     <>

@@ -24,7 +24,7 @@ export const useEditBudget = () => {
       editBudget({ cardData }, `${userData.telegram_id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget"] });
-      queryClient.invalidateQueries({ queryKey: ["groups"] });
+      queryClient.invalidateQueries({ queryKey: ["groups_budget"] });
     },
     onError: (error: Error) => {
       console.error("Error updating card:", error);
