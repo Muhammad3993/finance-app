@@ -13,11 +13,13 @@ import { Cell, Pie, PieChart } from "recharts";
 const FInish = () => {
   const navigate = useNavigate();
 
-  const { data: budgets } = useGetBudget();
+  const { data: budgets, isLoading } = useGetBudget();
   const { createGroup } = usePostGroupsBudget();
 
   const budget =
     budgets?.map((budget: IBudget) => budget.value).toString() || "0";
+
+  console.log(budget);
 
   const { groups, firstValue, secondValue, thirdValue } = useSettingBudget(
     +budget,
@@ -40,6 +42,10 @@ const FInish = () => {
       secondayColor: "rgba(0, 191, 51, 0.12)",
     },
   ];
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-040308 h-full flex flex-col justify-between overflow-y-auto">

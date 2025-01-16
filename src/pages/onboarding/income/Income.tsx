@@ -2,13 +2,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
-import { IFormValues } from "../finance/Finance";
 import { collection, doc, setDoc } from "firebase/firestore";
 import useUserData from "@/constants/useUserData";
 import { db } from "@/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import WebApp from "@twa-dev/sdk";
+
+interface IFormValues {
+  value: number;
+}
 
 const Income = () => {
   const userData = useUserData();
@@ -20,7 +23,7 @@ const Income = () => {
   const { t } = useTranslation();
 
   const schema = yup.object().shape({
-    card_finance: yup
+    value: yup
       .number()
       .typeError("Finance must be a number")
       .positive("Finance must be greater than 0")
@@ -60,7 +63,7 @@ const Income = () => {
 
   const onSubmit = (data: IFormValues) => {
     const cardData = {
-      card_finance: data.card_finance,
+      value: data.value,
     };
     saveCardData(cardData);
     // handleSaveBasic();
@@ -83,7 +86,7 @@ const Income = () => {
         <div className="w-full mt-24">
           <Controller
             control={control}
-            name="card_finance"
+            name="value"
             rules={{ required: "Finance required" }}
             render={({ field }) => (
               <input
@@ -97,9 +100,9 @@ const Income = () => {
               />
             )}
           />
-          {errors.card_finance && (
+          {errors.value && (
             <p className="text-xs relative left-6 top-1 h-3 text-red-500">
-              {errors.card_finance?.message}
+              {errors.value?.message}
             </p>
           )}
         </div>
