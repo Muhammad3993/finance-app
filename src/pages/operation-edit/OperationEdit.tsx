@@ -62,27 +62,6 @@ const AddExpense = () => {
   const [isDate, setIsDate] = useState(false);
 
   const handleSave = async (operationData: IOperationData) => {
-    // try {
-    //   const operationDocRef = doc(db, "operations", `${card}`);
-
-    //   const docSnapshot = await getDoc(operationDocRef);
-
-    //   if (!docSnapshot.exists()) {
-    //     await setDoc(operationDocRef, { initialized: true });
-    //     console.log(`New '${card}' created successfully`);
-    //   }
-
-    //   const operationsCollectionRef = collection(operationDocRef, "operations");
-
-    //   await addDoc(operationsCollectionRef, {
-    //     ...operationData,
-    //   });
-
-    //   console.log("Doc created successfully");
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
     if (!operation_id) {
       return;
     }
@@ -110,8 +89,7 @@ const AddExpense = () => {
     }
   };
 
-  const { categories, fetchAllCategories, isCategoryLoading } =
-    useGetCategories();
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories();
 
   useEffect(() => {
     try {
@@ -122,10 +100,6 @@ const AddExpense = () => {
       setResult(result);
     }
   }, [input]);
-
-  useEffect(() => {
-    fetchAllCategories();
-  }, []);
 
   const handleBackSpace = () => {
     setInput(input.slice(0, -1));
@@ -156,28 +130,6 @@ const AddExpense = () => {
     handleSave(operotionData);
     navigate("/card/" + card + "/operations/" + operation_id);
   };
-
-  // function formatCurrency(amount: number, locale?: string, currency?: string) {
-  //   if (!locale || !currency) {
-  //     throw new Error("Locale and currency must be provided."); // Xatolik chiqarish
-  //   }
-
-  //   const formatter = new Intl.NumberFormat(locale, {
-  //     style: "currency",
-  //     currency: currency,
-  //   });
-
-  //   const formatted = formatter.format(amount);
-
-  //   if (userData.currency?.symbol) {
-  //     return `${formatted.replace(
-  //       userData.currency.symbol.toUpperCase(),
-  //       "",
-  //     )} ${userData.currency?.symbol.toUpperCase()}`;
-  //   }
-
-  //   return formatted;
-  // }
 
   const isTrue: boolean =
     Boolean(input) &&
@@ -233,23 +185,6 @@ const AddExpense = () => {
                   "font-medium text-2xl font-unbounded text-white duration-300 flex gap-2",
                 )}
               >
-                {/* {(userData.currency?.code &&
-                  (regex.test(input)
-                    ? formatCurrency(
-                        +result,
-                        userData.currency.intl,
-                        userData.currency.code,
-                      )
-                    : formatCurrency(
-                        +input,
-                        userData.currency.intl,
-                        userData.currency.code,
-                      ))) ||
-                  "0"} */}
-                {/* {regex.test(input)
-                  ? formatBalance(result)
-                  : formatBalance(input) || "0"}
-                {userData?.currency?.symbol?.toUpperCase()} */}
                 {(userData.currency?.code &&
                   (regex.test(input)
                     ? result.replace(/\B(?=(\d{3})+(?!\d))/g, " ")

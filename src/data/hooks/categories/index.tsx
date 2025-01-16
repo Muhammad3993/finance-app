@@ -1,6 +1,5 @@
-import { db } from "@/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { useState } from "react";
+import { fetchAllCategories } from "@/data/api/categories";
+import { useQuery } from "@tanstack/react-query";
 
 export interface ICategory {
   id: string;
@@ -8,29 +7,10 @@ export interface ICategory {
 }
 
 const useGetCategories = () => {
-  const [isCategoryLoading, setIsCategoryLoading] = useState<boolean>(false);
-  const [categories, setCategories] = useState<ICategory[] | null>(null);
-
-  const fetchAllCategories = async () => {
-    try {
-      setIsCategoryLoading(true);
-      const docRef = collection(db, "categories");
-      const querySnapshot = await getDocs(docRef);
-
-      if (!querySnapshot.empty) {
-        const categories: ICategory[] = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name as string,
-        }));
-
-        setCategories(categories);
-      }
-      setIsCategoryLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  return { fetchAllCategories, isCategoryLoading, categories };
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: () => fetchAllCategories(),
+  });
 };
 
 export default useGetCategories;

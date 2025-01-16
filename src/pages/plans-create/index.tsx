@@ -31,12 +31,7 @@ const PlansCreate = () => {
   const [isOpenRepeat, setIsOpenRepeat] = useState(false);
 
   const { data: cards, isLoading } = useGetCards();
-  const { categories, fetchAllCategories, isCategoryLoading } =
-    useGetCategories();
-
-  useEffect(() => {
-    fetchAllCategories();
-  }, []);
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories();
 
   const { control, handleSubmit } = useForm<IPlan>({
     defaultValues: { autoDone: false },
@@ -140,23 +135,6 @@ const PlansCreate = () => {
                   "font-medium text-2xl font-unbounded text-white duration-300 flex gap-2",
                 )}
               >
-                {/* {(userData.currency?.code &&
-                            (regex.test(input)
-                              ? formatCurrency(
-                                  +result,
-                                  userData.currency.intl,
-                                  userData.currency.code,
-                                )
-                              : formatCurrency(
-                                  +input,
-                                  userData.currency.intl,
-                                  userData.currency.code,
-                                ))) ||
-                            "0"} */}
-                {/* {regex.test(input)
-                            ? formatBalance(result)
-                            : formatBalance(input) || "0"}
-                          {userData?.currency?.symbol?.toUpperCase()} */}
                 {(userData.currency?.code &&
                   (regex.test(input)
                     ? result.replace(/\B(?=(\d{3})+(?!\d))/g, " ")

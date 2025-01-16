@@ -2,7 +2,6 @@ import Flag from "@/assets/icons/flag";
 import { useUserContext } from "@/context/UserContext";
 import useCurrencies, { ICurrency } from "@/data/hooks/currencies";
 import clsx from "clsx";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -17,11 +16,7 @@ const ChooseValue = () => {
     setState({ user: { ...state.user, currency: currency } });
   };
 
-  const { currencies, fetchAllCurriense, isLoading } = useCurrencies();
-
-  useEffect(() => {
-    fetchAllCurriense();
-  }, []);
+  const { data: currencies, isLoading } = useCurrencies();
 
   if (isLoading) {
     return <p>Loading...</p>;

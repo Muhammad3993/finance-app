@@ -21,7 +21,7 @@ const CreateCard = () => {
   const navigate = useNavigate();
 
   const [isOpenCurrency, setIsOpenCurrency] = useState(false);
-  const { fetchAllCurriense, currencies, isLoading } = useCurrencies();
+  const { data: currencies, isLoading } = useCurrencies();
 
   const [selectedCurrence, setSelectedCurrence] = useState<ICurrency>({
     code: "uzs",
@@ -69,7 +69,6 @@ const CreateCard = () => {
   };
 
   useEffect(() => {
-    fetchAllCurriense();
     setValue("card_currency", selectedCurrence);
   }, []);
 

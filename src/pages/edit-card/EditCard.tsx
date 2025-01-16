@@ -23,7 +23,7 @@ const EditCard = () => {
 
   const navigate = useNavigate();
   const [isOpenCurrency, setIsOpenCurrency] = useState(false);
-  const { fetchAllCurriense, currencies, isLoading } = useCurrencies();
+  const { data: currencies, isLoading } = useCurrencies();
 
   const [selectedCurrence, setSelectedCurrence] = useState<ICurrency | null>(
     null,
@@ -105,10 +105,6 @@ const EditCard = () => {
     editCardData(cardData);
     navigate(-1);
   };
-
-  useEffect(() => {
-    fetchAllCurriense();
-  }, []);
 
   const formatNumber = (value: string | number): string => {
     if (typeof value === "number") value = value.toString();

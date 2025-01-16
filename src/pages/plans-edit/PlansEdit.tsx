@@ -33,14 +33,9 @@ const PlansEdit = () => {
 
   const [isOpenRepeat, setIsOpenRepeat] = useState(false);
 
-  const { categories, fetchAllCategories, isCategoryLoading } =
-    useGetCategories();
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories();
 
   const { data: plan } = useGetPlan(id || "");
-
-  useEffect(() => {
-    fetchAllCategories();
-  }, []);
 
   const { control, handleSubmit, setValue } = useForm<IPlan>({
     defaultValues: { autoDone: false },

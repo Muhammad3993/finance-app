@@ -49,7 +49,7 @@ const Home = () => {
     return <p>Loading...</p>;
   }
 
-  if (cards === null) {
+  if (cards?.length === 0) {
     navigate("/onboarding");
   }
 

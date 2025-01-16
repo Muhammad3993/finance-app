@@ -7,7 +7,7 @@ interface IProps {
   isOpenCategory: boolean;
   setIsOpenCategory: (value: boolean) => void;
   isCategoryLoading: boolean;
-  categories: ICategory[] | null;
+  categories?: ICategory[];
   selectedCategory: ICategory | null;
   setSelectedCategory: (value: ICategory) => void;
 }

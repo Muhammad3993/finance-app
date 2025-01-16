@@ -1,6 +1,13 @@
 import { db } from "@/firebaseConfig";
 import { ICards } from "@/pages/bills/Bills";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 
 export const fetchCard = async (telegram_id: string, cardId: string) => {
   if (!cardId) {
@@ -51,4 +58,15 @@ export const editCardData = async (
   } catch (e) {
     throw new Error(`Error updating card: ${e}`);
   }
+};
+
+export const deleteCardData = async (telegramId: string, cardId?: string) => {
+  if (!cardId) {
+    throw new Error("Card ID is required");
+  }
+
+  const userDocRef = doc(db, "users", telegramId);
+  const cardCollectionRef = doc(userDocRef, "cards", cardId);
+
+  return await deleteDoc(cardCollectionRef);
 };

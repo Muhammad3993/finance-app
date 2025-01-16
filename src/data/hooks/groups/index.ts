@@ -1,5 +1,5 @@
 import useUserData from "@/constants/useUserData";
-import { fetchGroups } from "@/data/api/groups";
+import { fetchBudgetGroups } from "@/data/api/groups";
 import { db } from "@/firebaseConfig";
 import { useQuery } from "@tanstack/react-query";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -69,7 +69,7 @@ export const useGetGroups = () => {
 
   return useQuery({
     queryKey: ["groups", userData.telegram_id],
-    queryFn: () => fetchGroups(`${userData.telegram_id}`),
+    queryFn: () => fetchBudgetGroups(`${userData.telegram_id}`),
   });
 };
 

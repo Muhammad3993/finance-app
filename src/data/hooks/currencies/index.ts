@@ -1,6 +1,5 @@
-import { db } from "@/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
-import { useState } from "react";
+import { fetchAllCurriense } from "@/data/api/currencies";
+import { useQuery } from "@tanstack/react-query";
 
 export interface ICurrency {
   name?: string;
@@ -11,25 +10,10 @@ export interface ICurrency {
 }
 
 const useCurrencies = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [currencies, setCurrencies] = useState<ICurrency[] | null>(null);
-
-  const fetchAllCurriense = async () => {
-    try {
-      setIsLoading(true);
-      const querySnapshot = await getDocs(collection(db, "currencies"));
-
-      if (!querySnapshot.empty) {
-        const currencies = querySnapshot.docs.map((doc) => doc.data());
-        setCurrencies(currencies);
-      }
-      setIsLoading(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  return { isLoading, currencies, fetchAllCurriense };
+  return useQuery({
+    queryKey: ["currencies"],
+    queryFn: () => fetchAllCurriense(),
+  });
 };
 
 export default useCurrencies;

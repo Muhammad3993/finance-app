@@ -90,8 +90,7 @@ const AddIncomeCard = () => {
     }
   };
 
-  const { categories, fetchAllCategories, isCategoryLoading } =
-    useGetCategories();
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories();
 
   useEffect(() => {
     try {
@@ -102,10 +101,6 @@ const AddIncomeCard = () => {
       setResult(result);
     }
   }, [input]);
-
-  useEffect(() => {
-    fetchAllCategories();
-  }, []);
 
   const handleBackSpace = () => {
     setInput(input.slice(0, -1));

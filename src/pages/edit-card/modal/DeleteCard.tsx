@@ -13,7 +13,7 @@ const DeleteCard = (props: IProps) => {
 
   const { deleteCard, setDeleteCard, bill } = props;
 
-  const { deleteCardById } = useDeleteCard();
+  const { mutate: deleteCardById } = useDeleteCard();
   return (
     <>
       {deleteCard && (

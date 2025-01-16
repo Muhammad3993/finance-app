@@ -7,7 +7,7 @@ interface IProps {
   setIsOpenCurrency: (value: boolean) => void;
   isOpenCurrency: boolean;
   setSelectedCurrence: (value: ICurrency) => void;
-  currencies: ICurrency[] | null;
+  currencies?: ICurrency[];
   selectedCurrence: ICurrency | null;
   selecteddCurrence: ICurrency | null;
 }

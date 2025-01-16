@@ -79,8 +79,7 @@ const AddExpense = () => {
     }
   };
 
-  const { categories, fetchAllCategories, isCategoryLoading } =
-    useGetCategories();
+  const { data: categories, isLoading: isCategoryLoading } = useGetCategories();
 
   useEffect(() => {
     try {
@@ -91,10 +90,6 @@ const AddExpense = () => {
       setResult(result);
     }
   }, [input]);
-
-  useEffect(() => {
-    fetchAllCategories();
-  }, []);
 
   const handleBackSpace = () => {
     setInput(input.slice(0, -1));
