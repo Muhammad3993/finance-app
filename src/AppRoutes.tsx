@@ -22,6 +22,15 @@ import Expenses from "./pages/card-operations/expenses/Expenses";
 import Adjustments from "./pages/card-operations/adjustments/Adjustments";
 import IncomeCardOperation from "./pages/card-operations/income/Income";
 import AddIncomeCard from "./pages/add-income-card/AddIncomeCard";
+import OperationDetails from "./pages/operation-details";
+import OperationEdit from "./pages/operation-edit/OperationEdit";
+import Plans from "./pages/plans";
+import ExpensesPlans from "./pages/plans/expenses";
+import IncomesPlans from "./pages/plans/incomes";
+import PlansCreate from "./pages/plans-create";
+import PlanDetails from "./pages/plan-detail/PlanDetails";
+import PlansEdit from "./pages/plans-edit/PlansEdit";
+import Telegram from "./pages/telegram/Telegram";
 
 const AppRoutes = () => {
   const { state, handleScroll } = useUserContext();
@@ -65,6 +74,22 @@ const AppRoutes = () => {
         <Route path="/budget" element={<Budget />} />
         <Route path="/test" element={<KeyboardListener />} />
         <Route path="/card/:card/operations" element={<Operations />} />
+        <Route
+          path="/card/:card/operations/:operation_id"
+          element={<OperationDetails />}
+        />
+        <Route
+          path="/card/:card/operations/:operation_id/edit"
+          element={<OperationEdit />}
+        />
+        <Route path="/plans" element={<Plans />}>
+          <Route index element={<ExpensesPlans />} />
+          <Route path="incomes" element={<IncomesPlans />} />
+        </Route>
+        <Route path="/plans-create/:type" element={<PlansCreate />} />
+        <Route path="/plans/:id" element={<PlanDetails />} />
+        <Route path="/plans/:type/:id/edit" element={<PlansEdit />} />
+        <Route path="/telegram" element={<Telegram />} />
         {/* <Route path="*" element={<Home />} /> */}
       </Routes>
       <Navigation />

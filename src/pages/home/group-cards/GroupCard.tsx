@@ -1,9 +1,9 @@
 import Cash from "@/assets/icons/cash";
 import Heart from "@/assets/icons/heart";
 import Savings from "@/assets/icons/savings";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import { IGroups } from "@/data/hooks/groups";
-import { useOperation } from "@/data/hooks/operation";
+import { useGetOperations } from "@/data/hooks/operations";
 import { Cell, Pie, PieChart } from "recharts";
 
 interface IProps {
@@ -13,11 +13,11 @@ interface IProps {
 const GroupCard = (props: IProps) => {
   const { group } = props;
 
-  const { data: operations } = useOperation(`${group.name}`, "Cash");
+  const { data: operations } = useGetOperations(`${group.name}`, "Cash");
 
   const oprationsValue =
     operations?.reduce((total, operation) => {
-      return total + +(operation.value || 0);
+      return total + Number(operation.value);
     }, 0) || 0;
 
   const dailySpendValueS =

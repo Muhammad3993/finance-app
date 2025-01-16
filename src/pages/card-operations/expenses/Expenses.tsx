@@ -1,15 +1,15 @@
 import CalendarIcon from "@/assets/icons/calendar";
 import OperationCard from "@/components/operation-cards/OperationCard";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import { useGetCard } from "@/data/hooks/cards";
-import { useOperation } from "@/data/hooks/operation";
+import { useGetOperations } from "@/data/hooks/operations";
 import { useParams } from "react-router-dom";
 
 const Expenses = () => {
   const { bill } = useParams();
 
   const { data: card, isLoading: isLoadingCard } = useGetCard(bill);
-  const { data: operations, isLoading } = useOperation(
+  const { data: operations, isLoading } = useGetOperations(
     undefined,
     card && card.card_name,
   );

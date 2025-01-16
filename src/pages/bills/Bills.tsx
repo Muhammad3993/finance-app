@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Bag from "@/assets/icons/bag";
 import ArrowRight from "@/assets/icons/arrowRight";
 import Plus from "@/assets/icons/plus";
-import formatBalance from "@/constants/useFormatBalance";
 import { ICurrency } from "@/data/hooks/currencies";
 import { useGetCards } from "@/data/hooks/cards";
+import { formatBalance } from "@/constants/useFormatBalance";
 
 export interface ICards {
   id?: string;
@@ -46,7 +46,7 @@ const Bills = () => {
                 {formatBalance(card.card_finance)}
               </p>
               <p className="text-9 leading-3 text-FFFFFF-50 font-unbounded">
-                Основной
+                {card.card_name}
               </p>
             </div>
             <ArrowRight fill="#FFFFFF80" />

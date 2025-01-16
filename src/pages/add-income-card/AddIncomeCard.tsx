@@ -3,8 +3,8 @@ import DateIcon from "@/assets/icons/dateIcon";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
 import useUserData from "@/constants/useUserData";
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { ICards } from "../bills/Bills";
 import useGetCategories, { ICategory } from "@/data/hooks/categories";
@@ -17,6 +17,7 @@ import CardModal from "./modals/CardModal";
 import CategoryModal from "./modals/CategoryModal";
 import RepeatModal from "./modals/RepeatModal";
 import { useGetCards } from "@/data/hooks/cards";
+import Calendar from "@/components/calendar/Calendar";
 
 export interface IWeekDay {
   id: number;
@@ -46,7 +47,6 @@ const AddIncomeCard = () => {
 
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
-  const dateRef = useRef<HTMLInputElement>(null);
   const userData = useUserData();
   const navigate = useNavigate();
   const [input, setInput] = useState("");
@@ -58,7 +58,8 @@ const AddIncomeCard = () => {
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
     null,
   );
-  const [isDate, setIsDate] = useState(false);
+  const [isOpenDate, setIsOpenDate] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   const handleSave = async (operationData: IOperationIncomeData) => {
     if (!bill) {
@@ -73,7 +74,6 @@ const AddIncomeCard = () => {
       await addDoc(cardIncomeCollectionRef, {
         ...operationData,
       });
-      console.log("successfully added");
     } catch (e) {
       console.error(e);
     }
@@ -122,7 +122,7 @@ const AddIncomeCard = () => {
       value: result,
       cardId: selectedCard?.id || bill,
       date:
-        data.date ||
+        selectedDate ||
         new Date().getFullYear().toString() +
           " " +
           new Date().getMonth().toString(),
@@ -158,7 +158,7 @@ const AddIncomeCard = () => {
     return formatted;
   }
 
-  const isTrue: boolean = Boolean(input) && isDate && Boolean(selectedCategory);
+  const isTrue: boolean = Boolean(input);
 
   return (
     <>
@@ -218,33 +218,24 @@ const AddIncomeCard = () => {
             </div>
           </div>
           <div className="mt-4 flex gap-2 px-4">
-            <Controller
-              control={control}
-              name="date"
-              render={({ field }) => {
-                setIsDate(Boolean(field.value));
-                return (
-                  <div
-                    className="flex-1 flex flex-col items-center justify-center gap-2"
-                    onClick={() => {
-                      dateRef?.current?.showPicker();
-                    }}
-                  >
-                    <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-                      <DateIcon fill="#00BF33" />
-                    </div>
-                    <p className="text-9 font-unbounded font-medium text-white">
-                      Дата
-                    </p>
-                    <input
-                      type="date"
-                      className="absolute opacity-0 input"
-                      {...field}
-                      ref={dateRef}
-                    />
-                  </div>
-                );
+            <div
+              className="flex-1 flex flex-col items-center justify-center gap-2"
+              onClick={() => {
+                setIsOpenDate(true);
               }}
+            >
+              <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
+                <DateIcon fill="#00BF33" />
+              </div>
+              <p className="text-9 font-unbounded font-medium text-white">
+                Дата
+              </p>
+            </div>
+
+            <Calendar
+              isOpen={isOpenDate}
+              setIsOpen={setIsOpenDate}
+              setResult={setSelectedDate}
             />
 
             <CategoryModal
@@ -293,6 +284,7 @@ const AddIncomeCard = () => {
                   ? "bg-00BF33 text-white"
                   : "bg-1B1A1E-100 text-FFFFFF-25",
               )}
+              disabled={!isTrue}
             >
               <p className=" text-xs font-medium font-unbounded">Добавить</p>
             </button>

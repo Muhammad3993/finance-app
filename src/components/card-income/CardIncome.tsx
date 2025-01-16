@@ -1,6 +1,6 @@
 import CardIcons from "@/assets/icons/cardicons";
 import Home from "@/assets/icons/home";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import { IOperationIncomeData } from "@/pages/add-income-card/AddIncomeCard";
 
 interface IProps {

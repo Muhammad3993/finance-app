@@ -1,33 +1,33 @@
 import useUserData from "@/constants/useUserData";
-import { db } from "@/firebaseConfig";
-import { collection, doc, getDocs } from "firebase/firestore";
-import { useState } from "react";
+import { editBudget, fetchBudget } from "@/data/api/budget";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface IBudget {
   id?: string;
-  card_finance?: number;
+  value?: number;
 }
 
 export const useGetBudget = () => {
-  const [budgets, setBudgets] = useState<IBudget[] | null>(null);
   const userData = useUserData();
+  return useQuery({
+    queryKey: ["budget", userData.telegram_id],
+    queryFn: () => fetchBudget(`${userData.telegram_id}`),
+  });
+};
 
-  const getBudget = async () => {
-    try {
-      const userDocRef = doc(db, "users", `${userData.telegram_id}`);
-      const cardsCollectionRef = collection(userDocRef, "budget");
-      const querySnapshot = await getDocs(cardsCollectionRef);
-      const cards = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+export const useEditBudget = () => {
+  const userData = useUserData();
+  const queryClient = useQueryClient();
 
-      setBudgets(cards);
-    } catch (e) {
-      console.error(e);
-      return [];
-    }
-  };
-
-  return { getBudget, budgets };
+  return useMutation({
+    mutationFn: ({ cardData }: { cardData: IBudget }) =>
+      editBudget({ cardData }, `${userData.telegram_id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["budget"] });
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
+    },
+    onError: (error: Error) => {
+      console.error("Error updating card:", error);
+    },
+  });
 };

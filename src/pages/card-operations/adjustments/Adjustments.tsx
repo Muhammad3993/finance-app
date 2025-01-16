@@ -1,6 +1,6 @@
 import CalendarIcon from "@/assets/icons/calendar";
 import CardOperation from "@/components/card-operation/CardOperation";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import {
   ICardOperation,
   useGetCardOperations,
@@ -16,7 +16,6 @@ const Adjustments = () => {
       (acc, cardOperation) => acc + cardOperation.value,
       0,
     ) || 0;
-
 
   if (isLoading) {
     return <div>Loading...</div>;

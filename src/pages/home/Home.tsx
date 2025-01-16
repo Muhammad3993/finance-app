@@ -4,18 +4,18 @@ import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import FollowAndAnalytics from "./follow_and_analytics";
-import formatBalance from "@/constants/useFormatBalance";
-import { useOperation } from "@/data/hooks/operation";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { usePostGroupsBalance } from "@/data/hooks/groups";
 import { useGetCards } from "@/data/hooks/cards";
 import { ICards } from "../bills/Bills";
+import { formatBalance } from "@/constants/useFormatBalance";
+import { useGetOperations } from "@/data/hooks/operations";
 
 const Home = () => {
   const { state } = useUserContext();
 
   const { data: cards, isLoading: isLoadingCard } = useGetCards();
-  const { data: operations, isLoading } = useOperation(undefined, "Cash");
+  const { data: operations, isLoading } = useGetOperations(undefined, "Cash");
   const { createGroup } = usePostGroupsBalance();
 
   const oprationsValue =
@@ -23,9 +23,12 @@ const Home = () => {
       return total + +(operation.value || 0);
     }, 0) || 0;
 
-  const finan = cards?.filter((card: ICards) => card.card_name === "Cash");
+  const finance: number =
+    cards
+      ?.filter((card: ICards) => card.isBalance === true)
+      .reduce((total, card: ICards) => total + (card?.card_finance ?? 0), 0) ||
+    0;
 
-  const finance = Number(finan?.map((card: ICards) => card.card_finance)) || 0;
   const { groups } = useSettingBudget(finance);
 
   const resultFinance = finance - Number(oprationsValue);

@@ -4,7 +4,6 @@ import Reverse from "@/assets/icons/reverse";
 import SettingIcon from "@/assets/icons/settingIcon";
 import CardOperation from "@/components/card-operation/CardOperation";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import formatBalance from "@/constants/useFormatBalance";
 import { useGetCardOperations } from "@/data/hooks/card-operations";
 import { useGetCard } from "@/data/hooks/cards";
 import clsx from "clsx";
@@ -12,6 +11,7 @@ import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import BillDetailModal from "./modal/BillDetailModal";
 import PlusComponent from "@/components/plus/Plus";
+import { formatBalance } from "@/constants/useFormatBalance";
 
 const BillDetails = () => {
   const { bill } = useParams();

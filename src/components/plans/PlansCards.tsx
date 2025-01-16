@@ -1,11 +1,11 @@
 import CalendarIcon from "@/assets/icons/calendar";
-import { useOperation } from "@/data/hooks/operation";
+import { useGetOperations } from "@/data/hooks/operations";
 import { Link, useParams } from "react-router-dom";
 
 const PlansCards = () => {
   const { card } = useParams();
 
-  const { data: operations } = useOperation(card);
+  const { data: operations } = useGetOperations(card);
 
   return (
     <div className="pb-4">

@@ -1,6 +1,6 @@
 import CalendarIcon from "@/assets/icons/calendar";
 import CardIncome from "@/components/card-income/CardIncome";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import { useGetCardIncomes } from "@/data/hooks/card-income";
 import { useParams } from "react-router-dom";
 

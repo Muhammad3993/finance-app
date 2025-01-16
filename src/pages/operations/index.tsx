@@ -3,15 +3,19 @@ import UserNavbar from "@/components/user-navbar/UserNavbar";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import "./operations.css";
 import OperationCard from "@/components/operation-cards/OperationCard";
-import { useOperation } from "@/data/hooks/operation";
 import CalendarIcon from "@/assets/icons/calendar";
+import { useGetOperations } from "@/data/hooks/operations";
+import { formatOperation } from "@/constants/useFormatBalance";
 
 const Operations = () => {
   const navigate = useNavigate();
 
   const { card } = useParams();
 
-  const { data: operations, isLoading } = useOperation(card);
+  const { data: operations, isLoading } = useGetOperations(card);
+
+  const value =
+    operations?.reduce((acc, operation) => acc + +operation.value, 0) || 0;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -63,7 +67,7 @@ const Operations = () => {
                 Сегодня
               </p>
               <p className="font-medium font-unbounded text-xs text-FFFFFF-50">
-                – 2 400 000 UZS
+                – {formatOperation(value)} UZS
               </p>
             </div>
             <div className="mt-3">

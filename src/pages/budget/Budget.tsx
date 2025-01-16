@@ -1,31 +1,36 @@
 import ArrowRight from "@/assets/icons/arrowRight";
 import Cash from "@/assets/icons/cash";
-import formatBalance from "@/constants/useFormatBalance";
 import { IBudget, useGetBudget } from "@/data/hooks/budget";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import BudgetModal from "./BudgetModal";
 import Heart from "@/assets/icons/heart";
 import Savings from "@/assets/icons/savings";
-import { useGetGroups } from "@/data/hooks/groups";
+import {
+  IGroups,
+  useGetGroups,
+  usePostGroupsBudget,
+} from "@/data/hooks/groups";
 import { Link } from "react-router-dom";
-import { useGetCards } from "@/data/hooks/cards";
-import { ICards } from "../bills/Bills";
+import useSettingBudget from "@/constants/useSettingBudget";
+import { formatBalance } from "@/constants/useFormatBalance";
 
 const Budget = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  const { data: cards, isLoading } = useGetCards();
-  const { budgets, getBudget } = useGetBudget();
+  const { data: budgets, isLoading } = useGetBudget();
 
   const budget =
-    budgets?.map((budget: IBudget) => budget.card_finance).toString() || "0";
+    budgets?.map((budget: IBudget) => budget.value).toString() || "0";
 
-  const { fetchGroups, groupsBudget } = useGetGroups();
+  const { groups } = useSettingBudget(+budget);
+  const { data: groupsBudget, isLoading: isLoadingGroups } = useGetGroups();
+  const { createGroup } = usePostGroupsBudget();
 
   useEffect(() => {
-    getBudget();
-    fetchGroups();
-  }, []);
+    if (groups && budget && !isLoadingGroups) {
+      createGroup(groups);
+    }
+  }, [budget]);
 
   const data = [
     {
@@ -45,12 +50,9 @@ const Budget = () => {
     },
   ];
 
-  if (isLoading) {
+  if (isLoadingGroups || isLoading) {
     return <p>Loading...</p>;
   }
-  const finance = Number(
-    cards?.slice(0)?.map((card: ICards) => card.card_finance),
-  );
 
   return (
     <div className="mt-[45px] overflow-hidden pb-[100px]">
@@ -136,9 +138,7 @@ const Budget = () => {
 
         <div className="w-[200px] h-[200px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col justify-center items-center mt-2">
           <p className="text-white text-2xl font-semibold font-unbounded leading-34">
-            {budgets?.length !== 0
-              ? formatBalance(Number(budget))
-              : formatBalance(finance)}
+            {budgets?.length !== 0 && formatBalance(Number(budget))}
           </p>
           <p className="text-10 font-unbounded font-normal text-FFFFFF-50 leading-3">
             Месячный бюджет
@@ -155,7 +155,7 @@ const Budget = () => {
       </div>
 
       <div className="px-4 z-20 flex flex-col gap-3">
-        {groupsBudget?.map((group, i: number) => (
+        {groupsBudget?.map((group: IGroups, i: number) => (
           <Link
             to={`/card/${group.name}`}
             className="bg-1B1A1E-80 p-4 flex items-center justify-between rounded-25 cursor- gap-4"
@@ -171,7 +171,7 @@ const Budget = () => {
             </div>
             <div className="w-[65%]">
               <p className="text-xs font-medium font-unbounded text-white leading-4">
-                Необходимые расходы
+                {group.title}
               </p>
               <p className="text-10 font-medium text-FFFFFF-50 font-unbounded">
                 {formatBalance(group.value)} сум на месяц
@@ -182,7 +182,11 @@ const Budget = () => {
         ))}
       </div>
 
-      <BudgetModal isOpenPopup={isOpenPopup} setIsOpenPopup={setIsOpenPopup} />
+      <BudgetModal
+        isOpenPopup={isOpenPopup}
+        setIsOpenPopup={setIsOpenPopup}
+        group={groups}
+      />
     </div>
   );
 };

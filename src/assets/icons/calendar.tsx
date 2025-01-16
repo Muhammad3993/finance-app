@@ -1,5 +1,15 @@
-const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={28} height={28} fill="none">
+interface IProps {
+  width?: number;
+  height?: number;
+}
+
+const CalendarIcon = (props: IProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={props.width || 28}
+    height={props.height || 28}
+    fill="none"
+  >
     <path
       fill="#fff"
       fillOpacity={0.25}

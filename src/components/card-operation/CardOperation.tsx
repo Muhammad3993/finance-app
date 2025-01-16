@@ -1,6 +1,6 @@
 import Minus from "@/assets/icons/minus";
 import Plus from "@/assets/icons/plus";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import { ICardOperation } from "@/data/hooks/card-operations";
 import clsx from "clsx";
 
@@ -35,8 +35,7 @@ const CardOperation = (props: IProps) => {
           operation.type === "minus" && "text-DE3A31",
         )}
       >
-        {operation.type === "minus" ? "" : "+"}{" "}
-        {formatBalance(operation.value)}
+        {operation.type === "minus" ? "" : "+"} {formatBalance(operation.value)}
       </p>
     </div>
   );

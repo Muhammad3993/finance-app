@@ -13,7 +13,8 @@ const Navigation = () => {
   const isShow =
     location.pathname === "/" ||
     location.pathname === "/bills" ||
-    location.pathname === "/date" ||
+    location.pathname === "/plans" ||
+    location.pathname === "/plans/incomes" ||
     location.pathname === "/budget" ||
     location.pathname === "/user";
 
@@ -37,7 +38,7 @@ const Navigation = () => {
         <Card fill="white" />
       </NavLink>
       <NavLink
-        to={"/date"}
+        to={"/plans"}
         className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
         <Date fill="white" />

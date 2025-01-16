@@ -3,29 +3,25 @@ import Cash from "@/assets/icons/cash";
 import Coin from "@/assets/icons/coin";
 import Savings from "@/assets/icons/savings";
 import UserNavbar from "@/components/user-navbar/UserNavbar";
-import formatBalance from "@/constants/useFormatBalance";
+import { formatBalance } from "@/constants/useFormatBalance";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { IBudget, useGetBudget } from "@/data/hooks/budget";
 import { usePostGroupsBudget } from "@/data/hooks/groups";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Cell, Pie, PieChart } from "recharts";
 
 const FInish = () => {
   const navigate = useNavigate();
 
-  const { budgets, getBudget } = useGetBudget();
+  const { data: budgets } = useGetBudget();
   const { createGroup } = usePostGroupsBudget();
 
   const budget =
-    budgets?.map((budget: IBudget) => budget.card_finance).toString() || "0";
+    budgets?.map((budget: IBudget) => budget.value).toString() || "0";
 
-  useEffect(() => {
-    getBudget();
-  }, []);
-
-  const { groups, firstValue, secondValue, thirdValue } =
-    useSettingBudget(budget);
+  const { groups, firstValue, secondValue, thirdValue } = useSettingBudget(
+    +budget,
+  );
 
   const data = [
     {

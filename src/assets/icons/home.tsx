@@ -1,9 +1,17 @@
 interface IProps {
   fill?: string;
+  width?: number;
+  height?: number;
 }
 
 const Home = (props: IProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={props.width || 16}
+    height={props.width || 16}
+    viewBox="0 0 16 16"
+    fill="none"
+  >
     <g>
       <path
         fill={props.fill || "#404040"}

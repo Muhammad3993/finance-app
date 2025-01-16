@@ -6,10 +6,25 @@ import ReverseIcon from "@/assets/icons/reverseIcon";
 interface IProps {
   isOpenRepeat: boolean;
   setIsOpenRepeat: (value: boolean) => void;
+  isText: boolean;
+  divClass?: string;
+  iconBoxClass?: string;
+  iconFill?: string;
+  iconFill1?: string;
+  iconWidth?: number;
 }
 
 const RepeatModal = (props: IProps) => {
-  const { isOpenRepeat, setIsOpenRepeat } = props;
+  const {
+    isOpenRepeat,
+    setIsOpenRepeat,
+    isText,
+    iconBoxClass,
+    iconFill,
+    iconFill1,
+    divClass,
+    iconWidth,
+  } = props;
   const [selectedRepeat, setSelectedRepeat] = useState<number>(0);
   const [selectedWeekDay, setSelectedWeekDay] = useState<IWeekDay | null>(null);
   const [selectedMonthDay, setSelectedMonthDay] = useState<IMonthDay | null>(
@@ -91,13 +106,23 @@ const RepeatModal = (props: IProps) => {
   return (
     <>
       <div
-        className="flex-1 flex flex-col items-center justify-center gap-2"
+        className={clsx(
+          "flex flex-col items-center justify-center gap-2",
+          divClass,
+        )}
         onClick={() => setIsOpenRepeat(true)}
       >
-        <div className="w-14 h-14 bg-00BF33-12 rounded-full flex justify-center items-center">
-          <ReverseIcon />
+        <div className={clsx("", iconBoxClass)}>
+          <ReverseIcon
+            fill={iconFill}
+            fill1={iconFill1}
+            width={iconWidth}
+            height={iconWidth}
+          />
         </div>
-        <p className="text-9 font-unbounded font-medium text-white">Повтор</p>
+        {isText && (
+          <p className="text-9 font-unbounded font-medium text-white">Повтор</p>
+        )}
       </div>
       {isOpenRepeat && (
         <div

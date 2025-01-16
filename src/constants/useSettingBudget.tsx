@@ -1,16 +1,16 @@
 import { IGroups } from "@/data/hooks/groups";
-import { useDaysInCurrentMonth } from "./useMonthDays";
+const daysInMonth = new Date(
+  new Date().getFullYear(),
+  new Date().getMonth() + 1,
+  0,
+).getDate();
 
-const useSettingBudget = (finance?: string | number) => {
-  const { daysInMonth } = useDaysInCurrentMonth();
-
-  const firstValue = (Number(finance) * 50) / 100;
-  const secondValue = (Number(finance) * 30) / 100;
-  const thirdValue = (Number(finance) * 20) / 100;
-
+const useSettingBudget = (finance: number) => {
+  const firstValue = (finance * 50) / 100;
+  const secondValue = (finance * 30) / 100;
+  const thirdValue = (finance * 20) / 100;
   const dailyValueNeed = +(firstValue / daysInMonth).toFixed(2);
   const dailyValueCul = +(secondValue / daysInMonth).toFixed(2);
-
   const groups: IGroups[] = [
     {
       name: "Necessary",
@@ -36,6 +36,7 @@ const useSettingBudget = (finance?: string | number) => {
       subtitle: "сум на месяц",
       value: thirdValue,
       spendValue: thirdValue,
+      dailySpendValue: 0,
     },
   ];
 

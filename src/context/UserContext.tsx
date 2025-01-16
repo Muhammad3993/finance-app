@@ -17,6 +17,7 @@ import {
 import { db } from "@/firebaseConfig";
 import WebApp from "@twa-dev/sdk";
 import { ICurrency } from "@/data/hooks/currencies";
+import { useNavigate } from "react-router-dom";
 
 interface IUser {
   telegram_id?: number;
@@ -46,9 +47,6 @@ const UserContext = createContext<IContext | undefined>(undefined);
 
 function UserProvider({ children }: { children: React.ReactNode }) {
   const dataUnsafe = WebApp.initDataUnsafe;
-  useEffect(() => {
-    console.log("WebApp.initDataUnsafe:", dataUnsafe);
-  }, []);
 
   const isTelegramWebApp = !!dataUnsafe?.user;
 
@@ -66,7 +64,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       },
     },
     userData: null,
-    isTelegramWebApp: true,
+    isTelegramWebApp: false,
     pages: 0,
   };
 
@@ -78,11 +76,14 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     initialState,
   );
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!isTelegramWebApp || !dataUnsafe?.user?.id) {
       console.warn(
         "Telegram WebApp yoki foydalanuvchi ma'lumotlari mavjud emas.",
       );
+      navigate("/telegram");
       return;
     }
 
@@ -107,7 +108,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     try {
       const docData = { ...userData };
       await setDoc(doc(db, "users", `${dataUnsafe.user.id}`), docData);
-      console.log("Foydalanuvchi ma'lumotlari saqlandi:", docData);
     } catch (e) {
       console.error("Foydalanuvchi ma'lumotlarini saqlashda xatolik:", e);
     }
@@ -149,10 +149,9 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
       if (!querySnapshot.empty) {
         const userData = querySnapshot.docs[0].data();
-        console.log("Foydalanuvchi ma'lumotlari topildi:", userData);
         setState({ userData });
       } else {
-        console.log("Foydalanuvchi topilmadi.");
+        console.error("Foydalanuvchi topilmadi.");
       }
       setState({ isLoading: false });
     } catch (e) {
@@ -166,6 +165,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       fetchUserByTelegramId(dataUnsafe.user.id);
       handleSaveBasic();
     }
+    // fetchUserByTelegramId(5673577167);
   }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);

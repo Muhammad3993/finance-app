@@ -1,24 +1,23 @@
-import useUserData from "@/constants/useUserData";
-import { db } from "@/firebaseConfig";
+import { useEditBudget } from "@/data/hooks/budget";
+import { IGroups } from "@/data/hooks/groups";
 import { yupResolver } from "@hookform/resolvers/yup";
 import clsx from "clsx";
-import { collection, doc, setDoc } from "firebase/firestore";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 interface IProps {
   isOpenPopup: boolean;
   setIsOpenPopup: (value: boolean) => void;
+  group: IGroups[];
 }
 
 interface IFormValues {
+  id?: string;
   value: number;
 }
 
 const BudgetModal = (props: IProps) => {
   const { isOpenPopup, setIsOpenPopup } = props;
-
-  const userData = useUserData();
 
   const schema = yup.object().shape({
     value: yup
@@ -33,21 +32,7 @@ const BudgetModal = (props: IProps) => {
     return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
-  const saveCardData = async (cardData: IFormValues) => {
-    try {
-      const userDocRef = doc(db, "users", `${userData.telegram_id}`);
-
-      const cardsCollectionRef = collection(userDocRef, "budget");
-
-      const newCardDocRef = doc(cardsCollectionRef, "budget_number");
-
-      await setDoc(newCardDocRef, {
-        ...cardData,
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { mutate: saveCardData } = useEditBudget();
 
   const {
     handleSubmit,
@@ -61,7 +46,7 @@ const BudgetModal = (props: IProps) => {
     const cardData = {
       value: data.value,
     };
-    saveCardData(cardData);
+    saveCardData({ cardData });
     setIsOpenPopup(false);
   };
 

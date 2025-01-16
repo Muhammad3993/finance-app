@@ -79,7 +79,7 @@ const UserNavbar = (props: IProps) => {
               )}
           <div
             className={clsx(
-              "w-12 h-full flex items-center justify-center rounded-full",
+              "w-12 h-full flex items-center justify-end rounded-full",
               rightIconBoxClass,
             )}
             onClick={rightIconBoxClick}

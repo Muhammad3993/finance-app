@@ -6,33 +6,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collection, deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 
-// export const useGetCards = () => {
-//   const [isLoading, setIsLoading] = useState<boolean>(false);
-//   const [cards, setCards] = useState<ICards[] | null>(null);
-//   const useData = useUserData();
-
-//   const fetchAllCard = async () => {
-//     try {
-//       setIsLoading(true);
-//       const userDocRef = doc(db, "users", `${useData.telegram_id}`);
-//       const cardsCollectionRef = collection(userDocRef, "cards");
-//       const querySnapshot = await getDocs(cardsCollectionRef);
-
-//       if (!querySnapshot.empty) {
-//         const cards: ICards[] = querySnapshot.docs.map((doc) => ({
-//           id: doc.id,
-//           ...doc.data(),
-//         }));
-//         setCards(cards);
-//       }
-//       setIsLoading(false);
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   };
-//   return { fetchAllCard, isLoading, cards };
-// };
-
 export const useGetCards = () => {
   const useData = useUserData();
 
@@ -85,8 +58,6 @@ export const useDeleteCard = () => {
       const cardDocRef = doc(userDocRef, cardId);
 
       await deleteDoc(cardDocRef);
-
-      console.log(`Card with ID "${cardId}" deleted successfully.`);
 
       setIsLoading(false);
     } catch (e) {

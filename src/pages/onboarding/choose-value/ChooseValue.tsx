@@ -13,8 +13,6 @@ const ChooseValue = () => {
 
   const { setState, state } = useUserContext();
 
-  console.log(state.user?.currency);
-
   const handleChooseCurrency = (currency: ICurrency) => {
     setState({ user: { ...state.user, currency: currency } });
   };
