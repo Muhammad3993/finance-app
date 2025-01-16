@@ -106,6 +106,7 @@ const Finance = () => {
               <input
                 {...field}
                 type="text"
+                inputMode="numeric"
                 className="font-unbounded w-full h-73 bg-00BF33-12 py-4 px-6 outline-none text-center rounded-25 placeholder:text-00BF33 placeholder:font-bold text-00BF33 font-bold"
                 placeholder="0 UZS"
                 value={formatNumber(field.value ?? "")}
