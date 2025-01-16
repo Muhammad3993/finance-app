@@ -19,8 +19,6 @@ const FInish = () => {
   const budget =
     budgets?.map((budget: IBudget) => budget.value).toString() || "0";
 
-  console.log(budget);
-
   const { groups, firstValue, secondValue, thirdValue } = useSettingBudget(
     +budget,
   );
