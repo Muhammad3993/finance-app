@@ -161,11 +161,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // if (dataUnsafe?.user?.id) {
-    //   fetchUserByTelegramId(dataUnsafe.user.id);
-    //   handleSaveBasic();
-    // }
-    fetchUserByTelegramId(5673577167);
+    if (dataUnsafe?.user?.id) {
+      fetchUserByTelegramId(dataUnsafe.user.id);
+      handleSaveBasic();
+    }
+    // fetchUserByTelegramId(5673577167);
   }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);
