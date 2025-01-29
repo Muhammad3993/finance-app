@@ -18,7 +18,7 @@ export default function GroupCards() {
     <>
       <div className="w-full h-342">
         <Swiper
-          key={groupsBudget?.length}
+          // key={groupsBudget?.length}
           slidesPerView={"auto"}
           centeredSlides={true}
           onSlideChange={(swiper) => {
