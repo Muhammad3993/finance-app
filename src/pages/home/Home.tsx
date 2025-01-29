@@ -45,7 +45,7 @@ const Home = () => {
     if (groups && finance) {
       createGroup(groups);
     }
-  }, [finance, location.pathname]);
+  }, [groups, finance, location.pathname]);
 
   if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
