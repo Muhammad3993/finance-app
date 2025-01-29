@@ -15,12 +15,12 @@ export interface IPlan {
   autoDone: boolean;
 }
 
-export const useGetPlans = (type: string) => {
+export const useGetPlans = (type?: string, is_done?: boolean) => {
   const useData = useUserData();
 
   return useQuery({
-    queryKey: ["plans", useData.telegram_id, type],
-    queryFn: () => fetchPlans(`${useData.telegram_id}`, type),
+    queryKey: ["plans", useData.telegram_id, type, is_done],
+    queryFn: () => fetchPlans(`${useData.telegram_id}`, type, is_done),
   });
 };
 

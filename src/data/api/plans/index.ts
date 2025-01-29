@@ -13,7 +13,11 @@ import {
   where,
 } from "firebase/firestore";
 
-export const fetchPlans = async (telegram_id: string, type: string) => {
+export const fetchPlans = async (
+  telegram_id: string,
+  type?: string,
+  is_done?: boolean,
+) => {
   const userDocRef = doc(db, "users", telegram_id);
   const plansRef = collection(userDocRef, "plans");
 
@@ -21,6 +25,10 @@ export const fetchPlans = async (telegram_id: string, type: string) => {
 
   if (type) {
     plansQuery = query(plansQuery, where("type", "==", type));
+  }
+
+  if (is_done !== undefined) {
+    plansQuery = query(plansQuery, where("is_done", "==", is_done));
   }
 
   const querySnapshot = await getDocs(plansQuery);

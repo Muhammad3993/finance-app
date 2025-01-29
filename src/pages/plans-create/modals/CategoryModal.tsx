@@ -30,7 +30,7 @@ const CategoryModal = (props: IProps) => {
           <Category fill="#00BF33" />
         </div>
         <p className="text-9 font-unbounded font-medium text-white">
-          Категория
+          {selectedCategory?.name || "Категория"}
         </p>
       </div>
       {isOpenCategory && (

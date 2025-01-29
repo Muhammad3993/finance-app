@@ -14,7 +14,6 @@ import {
 import { Link } from "react-router-dom";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { formatBalance } from "@/constants/useFormatBalance";
-import UserNavbar from "@/components/user-navbar/UserNavbar";
 
 const Budget = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -57,7 +56,6 @@ const Budget = () => {
 
   return (
     <div className="mt-[45px] overflow-hidden pb-[100px]">
-      <UserNavbar isSpace />
       <div className="h-[380px] w-[380px] relative mt-24 m-auto z-0">
         <PieChart
           width={380}

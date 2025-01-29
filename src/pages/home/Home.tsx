@@ -2,7 +2,7 @@ import GroupCards from "@/pages/home/group-cards/GroupCards";
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FollowAndAnalytics from "./follow_and_analytics";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { usePostGroupsBalance } from "@/data/hooks/groups";
@@ -10,6 +10,7 @@ import { useGetCards } from "@/data/hooks/cards";
 import { ICards } from "../bills/Bills";
 import { formatBalance } from "@/constants/useFormatBalance";
 import { useGetOperations } from "@/data/hooks/operations";
+import PlansCards from "./plans/PlansCards";
 
 const Home = () => {
   const { state } = useUserContext();
@@ -54,7 +55,7 @@ const Home = () => {
   }
 
   return (
-    <div className="mt-[110px]">
+    <div className="mt-[110px] pb-[100px]">
       <div className="w-full flex flex-col gap-2 items-center my-18">
         <div>
           <p className="text-10 font-unbounded font-normal text-white text-center">
@@ -67,12 +68,7 @@ const Home = () => {
       </div>
       <GroupCards />
       <FollowAndAnalytics />
-      <Link to="/onboarding" className="text-white">
-        Start
-      </Link>
-      <Link to="/test" className="text-white">
-        Start
-      </Link>
+      <PlansCards />
     </div>
   );
 };

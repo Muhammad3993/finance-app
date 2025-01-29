@@ -10,10 +10,11 @@ import { Link } from "react-router-dom";
 
 interface IProps {
   plan: IPlan;
+  minWidth?: boolean;
 }
 
 const PlansCard = (props: IProps) => {
-  const { plan } = props;
+  const { plan, minWidth } = props;
   const id: string | undefined = plan.id;
   const [isClicked, setIsClicked] = useState(plan.is_done);
 
@@ -54,6 +55,7 @@ const PlansCard = (props: IProps) => {
       to={`/plans/${plan.id}`}
       className={clsx(
         "w-full h-20 flex items-center justify-between bg-1B1A1E-100 rounded-25 p-5",
+        minWidth && "min-w-full",
       )}
     >
       <div
