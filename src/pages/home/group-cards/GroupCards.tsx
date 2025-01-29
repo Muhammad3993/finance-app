@@ -10,7 +10,9 @@ export default function GroupCards() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const { data: groupsBudget, isLoading } = useGetGroupsBalance();
 
-  if (isLoading) return <div className="h-342 text-red-600">Loading...</div>;
+  if (isLoading) {
+    return <div className="h-342 text-red-600">Loading...</div>;
+  }
 
   return (
     <>
