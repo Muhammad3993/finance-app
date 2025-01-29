@@ -1,8 +1,8 @@
 import GroupCards from "@/pages/home/group-cards/GroupCards";
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import FollowAndAnalytics from "./follow_and_analytics";
 import useSettingBudget from "@/constants/useSettingBudget";
 import { usePostGroupsBalance } from "@/data/hooks/groups";
@@ -14,7 +14,6 @@ import PlansCards from "./plans/PlansCards";
 
 const Home = () => {
   const { state } = useUserContext();
-  const location = useLocation();
 
   const { data: cards, isLoading: isLoadingCard } = useGetCards();
   const { data: operations, isLoading } = useGetOperations(undefined, "Cash");
@@ -25,11 +24,17 @@ const Home = () => {
       return total + +(operation.value || 0);
     }, 0) || 0;
 
-  const finance: number =
-    cards
-      ?.filter((card: ICards) => card.isBalance === true)
-      .reduce((total, card: ICards) => total + (card?.card_finance ?? 0), 0) ||
-    0;
+  const finance = useMemo(
+    () =>
+      cards
+        ?.filter((card: ICards) => card.isBalance === true)
+        .reduce(
+          (total, card: ICards) => total + (card?.card_finance ?? 0),
+          0,
+        ) || 0,
+    [cards],
+  );
+
 
   const { groups } = useSettingBudget(finance);
 
@@ -45,7 +50,7 @@ const Home = () => {
     if (groups && finance) {
       createGroup(groups);
     }
-  }, [groups, finance, location.pathname]);
+  }, [groups, finance]);
 
   if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
