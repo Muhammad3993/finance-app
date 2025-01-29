@@ -18,7 +18,7 @@ export default function GroupCards() {
     <>
       <div className="w-full h-342">
         <Swiper
-          key={groupsBudget?.length || 0}
+          key={groupsBudget.length}
           slidesPerView={"auto"}
           centeredSlides={true}
           onSlideChange={(swiper) => {
@@ -27,7 +27,7 @@ export default function GroupCards() {
           initialSlide={1}
           className="mySwiper px-10"
         >
-          {groupsBudget?.map((group: IGroups, index: number) => (
+          {groupsBudget.map((group: IGroups, index: number) => (
             <SwiperSlide key={index}>
               <Link
                 to={`/card/${group.name}`}
