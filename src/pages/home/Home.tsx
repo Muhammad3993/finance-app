@@ -45,7 +45,7 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
 
-  const [isWaiting, setIsWaiting] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(true);
 
   useEffect(() => {
     if (groups && finance) {
