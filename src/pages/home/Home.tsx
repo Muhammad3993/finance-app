@@ -49,16 +49,17 @@ const Home = () => {
 
   useEffect(() => {
     if (groups && finance) {
+      setIsWaiting(true);
       createGroup(groups, {
         onSuccess: () => {
-          setIsWaiting(true);
+          setIsWaiting(false);
         },
         onError: () => {
-          setIsWaiting(true);
+          setIsWaiting(false);
         },
       });
     }
-  }, [groups, finance]);
+  }, [finance]);
 
   if (cards?.length === 0 && !isLoadingCard) {
     navigate("/onboarding");
