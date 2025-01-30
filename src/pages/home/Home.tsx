@@ -80,7 +80,7 @@ const Home = () => {
           </p>
         </div>
       </div>
-      {isWaiting && <GroupCards isWaiting={isWaiting} />}
+      {isWaiting && <GroupCards />}
       <FollowAndAnalytics />
       <PlansCards />
     </div>

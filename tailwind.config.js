@@ -85,7 +85,8 @@ export default {
         "DE3A31-8": "rgba(222, 58, 49, 0.08)",
         "DE3A31-12": "rgba(222, 58, 49, 0.12)",
         "1CFA52-12": "rgba(28, 250, 83, 0.12)",
-        "FA531C": "rgba(250, 83, 28, 1)"
+        "FA531C": "rgba(250, 83, 28, 1)",
+        "293c31": "rgba(41,60,49, 1)"
       },
       backgroundImage: {
         'green-gradient': 'linear-gradient(to bottom, rgba(0, 191, 51, 1), rgba(0, 19, 5, 1))',
@@ -108,6 +109,7 @@ export default {
         "74": "74px",
         "76": "76px",
         "82": "82px",
+        "92": "92px",
         "94": "94px",
         "116": "116px",
         "180": "180px",
