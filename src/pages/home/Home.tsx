@@ -64,10 +64,6 @@ const Home = () => {
     navigate("/onboarding");
   }
 
-  if (isWaiting) {
-    window.location.reload();
-  }
-
   if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
   }
