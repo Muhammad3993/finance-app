@@ -64,7 +64,7 @@ const Home = () => {
     navigate("/onboarding");
   }
 
-  if (state.isLoading || isLoadingCard || isLoading || isWaiting) {
+  if (state.isLoading || isLoadingCard || isLoading || !isWaiting) {
     return <p>Loading...</p>;
   }
 
