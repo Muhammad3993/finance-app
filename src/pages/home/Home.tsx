@@ -45,16 +45,16 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
 
-  const [isWaiting, setIsWaiting] = useState(true);
+  const [isWaiting, setIsWaiting] = useState(false);
 
   useEffect(() => {
     if (groups && finance) {
       createGroup(groups, {
         onSuccess: () => {
-          setIsWaiting(false);
+          setIsWaiting(true);
         },
         onError: () => {
-          setIsWaiting(false);
+          setIsWaiting(true);
         },
       });
     }

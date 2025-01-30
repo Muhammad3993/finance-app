@@ -16,9 +16,7 @@ export default function GroupCards(props: IProps) {
 
   const { data: groupsBudget, isLoading, refetch } = useGetGroupsBalance();
   useEffect(() => {
-    if (!isWaiting) {
-      refetch();
-    }
+    refetch();
   }, [isWaiting, refetch]);
 
   if (isLoading) {
