@@ -60,12 +60,12 @@ const Home = () => {
     }
   }, [groups, finance]);
 
-  if (state.isLoading || isLoadingCard || isLoading || isWaiting) {
-    return <p>Loading...</p>;
+  if (cards?.length === 0 && !isLoadingCard) {
+    navigate("/onboarding");
   }
 
-  if (cards?.length === 0) {
-    navigate("/onboarding");
+  if (state.isLoading || isLoadingCard || isLoading || isWaiting) {
+    return <p>Loading...</p>;
   }
 
   return (
