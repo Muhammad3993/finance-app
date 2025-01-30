@@ -31,6 +31,7 @@ import PlansCreate from "./pages/plans-create";
 import PlanDetails from "./pages/plan-detail/PlanDetails";
 import PlansEdit from "./pages/plans-edit/PlansEdit";
 import Telegram from "./pages/telegram/Telegram";
+import Profile from "./pages/profile/Profile";
 
 const AppRoutes = () => {
   const { state, handleScroll } = useUserContext();
@@ -89,6 +90,7 @@ const AppRoutes = () => {
         <Route path="/plans-create/:type" element={<PlansCreate />} />
         <Route path="/plans/:id" element={<PlanDetails />} />
         <Route path="/plans/:type/:id/edit" element={<PlansEdit />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/telegram" element={<Telegram />} />
         {/* <Route path="*" element={<Home />} /> */}
       </Routes>

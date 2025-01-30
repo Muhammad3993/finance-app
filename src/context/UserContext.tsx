@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 interface IUser {
   telegram_id?: number;
   name?: string;
+  username?: string;
   lang?: string;
   photo?: string;
   currency?: ICurrency;
@@ -83,7 +84,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
       console.warn(
         "Telegram WebApp yoki foydalanuvchi ma'lumotlari mavjud emas.",
       );
-      navigate("/telegram");
+      // navigate("/telegram");
       return;
     }
 
@@ -124,6 +125,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     const basicUserData: IUser = {
       telegram_id: dataUnsafe.user.id,
       name: dataUnsafe.user.first_name,
+      username: dataUnsafe.user.username,
       lang: dataUnsafe.user.language_code,
       photo: dataUnsafe.user.photo_url,
       currency: state.userData?.currency || {
@@ -161,11 +163,11 @@ function UserProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (dataUnsafe?.user?.id) {
-      fetchUserByTelegramId(dataUnsafe.user.id);
-      handleSaveBasic();
-    }
-    // fetchUserByTelegramId(5673577167);
+    // if (dataUnsafe?.user?.id) {
+    //   fetchUserByTelegramId(dataUnsafe.user.id);
+    //   handleSaveBasic();
+    // }
+    fetchUserByTelegramId(5673577167);
   }, []);
 
   const [isScrolled, setIsScrolled] = useState(false);

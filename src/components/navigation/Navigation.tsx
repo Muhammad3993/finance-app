@@ -16,7 +16,7 @@ const Navigation = () => {
     location.pathname === "/plans" ||
     location.pathname === "/plans/incomes" ||
     location.pathname === "/budget" ||
-    location.pathname === "/user";
+    location.pathname === "/profile";
 
   return (
     <div
@@ -50,7 +50,7 @@ const Navigation = () => {
         <Chart fill="white" />
       </NavLink>
       <NavLink
-        to={"/user"}
+        to={"/profile"}
         className="w-14 h-14 flex justify-center items-center rounded-full nav_link"
       >
         <User fill="white" />
