@@ -64,7 +64,7 @@ const Home = () => {
     navigate("/onboarding");
   }
 
-  if (state.isLoading || isLoadingCard || isLoading || !isWaiting) {
+  if (state.isLoading || isLoadingCard || isLoading) {
     return <p>Loading...</p>;
   }
 
@@ -80,7 +80,7 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <GroupCards />
+      <GroupCards isWaiting={isWaiting} />
       <FollowAndAnalytics />
       <PlansCards />
     </div>

@@ -1,14 +1,25 @@
 import { IGroups, useGetGroupsBalance } from "@/data/hooks/groups";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import clsx from "clsx";
 import GroupCard from "./GroupCard";
 import { Link } from "react-router-dom";
 
-export default function GroupCards() {
+interface IProps {
+  isWaiting: boolean;
+}
+
+export default function GroupCards(props: IProps) {
+  const { isWaiting } = props;
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const { data: groupsBudget, isLoading } = useGetGroupsBalance();
+
+  const { data: groupsBudget, isLoading, refetch } = useGetGroupsBalance();
+  useEffect(() => {
+    if (!isWaiting) {
+      refetch();
+    }
+  }, [isWaiting, refetch]);
 
   if (isLoading) {
     return <div className="h-342 text-red-600">Loading...</div>;
