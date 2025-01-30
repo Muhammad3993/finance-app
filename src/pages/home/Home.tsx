@@ -1,7 +1,7 @@
 import GroupCards from "@/pages/home/group-cards/GroupCards";
 import { useUserContext } from "@/context/UserContext";
 import WebApp from "@twa-dev/sdk";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FollowAndAnalytics from "./follow_and_analytics";
 import useSettingBudget from "@/constants/useSettingBudget";
@@ -35,7 +35,6 @@ const Home = () => {
     [cards],
   );
 
-
   const { groups } = useSettingBudget(finance);
 
   const resultFinance = finance - Number(oprationsValue);
@@ -46,13 +45,22 @@ const Home = () => {
     WebApp.BackButton.hide();
   }, []);
 
+  const [isWaiting, setIsWaiting] = useState(false);
+
   useEffect(() => {
     if (groups && finance) {
-      createGroup(groups);
+      createGroup(groups, {
+        onSuccess: () => {
+          setIsWaiting(false);
+        },
+        onError: () => {
+          setIsWaiting(false);
+        },
+      });
     }
   }, [groups, finance]);
 
-  if (state.isLoading || isLoadingCard || isLoading) {
+  if (state.isLoading || isLoadingCard || isLoading || isWaiting) {
     return <p>Loading...</p>;
   }
 

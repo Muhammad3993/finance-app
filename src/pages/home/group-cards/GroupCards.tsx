@@ -18,7 +18,7 @@ export default function GroupCards() {
     <>
       <div className="w-full h-342">
         <Swiper
-          // key={groupsBudget?.length}
+          key={groupsBudget?.length || 0}
           slidesPerView={"auto"}
           centeredSlides={true}
           onSlideChange={(swiper) => {
@@ -27,19 +27,20 @@ export default function GroupCards() {
           initialSlide={1}
           className="mySwiper px-10"
         >
-          {groupsBudget && groupsBudget.map((group: IGroups, index: number) => (
-            <SwiperSlide key={index}>
-              <Link
-                to={`/card/${group.name}`}
-                className={clsx(
-                  "w-full h-342 rounded-35 p-5 flex flex-col justify-between items-center gap-4 bg-1B1A1E-50 backdrop-blur-50 shadow-swipe_box duration-300 overflow-hidden",
-                  activeIndex === index ? "scale-100" : "scale-90",
-                )}
-              >
-                <GroupCard group={group} />
-              </Link>
-            </SwiperSlide>
-          ))}
+          {groupsBudget &&
+            groupsBudget.map((group: IGroups, index: number) => (
+              <SwiperSlide key={index}>
+                <Link
+                  to={`/card/${group.name}`}
+                  className={clsx(
+                    "w-full h-342 rounded-35 p-5 flex flex-col justify-between items-center gap-4 bg-1B1A1E-50 backdrop-blur-50 shadow-swipe_box duration-300 overflow-hidden",
+                    activeIndex === index ? "scale-100" : "scale-90",
+                  )}
+                >
+                  <GroupCard group={group} />
+                </Link>
+              </SwiperSlide>
+            ))}
         </Swiper>
       </div>
     </>
