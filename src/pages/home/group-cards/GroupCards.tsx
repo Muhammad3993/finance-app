@@ -20,7 +20,7 @@ export default function GroupCards(props: IProps) {
       refetch();
       window.location.reload();
     }
-  }, [isWaiting, refetch]);
+  }, [isWaiting]);
 
   if (isLoading) {
     return <div className="h-342 text-red-600">Loading...</div>;
