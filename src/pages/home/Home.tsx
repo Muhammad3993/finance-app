@@ -81,7 +81,7 @@ const Home = () => {
           </p>
         </div>
       </div>
-      {isWaiting && <GroupCards />}
+      {!isWaiting && <GroupCards />}
       <FollowAndAnalytics />
       <PlansCards />
     </div>
